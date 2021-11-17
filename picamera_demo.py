@@ -25,13 +25,26 @@ from io import BytesIO
 
 
 # stream.2
-my_file = open('my_image.jpg', 'wb')
+# my_file = open('my_image.jpg', 'wb')
+# camera = PiCamera()
+# camera.start_preview()
+# sleep(2)
+# camera.capture(my_file) # my_flie.flush() is called
+# my_file.close()
+
+
+
+
+# Capturing to a PIL Image
+from PIL import Image
+stream = BytesIO()
 camera = PiCamera()
 camera.start_preview()
 sleep(2)
-camera.capture(my_file) # my_flie.flush() is called
-my_file.close()
-
+camera.capture(stream, format='jpeg')
+# "Rewind" the stream to the beginning so we can read its content
+stream.seek(0)
+image = Image.open(stream)
 
 
 
