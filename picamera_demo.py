@@ -1,5 +1,5 @@
 from time import sleep
-from picamera import Picamera
+from picamera import PiCamera
 
 camera = Camera()
 camera.resolution = (1024, 768)
