@@ -36,15 +36,26 @@ from io import BytesIO
 
 
 # Capturing to a PIL Image
-from PIL import Image
-stream = BytesIO()
+# from PIL import Image
+# stream = BytesIO()
+# camera = PiCamera()
+# camera.start_preview()
+# sleep(2)
+# camera.capture(stream, format='jpeg')
+# # "Rewind" the stream to the beginning so we can read its content
+# stream.seek(0)
+# image = Image.open(stream)
+
+
+
+
+# Capturing resized images
 camera = PiCamera()
+camera.resolution = (1024, 768)
 camera.start_preview()
 sleep(2)
-camera.capture(stream, format='jpeg')
-# "Rewind" the stream to the beginning so we can read its content
-stream.seek(0)
-image = Image.open(stream)
+camera.capture('foo.jpg', resize=(320, 240))
+
 
 
 
