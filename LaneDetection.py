@@ -391,12 +391,12 @@ reset()
 
 n = 0
 
-while n < 300:
+while n < 100:
     ret, frame = cap.read()
     if not (ret):
         break
 
-    if n % 25 == 0:
+    if n % 10 == 0:
         set_save_files(True)
     # set_save_files(False)
 
@@ -418,6 +418,7 @@ while n < 300:
     # if (n % 5 == 0):
     #     print("Saving frame", n)
     n = n + 1
+    print(n)
     # if keyboard.is_pressed('q'):
     #     break
     # set_save_files(False)
