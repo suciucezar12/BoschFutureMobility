@@ -3,9 +3,8 @@ import time
 
 import keyboard
 
-time.sleep(1)
-
 cap = cv2.VideoCapture(0)
+time.sleep(1)
 
 # while True:
 
