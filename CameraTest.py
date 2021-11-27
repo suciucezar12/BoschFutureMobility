@@ -5,13 +5,13 @@ import keyboard
 
 time.sleep(1)
 
-cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+cap = cv2.VideoCapture(0)
 
 while True:
 
     ret, frame = cap.read()
     cv2.imshow("frame", frame)
-    cv2.waitKey(2)
+    cv2.waitKey(1)
     if keyboard.is_pressed('q'):
         print("Pressed 'q' => stopped streaming.")
         break
