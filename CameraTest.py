@@ -3,16 +3,18 @@ import time
 
 import keyboard
 
-cap = cv2.VideoCapture(0)
-time.sleep(1)
+time.sleep(0.1)
 
-# while True:
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
-ret, frame = cap.read()
-cv2.imshow("frame", frame)
-cv2.waitKey(0)
-# if keyboard.is_pressed('q'):
-#     print("Pressed 'q' => stopped streaming.")
+while True:
+
+    ret, frame = cap.read()
+    cv2.imshow("frame", frame)
+    cv2.waitKey(1)
+    if keyboard.is_pressed('q'):
+        print("Pressed 'q' => stopped streaming.")
+        break
 
 cv2.destroyAllWindows()
 
