@@ -379,7 +379,7 @@ set_save_files(False)
 # cap = cv2.VideoCapture("video-sd.mp4")
 cap = cv2.VideoCapture(0)
 time.sleep(0.1)
-# writer = cv2.VideoWriter('video-sd-out.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 25, (1024, 600))
+writer = cv2.VideoWriter('video-sd-out.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 25, (640, 480))
 
 n = 0
 left_lanes = []
@@ -394,25 +394,31 @@ while True:
     if not (ret):
         break
 
-    # if n % 100 == 0:
-    #     set_save_files(True)
-    set_save_files(False)
-
+    if n % 50 == 0:
+        set_save_files(True)
+    # set_save_files(False)
+    
     frame = detect_lanes(frame, "frame_" + str(n) + ".jpg", left_lanes, right_lanes)
-    cv2.imshow("Frame", frame)
+
+    scale_percent = 50
+    w = int(frame.shape[1] * scale_percent / 100)
+    h = int(frame.shape[0] * scale_percent / 100)
+    dim = (w, h)
+    frame_resized = cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
+    cv2.imshow("Frame", frame_resized)
     cv2.waitKey(1)
-    # writer.write(frame)
+    writer.write(frame)
 
     if (len(left_lanes) > MAX_DETECTIONS):
         left_lanes = left_lanes[1:]
         right_lanes = right_lanes[1:]
 
-    if (n % 5 == 0):
-        print("Saving frame", n)
+    # if (n % 5 == 0):
+    #     print("Saving frame", n)
     n = n + 1
-    if keyboard.is_pressed('q'):
-        break
-    # set_save_files(False)
+    # if keyboard.is_pressed('q'):
+    #     break
+    set_save_files(False)
 
-# writer.release()
+writer.release()
 cap.release()
