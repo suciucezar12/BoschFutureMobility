@@ -389,20 +389,22 @@ right_lanes = []
 compute_perspective(640, 480, [0, 480], [190, 260], [460, 260], [640, 480])
 reset()
 
-while True:
+n = 0
+
+while n < 300:
     ret, frame = cap.read()
     if not (ret):
         break
 
-    if n % 50 == 0:
+    if n % 25 == 0:
         set_save_files(True)
     # set_save_files(False)
-    
+
     frame = detect_lanes(frame, "frame_" + str(n) + ".jpg", left_lanes, right_lanes)
 
     scale_percent = 50
-    w = int(frame.shape[1] * scale_percent / 100)
-    h = int(frame.shape[0] * scale_percent / 100)
+    w = int(frame.shape[1] * (1 + scale_percent))
+    h = int(frame.shape[0] * (1 + scale_percent))
     dim = (w, h)
     frame_resized = cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
     cv2.imshow("Frame", frame_resized)
@@ -418,7 +420,7 @@ while True:
     n = n + 1
     # if keyboard.is_pressed('q'):
     #     break
-    set_save_files(False)
+    # set_save_files(False)
 
 writer.release()
 cap.release()
