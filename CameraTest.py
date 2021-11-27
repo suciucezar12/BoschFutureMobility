@@ -3,7 +3,7 @@ import time
 
 import keyboard
 
-time.sleep(0.1)
+time.sleep(1)
 
 cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
 
