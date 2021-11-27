@@ -5,7 +5,7 @@ import keyboard
 
 time.sleep(0.1)
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 while True:
 
