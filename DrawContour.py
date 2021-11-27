@@ -2,7 +2,7 @@ import cv2
 
 cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
-cv2.line(frame, (160, 240), (320, 240), (255, 0, 0))    # up base
+cv2.line(frame, (213, 240), (427, 240), (255, 0, 0))    # up base
 # cv2.line(frame, (240, 320), (640, 480), (0, 255, 0))    # right
 # cv2.line(frame, (640, 480), (0, 480), (0, 0, 255))  # low base
 # cv2.line(frame, (0, 480), (240, 160), (255, 255, 255))  # left
