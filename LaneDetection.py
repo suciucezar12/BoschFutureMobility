@@ -403,8 +403,8 @@ while n < 300:
     frame = detect_lanes(frame, "frame_" + str(n) + ".jpg", left_lanes, right_lanes)
 
     scale_percent = 50
-    w = int(frame.shape[1] * (1 + scale_percent))
-    h = int(frame.shape[0] * (1 + scale_percent))
+    w = int(frame.shape[1] * (1 + scale_percent/100))
+    h = int(frame.shape[0] * (1 + scale_percent/100))
     dim = (w, h)
     frame_resized = cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
     cv2.imshow("Frame", frame_resized)
