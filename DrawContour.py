@@ -4,10 +4,10 @@ cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
 cv2.imshow("frame", frame)
 cv2.waitKey(0)
-cv2.line(frame, (160, 240), (320, 240), (255, 0, 0))    # up base
-cv2.line(frame, (320, 240), (480, 640), (0, 255, 0))    # right
-cv2.line(frame, (480, 640), (480, 0), (0, 0, 255))  # low base
-cv2.line(frame, (480, 0), (240, 160), (255, 255, 255))  # left
+cv2.line(frame, (240, 160), (240, 320), (255, 0, 0))    # up base
+cv2.line(frame, (240, 320), (640, 480), (0, 255, 0))    # right
+cv2.line(frame, (640, 480), (0, 480), (0, 0, 255))  # low base
+cv2.line(frame, (0, 480), (240, 160), (255, 255, 255))  # left
 cv2.imwrite("ImageFromCamera.jpg", frame)
 h = frame.shape[0]
 w = frame.shape[1]
