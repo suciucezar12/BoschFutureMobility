@@ -11,7 +11,7 @@ while True:
 
     ret, frame = cap.read()
     cv2.imshow("frame", frame)
-    cv2.waitKey(1)
+    cv2.waitKey(2)
     if keyboard.is_pressed('q'):
         print("Pressed 'q' => stopped streaming.")
         break
