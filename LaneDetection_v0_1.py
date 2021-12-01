@@ -20,12 +20,12 @@ while ret:
     cv2.imshow("Grayscale", frame_grayscale)
 
     # Apply Gaussian Blur
-    frame_blurred = cv2.GaussianBlur(frame_grayscale, (13, 13), cv2.BORDER_DEFAULT)
+    frame_blurred = cv2.GaussianBlur(frame_grayscale, (7, 7), cv2.BORDER_DEFAULT)
     cv2.imshow("Gaussian Blur", frame_blurred)
 
-    # Apply Sobel on X axis
+    # Apply Canny
     # gX = cv2.Sobel(gray, ddepth=cv2.CV_32F, dx=1, dy=0, ksize=ksize)
-    frame_edge_detection = cv2.Sobel(frame_blurred, cv2.CV_32F, 1, 0, ksize=3)
+    frame_edge_detection = cv2.Canny(frame_blurred, 100, 200)
     cv2.imshow("Sobel", frame_edge_detection)
     cv2.waitKey(1)
 
