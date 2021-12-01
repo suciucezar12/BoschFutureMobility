@@ -8,7 +8,7 @@ ret, frame = cap.read()
 
 while ret:
     frame_copy = frame.copy()
-    print("H = " + frame_copy.shape[0] + ", W = " +  frame_copy.shape[1])
+    print("H = " + str(frame_copy.shape[0]) + ", W = " +  str(frame_copy.shape[1]))
     # resize the image
 
 
