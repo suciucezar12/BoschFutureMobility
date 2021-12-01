@@ -26,7 +26,8 @@ while ret:
 
     # Apply Canny
     # gX = cv2.Sobel(gray, ddepth=cv2.CV_32F, dx=1, dy=0, ksize=ksize)
-    frame_edge_detection = cv2.Canny(frame_blurred, 100, 200)
+    # frame_edge_detection = cv2.Canny(frame_blurred, 100, 200)
+    frame_edge_detection = cv2.Sobel(frame_blurred, cv2.CV_32F, 1, 0, ksize=3)
     cv2.imshow("Sobel", frame_edge_detection)
     end = time.time()
     print(end - start)
