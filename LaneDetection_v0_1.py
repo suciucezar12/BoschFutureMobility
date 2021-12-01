@@ -19,7 +19,7 @@ while ret:
     cv2.imshow("Grayscale", frame_grayscale)
 
     # Apply Gaussian Blur
-    frame_blurred = cv2.GaussianBlur(frame_grayscale, (7, 7), cv2.BORDER_DEFAULT)
+    frame_blurred = cv2.GaussianBlur(frame_grayscale, (9, 9), cv2.BORDER_DEFAULT)
     cv2.imshow("Gaussian Blur", frame_blurred)
 
     # Apply Sobel on X axis
