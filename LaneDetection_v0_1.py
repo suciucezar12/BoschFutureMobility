@@ -9,7 +9,7 @@ ret, frame = cap.read()
 while ret:
     frame_copy = frame.copy()
     h = frame_copy.shape[0]
-    frame_copy = frame_copy[h / 2:, :]
+    frame_copy = frame[h / 2:, :]
     cv2.imshow("Frame", frame_copy)
 
     # print("H = " + str(frame_copy.shape[0]) + ", W = " +  str(frame_copy.shape[1]))
