@@ -25,5 +25,6 @@ while ret:
     # Apply Sobel on X axis
     frame_edge_detection = cv2.Sobel(frame_blurred, cv2.CV_64F, 1, 0, ksize=5)
     cv2.imshow("Sobel", frame_edge_detection)
+    cv2.waitKey(1)
 
 
