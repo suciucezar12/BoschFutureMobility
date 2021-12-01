@@ -22,6 +22,7 @@ def apply_filter(frame):
     print(end - start)
 
     cv2.waitKey(1)
+    return frame_edge_detection
 
 
 time.sleep(0.1)
@@ -32,6 +33,7 @@ ret, frame = cap.read()
 while ret:
     start = time.time()
     frame_copy = frame.copy()
-    apply_filter(frame_copy)
+    frame_edge_detection = apply_filter(frame_copy)
+    ret, frame = cap.read()
 
 
