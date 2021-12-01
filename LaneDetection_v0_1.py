@@ -4,10 +4,9 @@ import cv2
 time.sleep(0.1)
 cap = cv2.VideoCapture(0)
 
-
+ret, frame = cap.read()
 
 while ret:
-    ret, frame = cap.read()
     start = time.time()
     frame_copy = frame.copy()
     frame_copy = frame[int(frame.shape[0] / 2):, :]
@@ -33,5 +32,6 @@ while ret:
     end = time.time()
     print(end - start)
     cv2.waitKey(1)
+    ret, frame = cap.read()
 
 
