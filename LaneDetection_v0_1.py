@@ -18,7 +18,7 @@ while ret:
     cv2.imshow("Grayscale", frame_grayscale)
 
     # Apply Gaussian Blur
-    frame_blurred = cv2.GaussianBlur(frame_grayscale, (3, 3), cv2.BORDER_DEFAULT)
+    frame_blurred = cv2.GaussianBlur(frame_grayscale, (5, 5), cv2.BORDER_DEFAULT)
     cv2.imshow("Gaussian Blur", frame_blurred)
 
     # Apply Canny
