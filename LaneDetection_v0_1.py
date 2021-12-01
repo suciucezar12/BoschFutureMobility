@@ -23,7 +23,8 @@ while ret:
     cv2.imshow("Gaussian Blur", frame_blurred)
 
     # Apply Sobel on X axis
-    frame_edge_detection = cv2.Sobel(frame_blurred, cv2.CV_64F, 1, 0, ksize=5)
+    # gX = cv2.Sobel(gray, ddepth=cv2.CV_32F, dx=1, dy=0, ksize=ksize)
+    frame_edge_detection = cv2.Sobel(frame_blurred, cv2.CV_32F, 1, 0, ksize=3)
     cv2.imshow("Sobel", frame_edge_detection)
     cv2.waitKey(1)
 
