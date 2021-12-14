@@ -50,9 +50,9 @@ class LaneDetection:
                 x1, y1, x2, y2 = lane[0]
                 slope = float((x2 - x1) / (y2 - y1))
                 if slope > 0.0:
-                    left_lanes.append([x1, y1, x2, y2])
-                else:
                     right_lanes.append([x1, y1, x2, y2])
+                else:
+                    left_lanes.append([x1, y1, x2, y2])
 
             frame_copy = frame_copy = frame[int(frame.shape[0] / 2):, :]
             tolerance = 25
@@ -69,6 +69,8 @@ class LaneDetection:
                 x1, y1, x2, y2 = lane
                 cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
                 cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+
+
 
             cv2.imshow("Probabilistic Hough Transform", frame_copy)
             cv2.waitKey(1)
