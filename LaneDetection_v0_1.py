@@ -26,12 +26,12 @@ class LaneDetection:
 
         # Apply Canny
         frame_edge_detection = cv2.Canny(frame_blurred, 100, 200)
-        # cv2.imshow("Canny", frame_edge_detection)
+        cv2.imshow("Canny", frame_edge_detection)
 
         end = time.time()
-        # print(end - start)
+        print(end - start)
 
-        # cv2.waitKey(1)
+        cv2.waitKey(1)
         return frame_edge_detection
 
     def run(self):
