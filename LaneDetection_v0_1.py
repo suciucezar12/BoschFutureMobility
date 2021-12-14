@@ -56,19 +56,21 @@ class LaneDetection:
 
             frame_copy = frame_copy = frame[int(frame.shape[0] / 2):, :]
             tolerance = 25
-            for lane in left_lanes:
-                x1, y1, x2, y2 = lane[0]
-                cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
-                cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
-
-            for lane in right_lanes:
-                x1, y1, x2, y2 = lane[0]
-                cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
-                cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+            print("left lane \n" + left_lanes)
+            print("right laine \n" + right_lanes)
+            # for lane in left_lanes:
+            #     x1, y1, x2, y2 = lane[0]
+            #     cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
+            #     cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
+            #
+            # for lane in right_lanes:
+            #     x1, y1, x2, y2 = lane[0]
+            #     cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
+            #     cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
 
             cv2.imshow("Probabilistic Hough Transform", frame_copy)
-            cv2.waitKey(1)
-            cv2.waitKey(1)
+            # cv2.waitKey(1)
+            # cv2.waitKey(1)
             ret, frame = self.cap.read()
 
 
