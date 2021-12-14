@@ -47,9 +47,9 @@ class LaneDetection:
             lines = cv2.HoughLinesP(frame_edge_detection, 1, np.pi / 180, 100, minLineLength=10, maxLineGap=10)
             for line in lines:
                 x1, y1, x2, y2 = line[0]
-                cv2.line(frame, (x1, y1), (x2, y2), (255, 0, 0), 3)
+                cv2.line(frame_edge_detection, (x1, y1), (x2, y2), (255, 0, 0), 3)
 
-            cv2.imshow("Probabilistic Hough Transform", frame)
+            cv2.imshow("Probabilistic Hough Transform", frame_edge_detection)
             cv2.waitKey(1)
 
             ret, frame = self.cap.read()
