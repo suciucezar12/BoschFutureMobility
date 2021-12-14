@@ -30,9 +30,9 @@ class LaneDetection:
         cv2.imshow("Canny", frame_edge_detection)
 
         end = time.time()
-        print(end - start)
+        # print(end - start)
 
-        cv2.waitKey(1)
+        # cv2.waitKey(1)
         return frame_edge_detection
 
     def run(self):
@@ -44,7 +44,13 @@ class LaneDetection:
             # fourth argument =  Threshold = Minimum length of line that should be detected = Nb of pixels which belong to that line
             # fifth argument = max allowed gap between line segments to treat them as single line
 
-            # lines = cv2.HoughLinesP(frame_edge_detection, 1, np.pi / 180, 100, minLineLength, maxLineGap)
+            lines = cv2.HoughLinesP(frame_edge_detection, 1, np.pi / 180, 100, minLineLength=10, maxLineGap=10)
+            for line in lines:
+                x1, y1, x2, y2 = line[0]
+                cv2.line(frame, (x1, y1), (x2, y2), (255, 0, 0), 3)
+
+            cv2.imshow("Probabilistic Hough Transform", frame)
+            cv2.waitKey(1)
 
             ret, frame = self.cap.read()
 
