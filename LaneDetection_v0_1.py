@@ -46,7 +46,7 @@ class LaneDetection:
 
             lines = cv2.HoughLinesP(frame_edge_detection, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10, maxLineGap=100)
             frame_copy = frame_copy = frame[int(frame.shape[0] / 2):, :]
-            tolerance = 50
+            tolerance = 25
             if lines is not None:
                 for line in lines:
                     x1, y1, x2, y2 = line[0]
