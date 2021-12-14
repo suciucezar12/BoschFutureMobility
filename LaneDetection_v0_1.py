@@ -56,8 +56,10 @@ class LaneDetection:
 
             frame_copy = frame_copy = frame[int(frame.shape[0] / 2):, :]
             tolerance = 25
-            print("left lane \n" + left_lanes)
-            print("right laine \n" + right_lanes)
+            print("\n")
+            print(left_lanes)
+            print("\n")
+            print(right_lanes)
             # for lane in left_lanes:
             #     x1, y1, x2, y2 = lane[0]
             #     cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
