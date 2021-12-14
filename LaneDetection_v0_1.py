@@ -71,8 +71,7 @@ class LaneDetection:
                 cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
 
             cv2.imshow("Probabilistic Hough Transform", frame_copy)
-            # cv2.waitKey(1)
-            # cv2.waitKey(1)
+            cv2.waitKey(1)
             ret, frame = self.cap.read()
 
 
