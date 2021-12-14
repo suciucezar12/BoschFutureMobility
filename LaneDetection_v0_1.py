@@ -44,14 +44,15 @@ class LaneDetection:
             # fourth argument =  Threshold = Minimum length of line that should be detected = Nb of pixels which belong to that line
             # fifth argument = max allowed gap between line segments to treat them as single line
 
-            lines = cv2.HoughLinesP(frame_edge_detection, 1, np.pi / 180, 100, minLineLength=10, maxLineGap=100)
+            lines = cv2.HoughLinesP(frame_edge_detection, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10, maxLineGap=100)
             frame_copy = frame_copy = frame[int(frame.shape[0] / 2):, :]
             tolerance = 50
-            for line in lines:
-                x1, y1, x2, y2 = line[0]
-                cv2.line(frame_copy, (x2 - tolerance, y1), (x2 + tolerance, y1), (0, 255, 0), 3)
-                cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
-            cv2.imshow("Probabilistic Hough Transform", frame_copy)
+            if lines:
+                for line in lines:
+                    x1, y1, x2, y2 = line[0]
+                    cv2.line(frame_copy, (x2 - tolerance, y1), (x2 + tolerance, y1), (0, 255, 0), 3)
+                    cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
+                cv2.imshow("Probabilistic Hough Transform", frame_copy)
             cv2.waitKey(1)
 
             ret, frame = self.cap.read()
