@@ -10,7 +10,7 @@ class LaneDetection:
         self.cap = cv2.VideoCapture(0)
 
     def PreProcessing(self, frame):
-        frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
+        frame_copy = frame[3 * int(frame.shape[0] / 4):, :]
 
         frame_grayscale = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
 
@@ -47,7 +47,7 @@ class LaneDetection:
                 for lane in right_lanes:
                     x1, y1, x2, y2 = lane
                     cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
-                    
+
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT", frame_copy)
             cv2.waitKey(1)
