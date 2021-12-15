@@ -43,12 +43,13 @@ class LaneDetection:
             # third argument = Theta accuracies ?
             # fourth argument =  Threshold = Minimum length of line that should be detected = Nb of pixels which belong to that line
             # fifth argument = max allowed gap between line segments to treat them as single line
-            lanes = cv2.HoughLinesP(frame_edge_detection, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10, maxLineGap=100)
+            lanes = cv2.HoughLinesP(frame_edge_detection, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10,
+                                    maxLineGap=100)
             left_lanes = []
             right_lanes = []
             frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
             print(type(lanes))
-            if type(lanes) == type(None):
+            if not isinstance(type(lanes), type(None)):
                 for lane in lanes:
                     x1, y1, x2, y2 = lane[0]
                     slope = float((x2 - x1) / (y2 - y1))
@@ -61,7 +62,7 @@ class LaneDetection:
                 # usually we detect two lines which are near each other = pair that represents the lane
                 # use a 'tolerance' to find that pair
                 # 'tolerance' determined by experimentation
-                i = 0   # i represent the line in the 'left_lanes' list
+                i = 0  # i represent the line in the 'left_lanes' list
                 # while len(left_lanes) > 1:  # only one line remains
 
                 for lane in left_lanes:
