@@ -60,7 +60,7 @@ class LaneDetection:
             # 'tolerance' determined by experimentation
             i = 0   # i represent the line in the 'left_lanes' list
             # while len(left_lanes) > 1:  # only one line remains
-            frame_copy = frame[3 * int(frame.shape[0] / 4):, :]
+            frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
 
             for lane in left_lanes:
                 x1, y1, x2, y2 = lane
@@ -72,6 +72,7 @@ class LaneDetection:
                 # cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
                 cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
 
+            cv2.imshow("Probabilistic Hough Transform", frame_copy)
             cv2.waitKey(1)
             ret, frame = self.cap.read()
 
