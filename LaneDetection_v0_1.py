@@ -46,7 +46,7 @@ class LaneDetection:
             lanes = cv2.HoughLinesP(frame_edge_detection, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10, maxLineGap=100)
             left_lanes = []
             right_lanes = []
-            if lanes.count() > 0:
+            if lanes.any():
                 for lane in lanes:
                     x1, y1, x2, y2 = lane[0]
                     slope = float((x2 - x1) / (y2 - y1))
