@@ -48,7 +48,7 @@ class LaneDetection:
             right_lanes = []
             frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
             print(type(lanes))
-            if type(lanes) is not None:
+            if not isinstance(lanes, None):
                 for lane in lanes:
                     x1, y1, x2, y2 = lane[0]
                     slope = float((x2 - x1) / (y2 - y1))
