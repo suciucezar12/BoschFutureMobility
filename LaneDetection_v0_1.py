@@ -47,6 +47,7 @@ class LaneDetection:
             left_lanes = []
             right_lanes = []
             frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
+            print(type(lanes))
             if type(lanes) is not None:
                 for lane in lanes:
                     x1, y1, x2, y2 = lane[0]
