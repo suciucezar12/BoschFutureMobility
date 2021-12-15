@@ -45,13 +45,15 @@ class LaneDetection:
             # fifth argument = max allowed gap between line segments to treat them as single line
             lanes = cv2.HoughLinesP(frame_edge_detection, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10,
                                     maxLineGap=100)
+            if not lanes:
+                lanes = []
             left_lanes = []
             right_lanes = []
             frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
             print(type(lanes))
             print(isinstance(type(lanes), type(None)))
             print(type(None))
-            if not isinstance(type(lanes), type(None)):
+            if lanes.size == 0:
                 for lane in lanes:
                     x1, y1, x2, y2 = lane[0]
                     slope = float((x2 - x1) / (y2 - y1))
