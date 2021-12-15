@@ -29,7 +29,7 @@ class LaneDetection:
                                     maxLineGap=100)
             left_lanes = []
             right_lanes = []
-            frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
+            frame_copy = frame[3 * int(frame.shape[0] / 4):, :]
 
             if lines is not None:
                 for line in lines:
@@ -47,6 +47,7 @@ class LaneDetection:
                 for lane in right_lanes:
                     x1, y1, x2, y2 = lane
                     cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+                    
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT", frame_copy)
             cv2.waitKey(1)
