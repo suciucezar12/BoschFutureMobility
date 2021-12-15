@@ -5,12 +5,17 @@ import cv2
 
 class Lane:
 
+    # Y = slope * X + c         --> line equation
+    # slope = float((y2 - y1) / (x2 - x1))      --> slope equation
+    # c = Y(i) - slope * X(i)
     slope = 0.0
     coordinates = []    # x1, y1, x2, y2
+    c = 0
 
     def __init__(self, coordinates, slope):
         self.slope = slope
         self.coordinates = coordinates
+        self.c = int((coordinates[0][1] - slope * coordinates[0][0] + coordinates[0][3] - slope * coordinates[0][2]) / 2)
         pass
 
 
@@ -43,26 +48,35 @@ class LaneDetection:
             frame_copy = frame[int(int(frame.shape[0] * 0.55)):, :]
 
             if lines is not None:
+                # classify lanes based on their slope
                 for line in lines:
                     x1, y1, x2, y2 = line[0]
-                    slope = float((x2 - x1) / (y2 - y1))
+                    slope = float((y2 - y1) / (x2 - x1))
                     if slope < 0.0:
                         left_lanes.append(Lane([x1, y1, x2, y2], slope))
                     else:
                         right_lanes.append(Lane([x1, y1, x2, y2], slope))
 
+                # display candidates for left lane
                 for lane in left_lanes:
                     x1, y1, x2, y2 = lane.coordinates
                     cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
 
+                # display candidates for right lane
                 for lane in right_lanes:
                     x1, y1, x2, y2 = lane.coordinates
                     cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
 
+            margin = 25
+
+            # choose some x (about half of ROI)
+            y = frame_edge.shape[0] / 2
+            # for lane in left_lanes:
+                
 
 
             cv2.imshow("Frame", frame)
-            cv2.imshow("PHT", frame_copy)
+            cv2.imshow("PHT Candidates", frame_copy)
             cv2.waitKey(1)
             ret, frame = self.cap.read()
 
