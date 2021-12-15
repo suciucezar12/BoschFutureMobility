@@ -14,7 +14,7 @@ class LaneDetection:
         frame_copy = frame.copy()
         cv2.imshow("Frame", frame_copy)
 
-        frame_copy = frame[3 * int(frame.shape[0] / 4):, :]
+        frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
         # cv2.imshow("Frame", frame_copy)
 
         # rgb -> grayscale
