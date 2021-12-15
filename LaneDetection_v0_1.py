@@ -46,34 +46,35 @@ class LaneDetection:
             lanes = cv2.HoughLinesP(frame_edge_detection, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10, maxLineGap=100)
             left_lanes = []
             right_lanes = []
-            for lane in lanes:
-                x1, y1, x2, y2 = lane[0]
-                slope = float((x2 - x1) / (y2 - y1))
-                if slope < 0.0:
-                    left_lanes.append([x1, y1, x2, y2])
-                else:
-                    right_lanes.append([x1, y1, x2, y2])
+            if lanes:
+                for lane in lanes:
+                    x1, y1, x2, y2 = lane[0]
+                    slope = float((x2 - x1) / (y2 - y1))
+                    if slope < 0.0:
+                        left_lanes.append([x1, y1, x2, y2])
+                    else:
+                        right_lanes.append([x1, y1, x2, y2])
 
-            # extract only the lane we need:
-            # usually we detect two lines which are near each other = pair that represents the lane
-            # use a 'tolerance' to find that pair
-            # 'tolerance' determined by experimentation
-            i = 0   # i represent the line in the 'left_lanes' list
-            # while len(left_lanes) > 1:  # only one line remains
-            frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
+                # extract only the lane we need:
+                # usually we detect two lines which are near each other = pair that represents the lane
+                # use a 'tolerance' to find that pair
+                # 'tolerance' determined by experimentation
+                i = 0   # i represent the line in the 'left_lanes' list
+                # while len(left_lanes) > 1:  # only one line remains
+                frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
 
-            for lane in left_lanes:
-                x1, y1, x2, y2 = lane
-                # cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
-                cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
+                for lane in left_lanes:
+                    x1, y1, x2, y2 = lane
+                    # cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
+                    cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
 
-            for lane in right_lanes:
-                x1, y1, x2, y2 = lane
-                # cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
-                cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+                for lane in right_lanes:
+                    x1, y1, x2, y2 = lane
+                    # cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
+                    cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
 
-            cv2.imshow("Probabilistic Hough Transform", frame_copy)
-            cv2.waitKey(1)
+                cv2.imshow("Probabilistic Hough Transform", frame_copy)
+                cv2.waitKey(1)
             ret, frame = self.cap.read()
 
 
