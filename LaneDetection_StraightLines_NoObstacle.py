@@ -3,6 +3,17 @@ import numpy as np
 import cv2
 
 
+class Lane:
+
+    slope = 0.0
+    coordinates = []    # x1, y1, x2, y2
+
+    def __init__(self, coordinates, slope):
+        self.slope = slope
+        self.coordinates = coordinates
+        pass
+
+
 class LaneDetection:
 
     def __init__(self):
@@ -36,17 +47,19 @@ class LaneDetection:
                     x1, y1, x2, y2 = line[0]
                     slope = float((x2 - x1) / (y2 - y1))
                     if slope < 0.0:
-                        left_lanes.append([x1, y1, x2, y2])
+                        left_lanes.append(Lane([x1, y1, x2, y2], slope))
                     else:
-                        right_lanes.append([x1, y1, x2, y2])
+                        right_lanes.append(Lane([x1, y1, x2, y2], slope))
 
                 for lane in left_lanes:
-                    x1, y1, x2, y2 = lane
+                    x1, y1, x2, y2 = lane.coordinates
                     cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
 
                 for lane in right_lanes:
-                    x1, y1, x2, y2 = lane
+                    x1, y1, x2, y2 = lane.coordinates
                     cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+
+
 
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT", frame_copy)
