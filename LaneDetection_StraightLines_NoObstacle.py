@@ -25,8 +25,8 @@ class LaneDetection:
         while ret:
             frame_edge = self.PreProcessing(frame)
 
-            lines = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10, maxLineGap=100)
-
+            lines = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10,
+                                    maxLineGap=100)
             left_lanes = []
             right_lanes = []
             frame_copy = frame[3 * int(frame.shape[0] / 5):, :]
@@ -47,7 +47,7 @@ class LaneDetection:
                 for lane in right_lanes:
                     x1, y1, x2, y2 = lane
                     cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
-
+            cv2.imshow("Frame", frame)
             cv2.imshow("PHT", frame_copy)
             cv2.waitKey(1)
             ret, frame = self.cap.read()
