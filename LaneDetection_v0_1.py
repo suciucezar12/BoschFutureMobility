@@ -14,7 +14,7 @@ class LaneDetection:
         frame_copy = frame.copy()
         cv2.imshow("Frame", frame_copy)
 
-        frame_copy = frame[int(frame.shape[0] / 2):, :]
+        frame_copy = frame[int(frame.shape[0] / 4):, :]
         # cv2.imshow("Frame", frame_copy)
 
         # rgb -> grayscale
@@ -54,26 +54,24 @@ class LaneDetection:
                 else:
                     right_lanes.append([x1, y1, x2, y2])
 
-            frame_copy = frame_copy = frame[int(frame.shape[0] / 2):, :]
-            tolerance = 25
-
-            # print("\n")
-            # print(left_lanes)
-            # print("\n")
-            # print(right_lanes)
-            for lane in left_lanes:
-                x1, y1, x2, y2 = lane
-                # cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
-                cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
-
-            for lane in right_lanes:
-                x1, y1, x2, y2 = lane
-                # cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
-                cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+            # extract only the lane we need:
+            # usually we detect two lines which are near each other = pair that represents the lane
+            # use a 'tolerance' to find that pair
+            # 'tolerance' determined by experimentation
+            i = 0   # i represent the line in the 'left_lanes' list
+            # while len(left_lanes) > 1:  # only one line remains
 
 
+            # for lane in left_lanes:
+            #     x1, y1, x2, y2 = lane
+            #     # cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
+            #     cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
+            #
+            # for lane in right_lanes:
+            #     x1, y1, x2, y2 = lane
+            #     # cv2.line(frame_copy, (x1 - tolerance, y1), (x1 + tolerance, y1), (0, 255, 0), 3)
+            #     cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
 
-            cv2.imshow("Probabilistic Hough Transform", frame_copy)
             cv2.waitKey(1)
             ret, frame = self.cap.read()
 
