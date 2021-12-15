@@ -15,7 +15,7 @@ class Lane:
     def __init__(self, coordinates, slope):
         self.slope = slope
         self.coordinates = coordinates
-        self.c = int((coordinates[0][1] - slope * coordinates[0][0] + coordinates[0][3] - slope * coordinates[0][2]) / 2)
+        self.c = int((coordinates[1] - slope * coordinates[0] + coordinates[3] - slope * coordinates[2]) / 2)
         pass
 
 
@@ -72,7 +72,7 @@ class LaneDetection:
             # choose some x (about half of ROI)
             y = frame_edge.shape[0] / 2
             # for lane in left_lanes:
-                
+
 
 
             cv2.imshow("Frame", frame)
