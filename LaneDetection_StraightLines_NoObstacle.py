@@ -91,9 +91,9 @@ class LaneDetection:
         print("height = " + str(height))
         x1l, y1l, x2l, y2l = left_lane
         y1l = -(y1l - height)
-        print("y1l = " + str(y1l))
+        print("y1l = " + str(y1l) + ", x1l = " + str(x1l))
         y2l = -(y2l - height)
-        print("y2l = " + str(y2l))
+        print("y2l = " + str(y2l) + ", x2l = " + str(x2l))
 
         x1r, y1r, x2r, y2r = right_lane
         y1r = -(y1r - height)
