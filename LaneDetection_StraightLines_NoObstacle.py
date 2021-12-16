@@ -20,6 +20,27 @@ class LaneDetection:
 
         return frame_edge
 
+    def Averagelanes(self, lanes):
+        x1_f = 0
+        y1_f = 0
+        x2_f = 0
+        y2_f = 0
+
+        for lane in lanes:
+            x1, y1, x2, y2 = lane
+
+            x1_f += x1
+            y1_f += y1
+
+            x2_f += x2
+            y2_f += y2
+
+        x1_f = int(x1_f / len(lanes))
+        y1_f = int(y1_f / len(lanes))
+        x2_f = int(x2_f / len(lanes))
+        y2_f = int(y2_f / len(lanes))
+        return [x1, y1, x2, y2]
+
     def Run(self):
         ret, frame = self.cap.read()
         while ret:
@@ -51,46 +72,13 @@ class LaneDetection:
                 #     x1, y1, x2, y2 = lane
                 #     cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
 
-                x1_left = 0
-                y1_left = 0
-                x2_left = 0
-                y2_left = 0
+                left_lane = self.Averagelanes(left_lanes)
+                right_lane = self.Averagelanes(right_lanes)
 
-                for lane in left_lanes:
-                    x1, y1, x2, y2 = lane
-
-                    x1_left += x1
-                    y1_left += y1
-
-                    x2_left += x2
-                    y2_left += y2
-
-                x1_left = int(x1_left / len(left_lanes))
-                y1_left = int(y1_left / len(left_lanes))
-                x2_left = int(x2_left / len(left_lanes))
-                y2_left = int(y2_left / len(left_lanes))
-
-                x1_right = 0
-                y1_right = 0
-                x2_right = 0
-                y2_right = 0
-
-                for lane in right_lanes:
-                    x1, y1, x2, y2 = lane
-
-                    x1_right += x1
-                    y1_right += y1
-
-                    x2_right += x2
-                    y2_right += y2
-
-                x1_right = int(x1_right / len(right_lanes))
-                y1_right = int(y1_right / len(right_lanes))
-                x2_right = int(x2_right / len(right_lanes))
-                y2_right = int(y2_right / len(right_lanes))
-
-                cv2.line(frame_copy, (x1_left, y1_left), (x2_left, y2_left), (255, 0, 0), 3)
-                cv2.line(frame_copy, (x1_right, y1_right), (x2_right, y2_right), (0, 0, 255), 3)
+                x1, y1, x2, y2 = left_lane
+                cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
+                x1, y1, x2, y2 = right_lane
+                cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT Candidates", frame_copy)
             cv2.waitKey(1)
