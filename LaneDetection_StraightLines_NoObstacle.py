@@ -92,7 +92,8 @@ class LaneDetection:
 
         x0 = float((Bl * Cr - Br * Cl) / (Cl * Ar - Cr * Al))
         y0 = float((Cl * Ar - Cr * Al) / (Al * Br - Ar * Bl))
-
+        print(x0 + " " + y0)
+        print(float((x0 - width / 2) / y0))
         theta = math.atan(float((x0 - width / 2) / y0))
         return theta
 
