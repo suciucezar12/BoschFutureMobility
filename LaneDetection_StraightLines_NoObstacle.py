@@ -76,6 +76,17 @@ class LaneDetection:
         C = (x1 * y2 - x2 * y1)
         return A, B, -C
 
+    def Intersection(self, L1, L2):
+        D = L1[0] * L2[1] - L1[1] * L2[0]
+        Dx = L1[2] * L2[1] - L1[1] * L2[2]
+        Dy = L1[0] * L2[2] - L1[2] * L2[0]
+        if D != 0:
+            x = Dx / D
+            y = Dy / D
+            return x, y
+        else:
+            return False
+
     def Angle(self, left_lane, right_lane, width, height):
         x1l, y1l, x2l, y2l = left_lane
         y1l = -(y1l - height)
@@ -85,13 +96,14 @@ class LaneDetection:
         y1r = -(y1r - height)
         y2r = -(y2r - height)
 
-        Al, Bl, Cl = self.General_Equation_Form(x1l, y1l, x2l, y2l)
-        Ar, Br, Cr = self.General_Equation_Form(x1r, y1r, x2r, y2r)
+        L1 = self.General_Equation_Form(x1l, y1l, x2l, y2l)  # L1 -> left lane
+        L2 = self.General_Equation_Form(x1r, y1r, x2r, y2r)  # l2 -> right lane
 
-        x0 = float((Bl * Cr - Br * Cl) / (Cl * Ar - Cr * Al))
-        y0 = float((Cl * Ar - Cr * Al) / (Al * Br - Ar * Bl))
+        x0, y0 = self.Intersection(L1, L2)
+
         print(str(x0) + " " + str(y0) + " " + str(width/2))
         print(str(float((x0 - width / 2) / y0)))
+
         theta = math.atan(float((x0 - width / 2) / y0))
         return theta
 
