@@ -83,7 +83,7 @@ class LaneDetection:
         if D != 0:
             x = Dx / D
             y = Dy / D
-            return x, y
+            return x, -y
         else:
             return False
 
