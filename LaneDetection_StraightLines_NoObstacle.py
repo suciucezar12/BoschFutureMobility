@@ -46,29 +46,56 @@ class LaneDetection:
         x1, y1, x2, y2 = lane
         cv2.line(image, (x1, y1), (x2, y2), color, 5)
 
-    def General_Equation_Coeffcients(self, x1, y1, x2, y2):
-        a = float(y1 - y2)
-        b = float(x2 - x1)
-        c = float((x1 - x2) * y1 + (y2 - y1) * x1)
-        return a, b, c
+    # def General_Equation_Coeffcients(self, x1, y1, x2, y2):
+    #     a = float(y1 - y2)
+    #     b = float(x2 - x1)
+    #     c = float((x1 - x2) * y1 + (y2 - y1) * x1)
+    #     return a, b, c
+    #
+    # def Angle_VanishingPoint(self, left_lane, right_lane, width):
+    #     x1l, y1l, x2l, y2l = left_lane
+    #     x1r, y1r, x2r, y2r = right_lane
+    #     # swap
+    #     x1l, x2l = x2l, x1l
+    #     x1r, x2r = x2l, x2r
+    #     # create general equation (a, b, c coefficients)
+    #     a_l, b_l, c_l = self.General_Equation_Coeffcients(x2l, y2l, x1l, y1l)
+    #     a_r, b_r, c_r = self.General_Equation_Coeffcients(x2r, y2r, x1r, y1r)
+    #     # get vanishing point
+    #     x = float(((b_l * c_r - b_r * c_l) / (a_l * b_r - a_r * b_l)))
+    #     y = float(((c_l * a_r - c_r * a_l) / (a_l * b_r - a_r * b_l)))
+    #     # (x, y) is under the image
+    #     # create the angle between (x, y) (= (y, x) in opencv) and (0, width / 2) and vertical axis
+    #     theta = - math.atan((y / (width / 2) - x))
+    #     return theta
+    #     pass
 
-    def Angle_VanishingPoint(self, left_lane, right_lane, width):
+    def General_Equation_Form(self, slope, x1, y1):
+        A = slope
+        B = float(-1)
+        C = float(y1 - slope * x1)
+        return A, B, C
+
+    def Angle(self, left_lane, right_lane, width, height):
         x1l, y1l, x2l, y2l = left_lane
+        y1l = -(y1l - height)
+        y2l = -(y2l - height)
+        slope_l = float((y2l - y1l) / (x2l - x1l))
+
         x1r, y1r, x2r, y2r = right_lane
-        # swap
-        x1l, x2l = x2l, x1l
-        x1r, x2r = x2l, x2r
-        # create general equation (a, b, c coefficients)
-        a_l, b_l, c_l = self.General_Equation_Coeffcients(x2l, y2l, x1l, y1l)
-        a_r, b_r, c_r = self.General_Equation_Coeffcients(x2r, y2r, x1r, y1r)
-        # get vanishing point
-        x = float(((b_l * c_r - b_r * c_l) / (a_l * b_r - a_r * b_l)))
-        y = float(((c_l * a_r - c_r * a_l) / (a_l * b_r - a_r * b_l)))
-        # (x, y) is under the image
-        # create the angle between (x, y) (= (y, x) in opencv) and (0, width / 2) and vertical axis
-        theta = - math.atan((y / (width / 2) - x))
+        y1r = -(y1r - height)
+        y2r = -(y2r - height)
+        slope_r = float((y2r - y1r) / (x2r - x1r))
+
+        Al, Bl, Cl = self.General_Equation_Form(slope_l, x1l, y1l)
+        Ar, Br, Cr = self.General_Equation_Form(slope_r, x2r, y2r)
+
+        x0 = float((Bl * Cr - Br * Cl) / (Cl * Ar - Cr * Al))
+        y0 = float((Cl * Ar - Cr * Al) / (Al * Br - Ar * Bl))
+
+        theta = math.atan(float((x0 - width / 2) / y0))
         return theta
-        pass
+
 
     def Run(self):
         ret, frame = self.cap.read()
@@ -95,12 +122,12 @@ class LaneDetection:
 
                     left_lane = self.Averagelanes(left_lanes)
                     self.drawLane(frame_copy, left_lane, (255, 0, 0))
+
                     right_lane = self.Averagelanes(right_lanes)
                     self.drawLane(frame_copy, right_lane, (0, 0, 255))
-                    theta = self.Angle_VanishingPoint(left_lane, right_lane, int(frame_copy.shape[1]))
-                    print(theta)
-                    print("\n")
 
+                    theta = self.Angle(left_lane, right_lane, frame_copy.shape[0], frame_copy.shape[1])
+                    print(theta)
             # cv2.line(frame, (frame.shape[0] / 2, int(frame.shape[1])), (int(frame.shape[0] / 2), 0),
             #          (255, 255, 255), 3)
             # cv2.line(frame_copy, (int(frame_copy.shape[0] / 2), int(frame_copy.shape[1] / 2)), (int(frame_copy.shape[0] / 2), 0), (255, 255, 255), 3)
