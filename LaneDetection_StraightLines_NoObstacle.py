@@ -66,11 +66,11 @@ class LaneDetection:
                     else:
                         right_lanes.append([x1, y1, x2, y2])
 
-                if left_lanes is not None:
+                if len(left_lanes):
                     left_lane = self.Averagelanes(left_lanes)
                     self.drawLane(frame_copy, left_lane, (255, 0, 0))
 
-                if right_lanes is not None:
+                if len(right_lanes):
                     right_lane = self.Averagelanes(right_lanes)
                     self.drawLane(frame_copy, right_lane, (0, 0, 255))
 
