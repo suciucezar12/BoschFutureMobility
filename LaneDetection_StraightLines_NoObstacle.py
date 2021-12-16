@@ -1,3 +1,4 @@
+import math
 import time
 import numpy as np
 import cv2
@@ -45,6 +46,30 @@ class LaneDetection:
         x1, y1, x2, y2 = lane
         cv2.line(image, (x1, y1), (x2, y2), color, 5)
 
+    def General_Equation_Coeffcients(self, x1, y1, x2, y2):
+        a = y1 - y2
+        b = x2 - x1
+        c = int((x1 - x2) * y1 + (y2 - y1) * x1)
+        return a, b, c
+
+    def Angle_VanishingPoint(self, left_lane, right_lane, width):
+        x1l, y1l, x2l, y2l = left_lane
+        x1r, y1r, x2r, y2r = right_lane
+        # swap
+        x1l, x2l = x2l, x1l
+        x1r, x2r = x2l, x2r
+        # create general equation (a, b, c coefficients)
+        a_l, b_l, c_l = self.General_Equation_Coeffcients(x2l, y2l, x1l, y1l)
+        a_r, b_r, c_r = self.General_Equation_Coeffcients(x2r, y2r, x1r, y1r)
+        # get vanishing point
+        x = int((b_l * c_r - b_r * c_l) / (a_l * b_r - a_r * b_l))
+        y = int((c_l * a_r - c_r * a_l) / (a_l * b_r - a_r * b_l))
+        # (x, y) is under the image
+        # create the angle between (x, y) (= (y, x) in opencv) and (0, width / 2) and vertical axis
+        theta = - math.atan((width / 2 - x) / y)
+        return theta
+        pass
+
     def Run(self):
         ret, frame = self.cap.read()
         while ret:
@@ -66,14 +91,19 @@ class LaneDetection:
                     else:
                         right_lanes.append([x1, y1, x2, y2])
 
-                if len(left_lanes):
+                if len(left_lanes) and len(right_lanes):    # identify both lanes
+
                     left_lane = self.Averagelanes(left_lanes)
                     self.drawLane(frame_copy, left_lane, (255, 0, 0))
-
-                if len(right_lanes):
                     right_lane = self.Averagelanes(right_lanes)
                     self.drawLane(frame_copy, right_lane, (0, 0, 255))
+                    theta = self.Angle_VanishingPoint(left_lane, right_lane, frame_copy.shape[1])
+                    print(theta)
+                    print("\n")
 
+            cv2.line(frame, (frame.shape[1], frame.shape[0] / 2), (0, frame.shape[0] / 2),
+                     (255, 255, 255), 3)
+            cv2.line(frame_copy, (frame_copy.shape[1], frame_copy.shape[0] / 2), (0, frame_copy.shape[0] / 2), (255, 255, 255), 3)
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT", frame_copy)
             cv2.waitKey(1)
