@@ -143,7 +143,7 @@ class LaneDetection:
                     right_lane = self.Averagelanes(right_lanes)
                     self.drawLane(frame_copy, right_lane, (0, 0, 255))
 
-                    theta = self.Angle(left_lane, right_lane, frame_copy.shape[0], frame_copy.shape[1])
+                    theta = self.Angle(left_lane, right_lane, frame_copy.shape[1], frame_copy.shape[0])
                     print("theta = " + str(theta))
             # cv2.line(frame, (frame.shape[0] / 2, int(frame.shape[1])), (int(frame.shape[0] / 2), 0),
             #          (255, 255, 255), 3)
