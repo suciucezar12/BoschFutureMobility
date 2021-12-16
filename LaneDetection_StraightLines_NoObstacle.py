@@ -88,7 +88,7 @@ class LaneDetection:
             return False
 
     def Angle(self, left_lane, right_lane, width, height):
-        print("height = " + height)
+        print("height = " + str(height))
         x1l, y1l, x2l, y2l = left_lane
         y1l = -(y1l - height)
         y2l = -(y2l - height)
