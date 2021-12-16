@@ -66,7 +66,7 @@ class LaneDetection:
         y = float(((c_l * a_r - c_r * a_l) / (a_l * b_r - a_r * b_l)))
         # (x, y) is under the image
         # create the angle between (x, y) (= (y, x) in opencv) and (0, width / 2) and vertical axis
-        theta = - math.atan(((width / 2) - x) / y)
+        theta = - math.atan((y / (width / 2) - x))
         return theta
         pass
 
