@@ -41,6 +41,10 @@ class LaneDetection:
         y2_f = int(y2_f / len(lanes))
         return [x1_f, y1_f, x2_f, y2_f]
 
+    def drawLane(self, image, lane, color):
+        x1, y1, x2, y2 = lane
+        cv2.line(image, (x1, y1), (x2, y2), color, 3)
+
     def Run(self):
         ret, frame = self.cap.read()
         while ret:
@@ -75,10 +79,12 @@ class LaneDetection:
                 left_lane = self.Averagelanes(left_lanes)
                 right_lane = self.Averagelanes(right_lanes)
 
-                x1, y1, x2, y2 = left_lane
-                cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
-                x1, y1, x2, y2 = right_lane
-                cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+                # x1, y1, x2, y2 = left_lane
+                # cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
+                self.drawLane(frame_copy, left_lane, (255, 0, 0))
+                # x1, y1, x2, y2 = right_lane
+                # cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+                self.drawLane(frame_copy, right_lane, (0, 0, 255))
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT Candidates", frame_copy)
             cv2.waitKey(1)
