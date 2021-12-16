@@ -102,7 +102,7 @@ class LaneDetection:
         x0, y0 = self.Intersection(L1, L2)
 
         print("x0 = " + str(x0) + ", y0 = " + str(y0))
-
+        print("tan = " + str(float((x0 - width / 2) / y0)))
         theta = math.atan(float((x0 - width / 2) / y0))
         return theta
 
