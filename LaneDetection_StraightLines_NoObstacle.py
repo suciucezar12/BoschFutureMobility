@@ -39,7 +39,7 @@ class LaneDetection:
         y1_f = int(y1_f / len(lanes))
         x2_f = int(x2_f / len(lanes))
         y2_f = int(y2_f / len(lanes))
-        return [x1, y1, x2, y2]
+        return [x1_f, y1_f, x2_f, y2_f]
 
     def Run(self):
         ret, frame = self.cap.read()
