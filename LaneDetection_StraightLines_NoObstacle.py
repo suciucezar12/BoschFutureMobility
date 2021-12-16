@@ -41,16 +41,56 @@ class LaneDetection:
                     else:
                         right_lanes.append([x1, y1, x2, y2])
 
-                # display candidates for left lane
+                # # display candidates for left lane
+                # for lane in left_lanes:
+                #     x1, y1, x2, y2 = lane
+                #     cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
+                #
+                # # display candidates for right lane
+                # for lane in right_lanes:
+                #     x1, y1, x2, y2 = lane
+                #     cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+
+                x1_left = 0
+                y1_left = 0
+                x2_left = 0
+                y2_left = 0
+
                 for lane in left_lanes:
                     x1, y1, x2, y2 = lane
-                    cv2.line(frame_copy, (x1, y1), (x2, y2), (255, 0, 0), 3)
 
-                # display candidates for right lane
+                    x1_left += x1
+                    y1_left += y1
+
+                    x2_left += x2
+                    y2_left += y2
+
+                x1_left /= len(left_lanes)
+                y1_left /= len(left_lanes)
+                x2_left /= len(left_lanes)
+                y2_left /= len(left_lanes)
+
+                x1_right = 0
+                y1_right = 0
+                x2_right = 0
+                y2_right = 0
+
                 for lane in right_lanes:
                     x1, y1, x2, y2 = lane
-                    cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
 
+                    x1_right += x1
+                    y1_right += y1
+
+                    x2_right += x2
+                    y2_right += y2
+
+                x1_right /= len(right_lanes)
+                y1_right /= len(right_lanes)
+                x2_right /= len(right_lanes)
+                y2_right /= len(right_lanes)
+
+                cv2.line(frame_copy, (x1_left, y1_left), (x2_left, y2_left), (255, 0, 0), 3)
+                cv2.line(frame_copy, (x1_right, y1_right), (x2_right, y2_right), (0, 0, 255), 3)
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT Candidates", frame_copy)
             cv2.waitKey(1)
