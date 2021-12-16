@@ -49,7 +49,7 @@ class LaneDetection:
     def General_Equation_Coeffcients(self, x1, y1, x2, y2):
         a = y1 - y2
         b = x2 - x1
-        c = int((x1 - x2) * y1 + (y2 - y1) * x1)
+        c = (x1 - x2) * y1 + (y2 - y1) * x1
         return a, b, c
 
     def Angle_VanishingPoint(self, left_lane, right_lane, width):
