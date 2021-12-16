@@ -66,7 +66,7 @@ class LaneDetection:
         y = int((c_l * a_r - c_r * a_l) / (a_l * b_r - a_r * b_l))
         # (x, y) is under the image
         # create the angle between (x, y) (= (y, x) in opencv) and (0, width / 2) and vertical axis
-        theta = - math.atan((width / 2 - x) / y)
+        theta = - math.atan((int(width / 2) - x) / y)
         return theta
         pass
 
@@ -97,13 +97,13 @@ class LaneDetection:
                     self.drawLane(frame_copy, left_lane, (255, 0, 0))
                     right_lane = self.Averagelanes(right_lanes)
                     self.drawLane(frame_copy, right_lane, (0, 0, 255))
-                    theta = self.Angle_VanishingPoint(left_lane, right_lane, frame_copy.shape[1])
+                    theta = self.Angle_VanishingPoint(left_lane, right_lane, int(frame_copy.shape[1]))
                     print(theta)
                     print("\n")
 
-            cv2.line(frame, (frame.shape[1], frame.shape[0] / 2), (0, frame.shape[0] / 2),
+            cv2.line(frame, (frame.shape[1], int(frame.shape[0] / 2)), (0, int(frame.shape[0] / 2)),
                      (255, 255, 255), 3)
-            cv2.line(frame_copy, (frame_copy.shape[1], frame_copy.shape[0] / 2), (0, frame_copy.shape[0] / 2), (255, 255, 255), 3)
+            cv2.line(frame_copy, (frame_copy.shape[1], int(frame_copy.shape[0] / 2)), (0, int(frame_copy.shape[0] / 2)), (255, 255, 255), 3)
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT", frame_copy)
             cv2.waitKey(1)
