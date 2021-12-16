@@ -107,7 +107,7 @@ class LaneDetection:
         L2 = self.General_Equation_Form(x1r, y1r, x2r, y2r)  # l2 -> right lane
 
         x0, y0 = self.Intersection(L1, L2)
-        y0 = float(y0)
+        y0 = 0.83 * float(y0)
 
         print("x0 = " + str(x0) + ", y0 = " + str(y0))
         print("x0 - width / 2 = " + str((x0 - width / 2)))
