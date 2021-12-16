@@ -65,10 +65,10 @@ class LaneDetection:
                     x2_left += x2
                     y2_left += y2
 
-                x1_left /= len(left_lanes)
-                y1_left /= len(left_lanes)
-                x2_left /= len(left_lanes)
-                y2_left /= len(left_lanes)
+                x1_left = int(x1_left / len(left_lanes))
+                y1_left = int(y1_left / len(left_lanes))
+                x2_left = int(x2_left / len(left_lanes))
+                y2_left = int(y2_left / len(left_lanes))
 
                 x1_right = 0
                 y1_right = 0
@@ -84,10 +84,10 @@ class LaneDetection:
                     x2_right += x2
                     y2_right += y2
 
-                x1_right /= len(right_lanes)
-                y1_right /= len(right_lanes)
-                x2_right /= len(right_lanes)
-                y2_right /= len(right_lanes)
+                x1_right = int(x1_right / len(right_lanes))
+                y1_right = int(y1_right / len(right_lanes))
+                x2_right = int(x2_right / len(right_lanes))
+                y2_right = int(y2_right / len(right_lanes))
 
                 cv2.line(frame_copy, (x1_left, y1_left), (x2_left, y2_left), (255, 0, 0), 3)
                 cv2.line(frame_copy, (x1_right, y1_right), (x2_right, y2_right), (0, 0, 255), 3)
