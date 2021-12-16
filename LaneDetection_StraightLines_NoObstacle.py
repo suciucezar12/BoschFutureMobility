@@ -47,9 +47,9 @@ class LaneDetection:
         cv2.line(image, (x1, y1), (x2, y2), color, 5)
 
     def General_Equation_Coeffcients(self, x1, y1, x2, y2):
-        a = y1 - y2
-        b = x2 - x1
-        c = (x1 - x2) * y1 + (y2 - y1) * x1
+        a = float(y1 - y2)
+        b = float(x2 - x1)
+        c = float((x1 - x2) * y1 + (y2 - y1) * x1)
         return a, b, c
 
     def Angle_VanishingPoint(self, left_lane, right_lane, width):
@@ -62,8 +62,8 @@ class LaneDetection:
         a_l, b_l, c_l = self.General_Equation_Coeffcients(x2l, y2l, x1l, y1l)
         a_r, b_r, c_r = self.General_Equation_Coeffcients(x2r, y2r, x1r, y1r)
         # get vanishing point
-        x = ((b_l * c_r - b_r * c_l) / (a_l * b_r - a_r * b_l))
-        y = ((c_l * a_r - c_r * a_l) / (a_l * b_r - a_r * b_l))
+        x = float(((b_l * c_r - b_r * c_l) / (a_l * b_r - a_r * b_l)))
+        y = float(((c_l * a_r - c_r * a_l) / (a_l * b_r - a_r * b_l)))
         # (x, y) is under the image
         # create the angle between (x, y) (= (y, x) in opencv) and (0, width / 2) and vertical axis
         theta = - math.atan(((width / 2) - x) / y)
