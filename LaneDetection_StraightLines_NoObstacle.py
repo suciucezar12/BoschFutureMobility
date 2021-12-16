@@ -101,8 +101,7 @@ class LaneDetection:
 
         x0, y0 = self.Intersection(L1, L2)
 
-        print(str(x0) + " " + str(y0) + " " + str(width/2))
-        print(str(float((x0 - width / 2) / y0)))
+        print("x0 = " + str(x0) + ", y0 = " + str(y0))
 
         theta = math.atan(float((x0 - width / 2) / y0))
         return theta
@@ -138,7 +137,7 @@ class LaneDetection:
                     self.drawLane(frame_copy, right_lane, (0, 0, 255))
 
                     theta = self.Angle(left_lane, right_lane, frame_copy.shape[0], frame_copy.shape[1])
-                    print(theta)
+                    print("theta = " + str(theta))
             # cv2.line(frame, (frame.shape[0] / 2, int(frame.shape[1])), (int(frame.shape[0] / 2), 0),
             #          (255, 255, 255), 3)
             # cv2.line(frame_copy, (int(frame_copy.shape[0] / 2), int(frame_copy.shape[1] / 2)), (int(frame_copy.shape[0] / 2), 0), (255, 255, 255), 3)
