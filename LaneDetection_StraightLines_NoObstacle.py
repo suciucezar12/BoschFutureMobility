@@ -101,9 +101,9 @@ class LaneDetection:
                     print(theta)
                     print("\n")
 
-            cv2.line(frame, (frame.shape[0] / 2, int(frame.shape[1])), (int(frame.shape[0] / 2), 0),
-                     (255, 255, 255), 3)
-            cv2.line(frame_copy, (frame_copy.shape[0] / 2, int(frame_copy.shape[1] / 2)), (int(frame_copy.shape[0] / 2), 0), (255, 255, 255), 3)
+            # cv2.line(frame, (frame.shape[0] / 2, int(frame.shape[1])), (int(frame.shape[0] / 2), 0),
+            #          (255, 255, 255), 3)
+            # cv2.line(frame_copy, (int(frame_copy.shape[0] / 2), int(frame_copy.shape[1] / 2)), (int(frame_copy.shape[0] / 2), 0), (255, 255, 255), 3)
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT", frame_copy)
             cv2.waitKey(1)
