@@ -70,25 +70,23 @@ class LaneDetection:
     #     return theta
     #     pass
 
-    def General_Equation_Form(self, slope, x1, y1):
-        A = slope
-        B = float(-1)
-        C = float(y1 - slope * x1)
-        return A, B, C
+    def General_Equation_Form(self, x1, y1, x2, y2):
+        A = (y1 - y2)
+        B = (x1 - x2)
+        C = (x1 * y2 - x2 * y1)
+        return A, B, -C
 
     def Angle(self, left_lane, right_lane, width, height):
         x1l, y1l, x2l, y2l = left_lane
         y1l = -(y1l - height)
         y2l = -(y2l - height)
-        slope_l = float((y2l - y1l) / (x2l - x1l))
 
         x1r, y1r, x2r, y2r = right_lane
         y1r = -(y1r - height)
         y2r = -(y2r - height)
-        slope_r = float((y2r - y1r) / (x2r - x1r))
 
-        Al, Bl, Cl = self.General_Equation_Form(slope_l, x1l, y1l)
-        Ar, Br, Cr = self.General_Equation_Form(slope_r, x2r, y2r)
+        Al, Bl, Cl = self.General_Equation_Form(x1l, y1l, x2l, y2l)
+        Ar, Br, Cr = self.General_Equation_Form(x1r, y1r, x2r, y2r)
 
         x0 = float((Bl * Cr - Br * Cl) / (Cl * Ar - Cr * Al))
         y0 = float((Cl * Ar - Cr * Al) / (Al * Br - Ar * Bl))
