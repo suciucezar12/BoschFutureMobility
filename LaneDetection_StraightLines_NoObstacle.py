@@ -66,11 +66,13 @@ class LaneDetection:
                     else:
                         right_lanes.append([x1, y1, x2, y2])
 
-                left_lane = self.Averagelanes(left_lanes)
-                right_lane = self.Averagelanes(right_lanes)
+                if left_lanes is not None:
+                    left_lane = self.Averagelanes(left_lanes)
+                    self.drawLane(frame_copy, left_lane, (255, 0, 0))
 
-                self.drawLane(frame_copy, left_lane, (255, 0, 0))
-                self.drawLane(frame_copy, right_lane, (0, 0, 255))
+                if right_lanes is not None:
+                    right_lane = self.Averagelanes(right_lanes)
+                    self.drawLane(frame_copy, right_lane, (0, 0, 255))
 
             cv2.imshow("Frame", frame)
             cv2.imshow("PHT", frame_copy)
