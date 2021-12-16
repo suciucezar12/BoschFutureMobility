@@ -62,11 +62,11 @@ class LaneDetection:
         a_l, b_l, c_l = self.General_Equation_Coeffcients(x2l, y2l, x1l, y1l)
         a_r, b_r, c_r = self.General_Equation_Coeffcients(x2r, y2r, x1r, y1r)
         # get vanishing point
-        x = int((b_l * c_r - b_r * c_l) / (a_l * b_r - a_r * b_l))
-        y = int((c_l * a_r - c_r * a_l) / (a_l * b_r - a_r * b_l))
+        x = ((b_l * c_r - b_r * c_l) / (a_l * b_r - a_r * b_l))
+        y = ((c_l * a_r - c_r * a_l) / (a_l * b_r - a_r * b_l))
         # (x, y) is under the image
         # create the angle between (x, y) (= (y, x) in opencv) and (0, width / 2) and vertical axis
-        theta = - math.atan((int(width / 2) - x) / y)
+        theta = - math.atan(((width / 2) - x) / y)
         return theta
         pass
 
