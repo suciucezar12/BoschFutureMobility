@@ -110,6 +110,7 @@ class LaneDetection:
         y0 = float(y0 / 3)
 
         print("x0 = " + str(x0) + ", y0 = " + str(y0))
+        print("x0 - width / 2 = " + str((x0 - width / 2)))
         print("tan = " + str(float((x0 - width / 2) / y0)))
         theta = math.atan(float((x0 - width / 2) / y0))
         return theta
