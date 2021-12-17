@@ -69,9 +69,9 @@ class LaneDetection:
         # print("width = " + str(width))
         x1l, y1l, x2l, y2l = left_lane
         y1l = -(y1l - height)
-        print("y1l = " + str(y1l) + ", x1l = " + str(x1l))
+        # print("y1l = " + str(y1l) + ", x1l = " + str(x1l))
         y2l = -(y2l - height)
-        print("y2l = " + str(y2l) + ", x2l = " + str(x2l))
+        # print("y2l = " + str(y2l) + ", x2l = " + str(x2l))
 
         x1r, y1r, x2r, y2r = right_lane
         # print("y2r before = " + str(y2r))
@@ -136,7 +136,7 @@ class LaneDetection:
                                 theta = -5
                             else:
                                 theta = 0
-                    print(str(i) + ": theta = " + str(theta))
+                    # print(str(i) + ": theta = " + str(theta))
 
                 if len(theta_list) != 5:
                     theta_list.append(theta)
