@@ -147,8 +147,9 @@ class LaneDetection:
 
                 for angle in theta_list:
                     theta_average += angle
-                theta_average /= 5
-                print("theta_average = " + str(theta_average))
+                theta_average /= len(theta_list)
+
+            print("theta_average = " + str(theta_average))
 
 
             # cv2.line(frame, (frame.shape[0] / 2, int(frame.shape[1])), (int(frame.shape[0] / 2), 0),
