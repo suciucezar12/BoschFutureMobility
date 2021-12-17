@@ -145,6 +145,7 @@ class LaneDetection:
                     theta_list = list(theta_collection)
                     theta_list[len(theta_list)] = theta
 
+                theta_average = 0
                 for angle in theta_list:
                     theta_average += angle
                 theta_average /= len(theta_list)
