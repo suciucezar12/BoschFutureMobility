@@ -76,9 +76,9 @@ class LaneDetection:
         x1r, y1r, x2r, y2r = right_lane
         # print("y2r before = " + str(y2r))
         y1r = -(y1r - height)
-        print("y1r = " + str(y1r) + ", x1r = " + str(x1r))
+        # print("y1r = " + str(y1r) + ", x1r = " + str(x1r))
         y2r = -(y2r - height)
-        print("y2r = " + str(y2r) + ", x2r = " + str(x2r))
+        # print("y2r = " + str(y2r) + ", x2r = " + str(x2r))
 
         L1 = self.General_Equation_Form(x1l, y1l, x2l, y2l)  # L1 -> left lane
         L2 = self.General_Equation_Form(x1r, y1r, x2r, y2r)  # l2 -> right lane
@@ -132,6 +132,7 @@ class LaneDetection:
                             theta = 5
                         else:
                             if len(right_lanes):
+                                print("right")
                                 theta = -5
                             else:
                                 theta = 0
