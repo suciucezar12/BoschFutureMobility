@@ -132,7 +132,7 @@ class LaneDetection:
                             theta = 5
                         else:
                             if len(right_lanes):
-                                print("right")
+                                # print("right")
                                 theta = -5
                             else:
                                 theta = 0
