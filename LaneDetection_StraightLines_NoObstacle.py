@@ -1,3 +1,4 @@
+import collections
 import math
 import time
 import numpy as np
@@ -94,35 +95,62 @@ class LaneDetection:
     def Run(self):
         ret, frame = self.cap.read()
         while ret:
-            start = time.time()
-            frame_edge = self.PreProcessing(frame)
+            theta_list = []
+            theta_average = 0.0
+            theta = 0.0
+            for i in range(5):
+                start = time.time()
+                frame_edge = self.PreProcessing(frame)
 
-            lines = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10,
-                                    maxLineGap=100)
-            left_lanes = []
-            right_lanes = []
-            frame_copy = frame[int(int(frame.shape[0] * 0.55)):, :]  # used for displaying
+                lines = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=100, minLineLength=10,
+                                        maxLineGap=100)
+                left_lanes = []
+                right_lanes = []
+                frame_copy = frame[int(int(frame.shape[0] * 0.55)):, :]  # used for displaying
 
-            if lines is not None:
-                # classify lanes based on their slope
-                for line in lines:
-                    x1, y1, x2, y2 = line[0]
-                    slope = float((y2 - y1) / (x2 - x1))
-                    if slope < 0.0:
-                        left_lanes.append([x1, y1, x2, y2])
+                if lines is not None:
+                    # classify lanes based on their slope
+                    for line in lines:
+                        x1, y1, x2, y2 = line[0]
+                        slope = float((y2 - y1) / (x2 - x1))
+                        if slope < 0.0:
+                            left_lanes.append([x1, y1, x2, y2])
+                        else:
+                            right_lanes.append([x1, y1, x2, y2])
+
+                    if len(left_lanes) and len(right_lanes):    # identify both lanes
+
+                        left_lane = self.Averagelanes(left_lanes)
+                        self.drawLane(frame_copy, left_lane, (255, 0, 0))
+
+                        right_lane = self.Averagelanes(right_lanes)
+                        self.drawLane(frame_copy, right_lane, (0, 0, 255))
+
+                        theta = self.Angle(left_lane, right_lane, frame_copy.shape[1], frame_copy.shape[0])
                     else:
-                        right_lanes.append([x1, y1, x2, y2])
-
-                if len(left_lanes) and len(right_lanes):    # identify both lanes
-
-                    left_lane = self.Averagelanes(left_lanes)
-                    self.drawLane(frame_copy, left_lane, (255, 0, 0))
-
-                    right_lane = self.Averagelanes(right_lanes)
-                    self.drawLane(frame_copy, right_lane, (0, 0, 255))
-
-                    theta = self.Angle(left_lane, right_lane, frame_copy.shape[1], frame_copy.shape[0])
+                        if len(left_lanes):  # identify only left_lanes
+                            theta = 5
+                        else:
+                            if len(right_lanes):
+                                theta = -5
+                            else:
+                                theta = -theta_list[len(theta_list)]
                     print("theta = " + str(theta))
+
+                if len(theta_list) != 5:
+                    theta_list.append(theta)
+                else:
+                    theta_collection = collections.deque(theta_list)
+                    theta_collection.rotate(-1)
+                    theta_list = list(theta_collection)
+                    theta_list[len(theta_list)] = theta
+
+                for angle in theta_list:
+                    theta_average += angle
+                theta_average /= 5
+                print("theta_average = " + str(theta_average))
+
+
             # cv2.line(frame, (frame.shape[0] / 2, int(frame.shape[1])), (int(frame.shape[0] / 2), 0),
             #          (255, 255, 255), 3)
             # cv2.line(frame_copy, (int(frame_copy.shape[0] / 2), int(frame_copy.shape[1] / 2)), (int(frame_copy.shape[0] / 2), 0), (255, 255, 255), 3)
