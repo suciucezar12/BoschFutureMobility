@@ -98,7 +98,7 @@ class LaneDetection:
             theta_list = []
             theta_average = 0.0
             theta = 0.0
-            for i in range(10):
+            for i in range(5):
                 start = time.time()
                 frame_edge = self.PreProcessing(frame)
 
