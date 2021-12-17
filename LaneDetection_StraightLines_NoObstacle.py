@@ -158,7 +158,7 @@ class LaneDetection:
             cv2.imshow("PHT", frame_copy)
             cv2.waitKey(1)
             end = time.time()
-            print("Frame time = ", end - start)
+            print("Frame time = ", end - start + "\n")
             ret, frame = self.cap.read()
 
 
