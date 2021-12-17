@@ -129,7 +129,7 @@ class LaneDetection:
                     theta = self.Angle(left_lane, right_lane, frame_copy.shape[1], frame_copy.shape[0])
                 else:
                     if len(left_lanes):  # identify only left_lanes
-                        theta = 5
+                        theta = 19
                         left_lane = self.Averagelanes(left_lanes)
                         self.drawLane(frame_copy, left_lane, (255, 0, 0))
                     else:
@@ -139,7 +139,7 @@ class LaneDetection:
                             right_lane = self.Averagelanes(right_lanes)
                             self.drawLane(frame_copy, right_lane, (0, 0, 255))
                         else:
-                            theta = 19
+                            theta = 0
                 # print(str(i) + ": theta = " + str(theta))
 
                 if len(theta_list) != 5:
