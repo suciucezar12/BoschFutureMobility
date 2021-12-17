@@ -135,7 +135,7 @@ class LaneDetection:
                                 theta = -5
                             else:
                                 theta = -theta_list[len(theta_list)]
-                    print(str(i) + ": theta = " + str(theta))
+                    # print(str(i) + ": theta = " + str(theta))
 
                 if len(theta_list) != 5:
                     theta_list.append(theta)
@@ -158,7 +158,8 @@ class LaneDetection:
             cv2.imshow("PHT", frame_copy)
             cv2.waitKey(1)
             end = time.time()
-            print("Frame time = ", end - start + "\n")
+            # print("Frame time = " + str(end - start))
+            print("\n")
             ret, frame = self.cap.read()
 
 
