@@ -135,11 +135,11 @@ class LaneDetection:
                     else:
                         if len(right_lanes):
                             # print("right")
-                            theta = -5
+                            theta = -14
                             right_lane = self.Averagelanes(right_lanes)
                             self.drawLane(frame_copy, right_lane, (0, 0, 255))
                         else:
-                            theta = 0
+                            theta = 19
                 # print(str(i) + ": theta = " + str(theta))
 
                 if len(theta_list) != 5:
