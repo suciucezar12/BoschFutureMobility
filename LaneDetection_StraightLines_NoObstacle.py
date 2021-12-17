@@ -134,7 +134,7 @@ class LaneDetection:
                             if len(right_lanes):
                                 theta = -5
                             else:
-                                theta = -theta_list[len(theta_list)]
+                                theta = 0
                     # print(str(i) + ": theta = " + str(theta))
 
                 if len(theta_list) != 5:
