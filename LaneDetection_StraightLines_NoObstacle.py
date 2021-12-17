@@ -106,7 +106,7 @@ class LaneDetection:
                                         maxLineGap=100)
             left_lanes = []
             right_lanes = []
-            frame_copy = frame[int(frame.shape[0] * 0.55):, :]  # used for displaying
+            frame_copy = frame[int(frame.shape[0] * 0.4):, :]  # used for displaying
 
             if lines is not None:
                 # classify lanes based on their slope
