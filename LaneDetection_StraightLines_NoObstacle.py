@@ -65,8 +65,8 @@ class LaneDetection:
             return False
 
     def Angle(self, left_lane, right_lane, width, height):
-        print("height = " + str(height))
-        print("width = " + str(width))
+        # print("height = " + str(height))
+        # print("width = " + str(width))
         x1l, y1l, x2l, y2l = left_lane
         y1l = -(y1l - height)
         # print("y1l = " + str(y1l) + ", x1l = " + str(x1l))
@@ -143,7 +143,7 @@ class LaneDetection:
                     theta_collection = collections.deque(theta_list)
                     theta_collection.rotate(-1)
                     theta_list = list(theta_collection)
-                    theta_list[len(theta_list)] = theta
+                    theta_list[len(theta_list) - 1] = theta
 
                 theta_average = 0
                 for angle in theta_list:
