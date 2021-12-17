@@ -140,10 +140,11 @@ class LaneDetection:
                 if len(theta_list) != 5:
                     theta_list.append(theta)
                 else:
-                    theta_collection = collections.deque(theta_list)
-                    theta_collection.rotate(-1)
-                    theta_list = list(theta_collection)
-                    theta_list[len(theta_list) - 1] = theta
+                    theta_list = theta_list[1:]
+                    # theta_collection = collections.deque(theta_list)
+                    # theta_collection.rotate(-1)
+                    # theta_list = list(theta_collection)
+                    theta_list.append(theta)
 
                 theta_average = 0
                 for angle in theta_list:
