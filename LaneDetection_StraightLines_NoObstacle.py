@@ -120,21 +120,35 @@ class LaneDetection:
 
                 if len(left_lanes) and len(right_lanes):    # identify both lanes
 
+                    for lane in left_lanes:
+                        x1, y1, x2, y2 = lane
+                        cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+
+                    for lane in right_lanes:
+                        x1, y1, x2, y2 = lane
+                        cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
+
                     left_lane = self.Averagelanes(left_lanes)
                     self.drawLane(frame_copy, left_lane, (255, 0, 0))
 
                     right_lane = self.Averagelanes(right_lanes)
-                    self.drawLane(frame_copy, right_lane, (0, 0, 255))
+                    self.drawLane(frame_copy, right_lane, (255, 0, 0))
 
                     theta = self.Angle(left_lane, right_lane, frame_copy.shape[1], frame_copy.shape[0])
                 else:
                     if len(left_lanes):  # identify only left_lanes
+                        for lane in left_lanes:
+                            x1, y1, x2, y2 = lane
+                            cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
                         theta = 19
                         left_lane = self.Averagelanes(left_lanes)
                         self.drawLane(frame_copy, left_lane, (255, 0, 0))
                     else:
                         if len(right_lanes):
                             # print("right")
+                            for lane in right_lanes:
+                                x1, y1, x2, y2 = lane
+                                cv2.line(frame_copy, (x1, y1), (x2, y2), (0, 0, 255), 3)
                             theta = -14
                             right_lane = self.Averagelanes(right_lanes)
                             self.drawLane(frame_copy, right_lane, (0, 0, 255))
