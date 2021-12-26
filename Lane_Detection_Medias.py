@@ -8,7 +8,7 @@ class LaneDetection:
 
     def __init__(self):
         time.sleep(0.2)  # let camera warm-up
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(1)
 
     def run(self):
         ret, frame = self.cap.read()
