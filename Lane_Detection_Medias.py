@@ -27,8 +27,11 @@ class LaneDetection:
         cv2.line(image, (x4, y4), (x1, y1), (0, 0, 255), 3)
 
     # method used to obtain the starting points (x) of left and right lane
-    def get_starting_points_lanes(self, frame):
-        partial_frame = frame[frame.shape[0] // 5:, :]
+    def get_starting_points_lanes(self, blurred_frame):
+        sobel_frame = cv2.Sobel(blurred_frame, ddepth=cv2.CV_32F, dx=1, dy=0, ksize=5)
+        cv2.imshow("Sobel", sobel_frame)
+        cv2.waitKey(1)
+        partial_frame = sobel_frame[sobel_frame.shape[0] // 5:, :]
         histogram = np.sum(partial_frame, axis=0)  # sum on each column (on each particular column) => histogram
         # print(histogram)
         size = len(histogram)
@@ -51,9 +54,11 @@ class LaneDetection:
         height = frame_copy.shape[0]
         frame_copy = frame_copy[int(0.5 * height):, :]  # crop image
 
-        # Apply filters
         gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
         blurred_frame = cv2.GaussianBlur(gray_frame, (5, 5), cv2.BORDER_DEFAULT)
+
+        self.get_starting_points_lanes(blurred_frame)   # use here to no compute 2 times all preprocessing phases until edge detection phase
+
         edge_frame = cv2.Canny(blurred_frame, 100, 200)
 
         return edge_frame
