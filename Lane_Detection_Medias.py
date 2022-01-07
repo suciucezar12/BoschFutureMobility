@@ -28,7 +28,7 @@ class LaneDetection:
 
     # method used to obtain the starting points (x) of left and right lane
     def get_starting_points_lanes(self, blurred_frame):
-        sobel_frame = cv2.Sobel(blurred_frame, ddepth=cv2.CV_32F, dx=1, dy=0, ksize=5)
+        sobel_frame = cv2.Sobel(blurred_frame, ddepth=cv2.CV_32F, dx=0, dy=1, ksize=5)
         cv2.imshow("Sobel", sobel_frame)
         cv2.waitKey(1)
         partial_frame = sobel_frame[sobel_frame.shape[0] // 5:, :]
