@@ -21,7 +21,7 @@ class Lane_Detection:
         frame_copy = frame_copy[int(0.5 * height):, :]  # crop image
 
         # Apply filters
-        gray_frame = cv2.cvtColor(frame_copy, frame_copy)
+        gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
         blurred_frame = cv2.GaussianBlur(gray_frame, (5, 5), cv2.BORDER_DEFAULT)
         edge_frame = cv2.Canny(blurred_frame, 100, 200)
 
