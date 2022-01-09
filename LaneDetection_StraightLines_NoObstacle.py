@@ -102,7 +102,7 @@ class LaneDetection:
             theta_average = 0.0
             frame_edge = self.PreProcessing(frame)
 
-            lines = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=10, minLineLength=10,
+            lines = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=50, minLineLength=10,
                                         maxLineGap=100)
             left_lanes = []
             right_lanes = []
