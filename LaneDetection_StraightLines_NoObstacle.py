@@ -90,7 +90,7 @@ class LaneDetection:
         print("tan = " + str(float(float(x0 - width / 2) / float(y0))))
         theta = float(math.atan(float(float(x0 - width / 2) / float(y0))))
         print("theta = " + str(theta * 50))
-        return theta * 50
+        return theta * 30
 
 
     def run(self):
