@@ -39,11 +39,11 @@ class LaneDetection:
         x_left = np.argmax(histogram[0: size // 2])  # choose x_left
         x_right = np.argmax(histogram[size // 2:]) + size // 2  # choose x_right
 
-        print(f"histogram[{x_left}] = " + histogram[x_left])
+        # print(f"histogram[{x_left}] = " + histogram[x_left])
         if histogram[x_left] == 0:  # no left lane
             x_left = None
 
-        print(f"histogram[{x_right}] = " + histogram[x_right])
+        # print(f"histogram[{x_right}] = " + histogram[x_right])
         if histogram[x_right] == 0:  # no right lane
             x_right = None
 
