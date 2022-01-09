@@ -74,8 +74,6 @@ class LaneDetection:
         while ret:
             # preprocessing frame
             blurred_frame = self.preprocessing_frame(frame)
-            # find starting points of lanes (x, 0)
-            # x_left, x_right = self.get_starting_points_lanes(blurred_frame)
 
             edge_frame = cv2.Canny(blurred_frame, 100, 200)
 
