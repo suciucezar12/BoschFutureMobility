@@ -87,8 +87,8 @@ class LaneDetection:
 
         print("x0 = " + str(x0) + ", y0 = " + str(y0))
         print("x0 - width / 2 = " + str((x0 - width / 2)))
-        print("tan = " + str(float((x0 - width / 2) / y0)))
-        theta = float(math.atan(float((x0 - width / 2) / y0)))
+        print("tan = " + str(float(float(x0 - width / 2) / float(y0))))
+        theta = float(math.atan(float(float(x0 - width / 2) / float(y0))))
         print("theta = " + str(theta * 50))
         return theta * 50
 
