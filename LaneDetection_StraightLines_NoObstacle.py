@@ -12,7 +12,7 @@ class LaneDetection:
         self.cap = cv2.VideoCapture(0)
 
     def PreProcessing(self, frame):
-        frame_copy = frame[int(int(frame.shape[0] * 0.6)):, :]
+        frame_copy = frame[int(int(frame.shape[0] * 0.7)):, :]
 
         frame_grayscale = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
 
@@ -103,10 +103,10 @@ class LaneDetection:
             frame_edge = self.PreProcessing(frame)
 
             lines = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=50, minLineLength=10,
-                                        maxLineGap=100)
+                                        maxLineGap=10)
             left_lanes = []
             right_lanes = []
-            frame_copy = frame[int(frame.shape[0] * 0.6):, :]  # used for displaying
+            frame_copy = frame[int(frame.shape[0] * 0.7):, :]  # used for displaying
 
             if lines is not None:
                 # classify lanes based on their slope
