@@ -56,7 +56,7 @@ class LaneDetection:
         frame_copy = frame.copy()
 
         height = frame_copy.shape[0]
-        frame_copy = frame_copy[int(0.5 * height):, :]  # crop image (select our ROI)
+        frame_copy = frame_copy[int(0.6 * height):, :]  # crop image (select our ROI)
 
         # Apply filters
         gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
