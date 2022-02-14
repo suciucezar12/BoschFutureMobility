@@ -13,7 +13,7 @@ class LaneDetection:
         frame = self.cap.read()
 
         cv2.imshow("Frame", frame)
-        cv2.waitKey(0)
+        cv2.waitKey(1)
 
 LD = LaneDetection()
 
