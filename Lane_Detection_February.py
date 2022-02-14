@@ -14,3 +14,7 @@ class LaneDetection:
 
         cv2.imshow("Frame", frame)
         cv2.waitKey(0)
+
+LD = LaneDetection()
+
+LD.run()
