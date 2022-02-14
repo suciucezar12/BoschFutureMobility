@@ -10,7 +10,7 @@ class LaneDetection:
 
     def run(self):
 
-        frame = self.cap.read()
+        ret, frame = self.cap.read()
 
         cv2.imshow("Frame", frame)
         cv2.waitKey(1)
