@@ -30,6 +30,10 @@ class LaneDetection:
 
         print(perspective_correction)
         print("\n-----------------------------------------")
+        print(source_coords)
+        print("\n-----------------------------------------")
+        print(destination_coords + "\n\n")
+
 
         warp_size = (self.width_frame, self.height_frame - self.x_top_trapezoid)
 
