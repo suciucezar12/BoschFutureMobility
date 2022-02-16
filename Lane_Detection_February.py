@@ -33,10 +33,13 @@ class LaneDetection:
         print(source_coords)
         print("\n-----------------------------------------")
         print(destination_coords)
-        print("\n\n")
 
 
         warp_size = (self.width_frame, self.height_frame - self.x_top_trapezoid)
+
+        print(warp_size)
+        print("\n-----------------------------------------")
+
 
         return cv2.warpPerspective(frame_cropped, perspective_correction, warp_size, flags=cv2.INTER_LANCZOS4)
 
