@@ -43,9 +43,9 @@ class LaneDetection:
 
             frame_copy = frame.copy()
 
-            cv2.line(frame_copy, (0, 480), (100, 290), (0, 255, 0), 2)
-            cv2.line(frame_copy, (100, 290), (540, 290), (0, 255, 0), 2)
-            cv2.line(frame_copy, (540, 290), (640, 480), (0, 255, 0), 2)
+            cv2.line(frame_copy, (0, 480), (90, 300), (0, 255, 0), 2)
+            cv2.line(frame_copy, (90, 300), (550, 300), (0, 255, 0), 2)
+            cv2.line(frame_copy, (550, 300), (640, 480), (0, 255, 0), 2)
             cv2.line(frame_copy, (640, 480), (0, 480), (0, 255, 0), 2)
 
             cv2.imshow("Frame", frame_copy)
