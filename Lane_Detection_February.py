@@ -20,7 +20,7 @@ class LaneDetection:
         self.width_frame = 640
         self.height_frame = 480
 
-    def get_warp(self, frame_cropped):  # from trapezoid to rectangle
+    def get_warp(self, frame):  # from trapezoid to rectangle
 
         cv2.imshow("Frame_Cropped", frame_cropped)
 
@@ -43,7 +43,7 @@ class LaneDetection:
         print("\n-----------------------------------------")
 
 
-        return cv2.warpPerspective(frame_cropped, perspective_correction, warp_size, flags=cv2.INTER_LANCZOS4)
+        return cv2.warpPerspective(frame, perspective_correction, warp_size, flags=cv2.INTER_LANCZOS4)
 
     def drawROI(self, frame):   # draw ROI
         cv2.line(frame, (0, 480), (self.y_top_left_trapezoid, self.x_top_trapezoid), (0, 255, 0), 2)
@@ -77,7 +77,7 @@ class LaneDetection:
 
             # cv2.imshow("Canny", processed_frame)
 
-            warp_frame = self.get_warp(processed_frame)
+            warp_frame = self.get_warp(frame)
 
             cv2.imshow("Warp", warp_frame)
 
