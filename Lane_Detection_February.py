@@ -21,7 +21,7 @@ class LaneDetection:
 
     def preprocessing(self, frame):
 
-        frame_copy = frame.copy.deepcopy()
+        frame_copy = frame.clone()
         gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
 
         return gray_frame
