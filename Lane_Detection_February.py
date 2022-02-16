@@ -9,15 +9,19 @@ class LaneDetection:
         time.sleep(0.1)
         self.cap = cv2.VideoCapture(0)
 
+        # trapezoid's coordinates
         self.y_top_left_trapezoid = 90
         self.x_top_trapezoid = 300
         self.y_top_right_trapezoid = 550
 
-    def drawROI(self, frame):
+    def drawROI(self, frame):   # draw ROI
         cv2.line(frame, (0, 480), (self.y_top_left_trapezoid, self.x_top_trapezoid), (0, 255, 0), 2)
         cv2.line(frame, (self.y_top_left_trapezoid, self.x_top_trapezoid), (self.y_top_right_trapezoid, self.x_top_trapezoid), (0, 255, 0), 2)
         cv2.line(frame, (self.y_top_right_trapezoid, self.x_top_trapezoid), (640, 480), (0, 255, 0), 2)
 
+    def preprocessing(self, frame):
+
+        frame_copy = frame.copy.deepcopy()
 
     def run(self):
 
@@ -25,10 +29,9 @@ class LaneDetection:
 
         while True:
 
-            print(str(frame.shape[0]) + " " + str(frame.shape[1]))
             # Selecting ROI -> looking for a trapezoid where our lanes would always appear
             # base of the trapezoid is actually the bottom line of our frame
-            self.drawROI(frame)
+            # self.drawROI(frame) # draw ROI
 
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
