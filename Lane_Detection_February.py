@@ -28,9 +28,9 @@ class LaneDetection:
 
         blurred_frame = cv2.GaussianBlur(gray_frame, (5, 5), 0)
 
-        # canny_frame = cv2.Canny(blurred_frame, 100, 200)
+        canny_frame = cv2.Canny(blurred_frame, 100, 200)
 
-        return blurred_frame
+        return canny_frame
 
     def run(self):
 
@@ -44,7 +44,7 @@ class LaneDetection:
 
             processed_frame = self.preprocessing(frame)
 
-            cv2.imshow("Blurred", processed_frame)
+            cv2.imshow("Canny", processed_frame)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
