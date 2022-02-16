@@ -16,7 +16,7 @@ class LaneDetection:
     def drawROI(self, frame):
         cv2.line(frame, (0, 480), (self.y_top_left_trapezoid, self.x_top_trapezoid), (0, 255, 0), 2)
         cv2.line(frame, (self.y_top_left_trapezoid, self.x_top_trapezoid), (self.y_top_right_trapezoid, self.x_top_trapezoid), (0, 255, 0), 2)
-        cv2.line(frame, (self.y_top_right_trapezoid, self.x_top_trapezoid), (640, 480))
+        cv2.line(frame, (self.y_top_right_trapezoid, self.x_top_trapezoid), (640, 480), (0, 255, 0), 2)
 
 
     def run(self):
