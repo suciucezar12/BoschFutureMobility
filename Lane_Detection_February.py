@@ -37,7 +37,7 @@ class LaneDetection:
         print("\n-----------------------------------------")
         print(destination_coords)
 
-        warp_size = (self.height_frame - self.x_top_trapezoid, self.width_frame)
+        warp_size = (self.width_frame, self.height_frame - self.x_top_trapezoid, )
 
         print(warp_size)
         print("\n-----------------------------------------")
