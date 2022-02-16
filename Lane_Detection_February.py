@@ -28,6 +28,9 @@ class LaneDetection:
 
         perspective_correction = cv2.getPerspectiveTransform(source_coords, destination_coords)  # the transformation matrix
 
+        print(perspective_correction)
+        print("\n-----------------------------------------")
+
         warp_size = (self.width_frame, self.height_frame - self.x_top_trapezoid)
 
         return cv2.warpPerspective(frame_cropped, perspective_correction, warp_size, flags=cv2.INTER_LANCZOS4)
