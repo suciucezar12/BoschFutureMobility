@@ -26,7 +26,7 @@ class LaneDetection:
 
         gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
 
-        blurred_frame = cv2.GaussianBlur(gray_frame, (11, 11), 0)
+        blurred_frame = cv2.GaussianBlur(gray_frame, (9, 9), 0)
 
         # canny_frame = cv2.Canny(blurred_frame, 100, 200)
 
