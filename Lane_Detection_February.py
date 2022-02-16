@@ -21,7 +21,7 @@ class LaneDetection:
 
     def preprocessing(self, frame):
 
-        frame_copy = frame.copy.deepcopy()
+        frame_copy = frame.clone()
 
     def run(self):
 
