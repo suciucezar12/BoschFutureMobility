@@ -26,7 +26,7 @@ class LaneDetection:
 
         destination_coords = np.float32([(0, 480), (0, self.x_top_trapezoid), (640, self.x_top_trapezoid), (640, 480)])
 
-        perspective_correction = cv2.getPerspectiveTransform(source_coords, destination_coords) # the transformation matrix
+        perspective_correction = cv2.getPerspectiveTransform(source_coords.position(0), destination_coords.position(0))  # the transformation matrix
 
         warp_size = (self.width_frame, self.height_frame - self.x_top_trapezoid)
 
