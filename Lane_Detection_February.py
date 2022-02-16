@@ -23,6 +23,7 @@ class LaneDetection:
     def preprocessing(self, frame):
 
         frame_copy = copy.deepcopy(frame)
+        frame_copy = frame_copy[self.x_top_trapezoid:, :]   # section from horizontal line = top of trapezoid
 
         gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
 
