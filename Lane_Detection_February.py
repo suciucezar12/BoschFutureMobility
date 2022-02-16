@@ -22,6 +22,9 @@ class LaneDetection:
     def preprocessing(self, frame):
 
         frame_copy = frame.clone()
+        gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
+
+        return gray_frame
 
     def run(self):
 
@@ -32,7 +35,10 @@ class LaneDetection:
             # Selecting ROI -> looking for a trapezoid where our lanes would always appear
             # base of the trapezoid is actually the bottom line of our frame
             # self.drawROI(frame) # draw ROI
+            
+            processed_frame = self.preprocessing(frame)
 
+            cv2.imshow("Gray", processed_frame)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
