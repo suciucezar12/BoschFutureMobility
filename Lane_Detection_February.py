@@ -1,7 +1,7 @@
 import copy
 import time
 import cv2
-import numpy as np
+
 
 class LaneDetection:
 
@@ -14,6 +14,22 @@ class LaneDetection:
         self.y_top_left_trapezoid = 90
         self.x_top_trapezoid = 300
         self.y_top_right_trapezoid = 550
+
+        # size of frame
+        self.width_frame = 640
+        self.height_frame = 480
+
+    def get_warp(self, frame_cropped):  # from trapezoid to rectangle
+        source_coords = [(0, 480), (self.y_top_left_trapezoid, self.x_top_trapezoid),
+                         (self.y_top_right_trapezoid, self.x_top_trapezoid), (640, 480)]
+
+        destination_coords = [(0, 480), (0, self.x_top_trapezoid), (640, self.x_top_trapezoid), (640, 480)]
+
+        perspective_correction = cv2.getPerspectiveTransform(source_coords, destination_coords) # the transformation matrix
+
+        warp_size = (self.width_frame, self.height_frame - self.x_top_trapezoid)
+
+        return cv2.warpPerspective(frame_cropped, perspective_correction, warp_size, flags=cv2.INTER_LANCZOS4)
 
     def drawROI(self, frame):   # draw ROI
         cv2.line(frame, (0, 480), (self.y_top_left_trapezoid, self.x_top_trapezoid), (0, 255, 0), 2)
@@ -46,6 +62,11 @@ class LaneDetection:
             processed_frame = self.preprocessing(frame)
 
             cv2.imshow("Canny", processed_frame)
+
+            warp_frame = self.get_warp(processed_frame)
+            
+            cv2.imshow("Warp", warp_frame)
+
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
