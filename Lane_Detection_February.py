@@ -41,10 +41,10 @@ class LaneDetection:
             pt3 = (590, 600)
             pt4 = (480, 640)
 
-            cv2.line(frame, pt1, pt2, (255, 255, 0), 3)
-            cv2.line(frame, pt2, pt3, (255, 255, 0), 3)
-            cv2.line(frame, pt3, pt4, (255, 255, 0), 3)
-            cv2.line(frame, pt4, pt1, (255, 255, 0), 3)
+            cv2.line(frame, (0, 640), (50, 600), (255, 255, 0), 3)
+            cv2.line(frame, (50, 600), (590, 600), (255, 255, 0), 3)
+            cv2.line(frame, (590, 600), (480, 640), (255, 255, 0), 3)
+            cv2.line(frame, (480, 640), (0, 640), (255, 255, 0), 3)
 
             cv2.imshow("Frame", frame)
             cv2.waitKey(2)
