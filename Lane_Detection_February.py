@@ -48,7 +48,7 @@ class LaneDetection:
             cv2.line(frame_copy, (590, 600), (480, 640), (255, 255, 0), 3)
             cv2.line(frame_copy, (480, 640), (0, 640), (255, 255, 0), 3)
 
-            cv2.imshow("Frame", frame)
+            cv2.imshow("Frame", frame_copy)
             cv2.waitKey(2)
 
             ret, frame = self.cap.read()
