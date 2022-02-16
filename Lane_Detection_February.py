@@ -31,7 +31,7 @@ class LaneDetection:
 
         while True:
 
-            print(frame.shape[0] + " " + frame.shape[1])
+            print(str(frame.shape[0]) + " " + str(frame.shape[1]))
             # Selecting ROI -> looking for a trapezoid where our lanes would always appear
             # base of the trapezoid is actually the bottom line of our frame
             frame = self.draw_ROI(frame)
