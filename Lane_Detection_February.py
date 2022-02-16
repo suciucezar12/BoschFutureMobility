@@ -41,7 +41,7 @@ class LaneDetection:
             pt3 = (590, 600)
             pt4 = (480, 640)
 
-            frame_copy = frame.deepcopy()
+            frame_copy = frame.copy()
 
             cv2.line(frame_copy, (0, 640), (50, 600), (255, 255, 0), 3)
             cv2.line(frame_copy, (50, 600), (590, 600), (255, 255, 0), 3)
