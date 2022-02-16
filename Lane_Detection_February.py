@@ -42,13 +42,13 @@ class LaneDetection:
         frame_copy = copy.deepcopy(frame)
         frame_copy = frame_copy[self.x_top_trapezoid:, :]   # section from horizontal line = top of trapezoid
 
-        gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
+        # gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
+        #
+        # blurred_frame = cv2.GaussianBlur(gray_frame, (7, 7), 0)
+        #
+        # canny_frame = cv2.Canny(blurred_frame, 100, 200)
 
-        blurred_frame = cv2.GaussianBlur(gray_frame, (7, 7), 0)
-
-        canny_frame = cv2.Canny(blurred_frame, 100, 200)
-
-        return canny_frame
+        return frame_copy
 
     def run(self):
 
@@ -62,7 +62,7 @@ class LaneDetection:
 
             processed_frame = self.preprocessing(frame)
 
-            cv2.imshow("Canny", processed_frame)
+            # cv2.imshow("Canny", processed_frame)
 
             warp_frame = self.get_warp(processed_frame)
 
