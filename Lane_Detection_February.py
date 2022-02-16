@@ -23,9 +23,12 @@ class LaneDetection:
     def preprocessing(self, frame):
 
         frame_copy = copy.deepcopy(frame)
+
         gray_frame = cv2.cvtColor(frame_copy, cv2.COLOR_BGR2GRAY)
 
-        return gray_frame
+        canny_frame = cv2.Canny(gray_frame, 100, 200)
+
+        return canny_frame
 
     def run(self):
 
@@ -39,7 +42,7 @@ class LaneDetection:
 
             processed_frame = self.preprocessing(frame)
 
-            cv2.imshow("Gray", processed_frame)
+            cv2.imshow("Canny", processed_frame)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
