@@ -1,7 +1,7 @@
 import copy
 import time
 import cv2
-
+import numpy as np
 
 class LaneDetection:
 
@@ -28,7 +28,7 @@ class LaneDetection:
 
         blurred_frame = cv2.GaussianBlur(gray_frame, (13, 13), 0)
 
-        canny_frame = cv2.Canny(gray_frame, 100, 200)
+        canny_frame = cv2.Canny(blurred_frame, 100, 200)
 
         return canny_frame
 
