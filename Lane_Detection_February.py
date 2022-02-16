@@ -13,10 +13,10 @@ class LaneDetection:
         height_frame = 480
 
         # select the 4 points of the trapezoid
-        pt1 = [0, 640]
-        pt2 = [50, 600]
-        pt3 = [590, 600]
-        pt4 = [480, 640]
+        pt1 = (0, 640)
+        pt2 = (50, 600)
+        pt3 = (590, 600)
+        pt4 = (480, 640)
 
         cv2.line(frame, pt1, pt2, (255, 0, 0), 3)
         cv2.line(frame, pt2, pt3, (255, 0, 0), 3)
