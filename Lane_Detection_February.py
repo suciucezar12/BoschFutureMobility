@@ -21,6 +21,9 @@ class LaneDetection:
         self.height_frame = 480
 
     def get_warp(self, frame_cropped):  # from trapezoid to rectangle
+
+        cv2.imshow("Frame_Cropped", frame_cropped)
+
         source_coords = np.float32([(0, 480), (self.y_top_left_trapezoid, self.x_top_trapezoid),
                          (self.y_top_right_trapezoid, self.x_top_trapezoid), (640, 480)])
 
