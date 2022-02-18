@@ -342,6 +342,9 @@ if __name__ == '__main__':
         # plt.show()
 
         # cv2.imshow("Image", image)
+
+        cv2.imshow("Frame", frame)
+
         cv2.imshow("IPM", warped1)
         cv2.waitKey(1)
 
