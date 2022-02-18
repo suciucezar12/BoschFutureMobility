@@ -271,7 +271,7 @@ def meshgrid(xmin, xmax, num_x, ymin, ymax, num_y, is_homogeneous=True):
 
 # from utils import perspective, Plane, load_camera_params, bilinear_sampler, warped
 interpolation_fn = bilinear_sampler  # or warped
-TARGET_H, TARGET_W = 500, 500
+TARGET_H, TARGET_W = 200, 200
 
 
 def ipm_from_parameters(image, xyz, K, RT, interpolation_fn):
