@@ -309,6 +309,9 @@ if __name__ == '__main__':
 
     while True:
         # Apply perspective transformation
+
+        start = time.time()
+
         warped1 = ipm_from_parameters(frame, plane.xyz, intrinsic, extrinsic, interpolation_fn)
 
         # ################
@@ -347,5 +350,9 @@ if __name__ == '__main__':
 
         cv2.imshow("IPM", warped1)
         cv2.waitKey(1)
+
+        end = time.time()
+
+        print(end - start)
 
         ret, frame = cap.read()
