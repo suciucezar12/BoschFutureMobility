@@ -63,7 +63,7 @@ def load_camera_params():
         'roll': 0.0,
         'yaw': 0.0,
 
-        'x': 1.0,
+        'x': 0.0,
         'y': 0.0,
         'z': 31.,
 
@@ -298,7 +298,7 @@ if __name__ == '__main__':
     # Derived method
     ################
     # Define the plane on the region of interest (road)
-    plane = Plane(0, -30, 0, 0, 0, 0, TARGET_H, TARGET_W, 0.076562)
+    plane = Plane(0, -35, 0, 0, 0, 0, TARGET_H, TARGET_W, 0.076562)
     # Retrieve camera parameters
     extrinsic, intrinsic = load_camera_params()
 
