@@ -298,7 +298,7 @@ if __name__ == '__main__':
     # Derived method
     ################
     # Define the plane on the region of interest (road)
-    plane = Plane(0, 0, 0, 0, 0, 0, TARGET_H, TARGET_W, 0.76562)
+    plane = Plane(0, -10, 0, 0, 0, 0, TARGET_H, TARGET_W, 0.76562)
     # Retrieve camera parameters
     extrinsic, intrinsic = load_camera_params()
 
