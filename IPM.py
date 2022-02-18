@@ -63,7 +63,7 @@ def load_camera_params():
         'roll': 0.0,
         'yaw': 0.0,
 
-        'x': 0.0,
+        'x': 1.0,
         'y': 0.0,
         'z': 31.,
 
