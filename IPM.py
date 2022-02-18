@@ -1,6 +1,7 @@
 # import json
 import time
-
+import cv2
+# import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -49,7 +50,7 @@ def translation_matrix(vector):
     return M
 
 
-def load_camera_params(file):
+def load_camera_params():
     """
     Get the intrinsic and extrinsic parameters
     Returns:
@@ -264,13 +265,9 @@ def meshgrid(xmin, xmax, num_x, ymin, ymax, num_y, is_homogeneous=True):
         coords = np.stack([x, y, z], axis=0)
     return coords
 
-#
-#
-#
-
-import cv2
-import matplotlib.pyplot as plt
-import numpy as np
+# =====================================================================================================
+# =====================================================================================================
+# =====================================================================================================
 
 # from utils import perspective, Plane, load_camera_params, bilinear_sampler, warped
 interpolation_fn = bilinear_sampler  # or warped
