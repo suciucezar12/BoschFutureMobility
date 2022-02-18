@@ -271,7 +271,7 @@ def meshgrid(xmin, xmax, num_x, ymin, ymax, num_y, is_homogeneous=True):
 
 # from utils import perspective, Plane, load_camera_params, bilinear_sampler, warped
 interpolation_fn = bilinear_sampler  # or warped
-TARGET_H, TARGET_W = int(500 * 0.3), int(500 * 0.3)
+TARGET_H, TARGET_W = 500, 500
 
 
 def ipm_from_parameters(image, xyz, K, RT, interpolation_fn):
@@ -298,7 +298,7 @@ if __name__ == '__main__':
     # Derived method
     ################
     # Define the plane on the region of interest (road)
-    plane = Plane(0, -191, 0, 0, 0, 0, TARGET_H, TARGET_W, 0.76562)
+    plane = Plane(0, - int(TARGET_W * 0.76562 * 0.5), 0, 0, 0, 0, TARGET_H, TARGET_W, 0.76562)
     # Retrieve camera parameters
     extrinsic, intrinsic = load_camera_params()
 
