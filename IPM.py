@@ -238,9 +238,9 @@ class Plane:
             Grid coordinate: [b, 3/4, row*cols]
         """
         xmin = self.x
-        xmax = (self.x + self.col * self.scale) / 3
+        xmax = (self.x + self.col * self.scale) * 0.3
         ymin = self.y
-        ymax = (self.y + self.row * self.scale) / 3
+        ymax = (self.y + self.row * self.scale) * 0.3
         return meshgrid(xmin, xmax, self.col,
                         ymin, ymax, self.row)
 
