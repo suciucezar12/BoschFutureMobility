@@ -238,9 +238,9 @@ class Plane:
             Grid coordinate: [b, 3/4, row*cols]
         """
         xmin = self.x
-        xmax = (self.x + self.col * self.scale) * 0.3
+        xmax = self.x + self.col * self.scale
         ymin = self.y
-        ymax = (self.y + self.row * self.scale) * 0.3
+        ymax = self.y + self.row * self.scale
         return meshgrid(xmin, xmax, self.col,
                         ymin, ymax, self.row)
 
@@ -298,7 +298,7 @@ if __name__ == '__main__':
     # Derived method
     ################
     # Define the plane on the region of interest (road)
-    plane = Plane(0, (-191 * 0.7), 0, 0, 0, 0, TARGET_H, TARGET_W, 0.76562)
+    plane = Plane(0,-191, 0, 0, 0, 0, TARGET_H, TARGET_W, 0.76562)
     # Retrieve camera parameters
     extrinsic, intrinsic = load_camera_params()
 
@@ -311,6 +311,8 @@ if __name__ == '__main__':
         # Apply perspective transformation
 
         start = time.time()
+
+        frame = frame[int(frame.shape[0] * 0.7), :]
 
         warped1 = ipm_from_parameters(frame, plane.xyz, intrinsic, extrinsic, interpolation_fn)
 
