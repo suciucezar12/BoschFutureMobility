@@ -10,8 +10,8 @@ class LaneDetection:
 
         ''' The coordinates of Region of Interest (ROI) '''
         self.x_top = 300
-        self.y_left_top = 110
-        self.y_right_top = 530
+        self.y_left_top = 150
+        self.y_right_top = 490
         # self.roi_coords = np.array([[480, 0], [self.x_top, self.y_left_top], [self.x_top, self.y_right_top], [480, 640]], dtype=np.int32)
         # coords are [y, x]
         self.roi_coords = np.array([[0, 480], [self.y_left_top, self.x_top], [self.y_right_top, self.x_top], [640, 480]], dtype=np.int32)
