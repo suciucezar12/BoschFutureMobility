@@ -68,8 +68,8 @@ def load_camera_params():
         'z': 31.,
 
         'fx': 530.59817269,
-        # 'fy': 506.50082419,
-        'fy': 540.,
+        'fy': 506.50082419,
+        # 'fy': 540.,
 
         'u0': 315.86549494,
         'v0': 238.34556175
@@ -313,7 +313,7 @@ if __name__ == '__main__':
 
         start = time.time()
 
-        frame = frame[int(frame.shape[0] * 0.5):, :]
+        # frame = frame[int(frame.shape[0] * 0.5):, :]
 
         warped1 = ipm_from_parameters(frame, plane.xyz, intrinsic, extrinsic, interpolation_fn)
 
