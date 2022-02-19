@@ -30,3 +30,4 @@ class LaneDetection:
 
 
 LD = LaneDetection()
+LD.run()
