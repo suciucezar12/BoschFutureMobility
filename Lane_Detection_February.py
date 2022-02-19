@@ -26,6 +26,7 @@ class LaneDetection:
 
             cv2.polylines(frame, [self.roi_coords], True, (0,255,255))
             cv2.imshow("Frame", frame)
+            cv2.waitKey(1)
             ret, frame = self.cap.read()
 
 
