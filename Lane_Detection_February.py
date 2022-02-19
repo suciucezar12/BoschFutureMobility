@@ -12,7 +12,7 @@ class LaneDetection:
         self.x_top = 300
         self.y_left_top = 50
         self.y_right_top = 590
-        self.roi_coords = np.array([[480, 0], [self.x_top, self.y_left_top], [self.x_top, self.y_right_top], [[480, 640]]], np.int32)
+        self.roi_coords = np.array([[480, 0], [self.x_top, self.y_left_top], [self.x_top, self.y_right_top], [480, 640]], np.int32)
         ''' =========================================== '''
 
         time.sleep(1)
