@@ -313,7 +313,7 @@ if __name__ == '__main__':
 
         start = time.time()
 
-        # frame = frame[int(frame.shape[0] * 0.5):, :]
+        frame = frame[int(frame.shape[0] * 0.5):, :]
 
         warped1 = ipm_from_parameters(frame, plane.xyz, intrinsic, extrinsic, interpolation_fn)
 
