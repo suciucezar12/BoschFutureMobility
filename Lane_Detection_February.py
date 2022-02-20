@@ -75,7 +75,7 @@ class LaneDetection:
             rotated = cv2.warpAffine(frame, M, (640, 480))
 
             cv2.imshow("IPM", out)
-            cv2.imshow("Frame", frame)
+            cv2.imshow("Frame", rotated)
             cv2.waitKey(1)
 
             end = time.time()
