@@ -73,6 +73,7 @@ tvec_avg = tvecs[0]
 for rvec in rvecs[1:]:
     rvec_avg += rvec
 rvec_avg = rvec_avg / n_frame
+print(rvec_avg)
 
 rvec_mat = cv2.Rodrigues(rvec_avg)
 
