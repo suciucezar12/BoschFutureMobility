@@ -45,7 +45,9 @@ class LaneDetection:
         RT = R @ R_world2camera @ T
 
         P = K @ RT
+        print(P)
         return P
+
 
     def run(self):
 
