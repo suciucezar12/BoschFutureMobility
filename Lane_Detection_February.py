@@ -65,7 +65,7 @@ class LaneDetection:
                                      [43.9, 44.4],
                                      [20.5, 41]])
 
-            M = cv2.getPerspectiveTransform(self.roi_coords, output_pts)
+            M = cv2.getPerspectiveTransform(np.array(self.roi_coords, dtype=np.float32), output_pts)
 
             out = cv2.warpPerspective(frame, M, (50, 50), flags=cv2.INTER_LINEAR)
 
