@@ -57,7 +57,17 @@ class LaneDetection:
 
             cv2.polylines(frame, [self.roi_coords], True, (0,255,255))
 
-            out = cv2.warpPerspective(frame, self.P, (640, 480 - self.x_top), flags=cv2.INTER_LINEAR)
+            # out = cv2.warpPerspective(frame, self.P, (640, 480 - self.x_top), flags=cv2.INTER_LINEAR)
+
+            # coordinates correspondents
+            output_pts = np.float32([[19.9, 3.6],
+                                     [41.7, 0],
+                                     [43.9, 44.4],
+                                     [20.5, 41]])
+
+            M = cv2.getPerspectiveTransform(self.roi_coords, output_pts)
+
+            out = cv2.warpPerspective(frame, M, (50, 50), flags=cv2.INTER_LINEAR)
 
             cv2.imshow("IPM", out)
             cv2.imshow("Frame", frame)
