@@ -75,7 +75,7 @@ class LaneDetection:
 
 
             cv2.imshow("IPM", frame_IPM)
-            cv2.imshow("IPM Preprocessed", frame_edge)
+            cv2.imshow("IPM Preprocessed", frame_preprocessed)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
