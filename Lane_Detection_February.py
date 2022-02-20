@@ -31,8 +31,8 @@ class LaneDetection:
         self.cap = cv2.VideoCapture(0)
 
     def get_IPM_frame(self, frame):
-        frame_IPM = cv2.warpPerspective(frame, self.matrix_IPM, (400, 400), flags=cv2.INTER_LINEAR)
-        rotation_matrix = cv2.getRotationMatrix2D((200, 200), 90, 1.0)
+        frame_IPM = cv2.warpPerspective(frame, self.matrix_IPM, (500, 500), flags=cv2.INTER_LINEAR)
+        rotation_matrix = cv2.getRotationMatrix2D((250, 250), 90, 1.0)
         frame_IPM_rotated = cv2.warpAffine(frame_IPM, rotation_matrix, (500, 500))
         return frame_IPM_rotated
 
