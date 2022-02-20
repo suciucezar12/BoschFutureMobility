@@ -74,7 +74,7 @@ for rvec in rvecs[1:]:
     rvec_avg += rvec
 rvec_avg = rvec_avg / n_frame
 
-rvec_avg = cv2.Rodrigues(rvec_avg, rvec_avg)
+rvec_mat = cv2.Rodrigues(rvec_avg)
 
 for tvec in tvecs[1:]:
     tvec_avg += tvec
@@ -87,10 +87,10 @@ print("dist_coeff: ")
 print(dist)
 
 print("rvec: ")
-print(rvec)
+print(rvec_mat)
 
 print("tvec: ")
-print(tvec)
+print(tvec_avg)
 
 
 # ================================================================================================
