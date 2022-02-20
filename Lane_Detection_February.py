@@ -24,7 +24,8 @@ class LaneDetection:
         rotation_matrix = cv2.getRotationMatrix2D((frame_IPM_width / 2, frame_IPM_height / 2), 90, 1.0)
         frame_IPM_rotated = cv2.warpAffine(frame_IPM, rotation_matrix, (frame_IPM_width, frame_IPM_height))
         margin_x_crop = 35
-        frame_IPM_final = frame_IPM_rotated[:, margin_x_crop: frame_IPM_rotated.shape[0] - margin_x_crop]
+        height_crop = 200
+        frame_IPM_final = frame_IPM_rotated[: height_crop, margin_x_crop: frame_IPM_rotated.shape[0] - margin_x_crop]
 
         return frame_IPM_final
 
