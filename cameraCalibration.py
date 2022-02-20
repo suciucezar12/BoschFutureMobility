@@ -78,7 +78,7 @@ rvec_avg = cv2.Rodrigues(rvec_avg, rvec_avg)
 
 for tvec in tvecs[1:]:
     tvec_avg += tvec
-tvec_avg = rvec_avg / n_frame
+tvec_avg = tvec_avg / n_frame
 
 print("K: ")
 print(cameraMatrix)
