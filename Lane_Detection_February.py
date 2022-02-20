@@ -67,7 +67,7 @@ class LaneDetection:
             # frame after applying preprocessing
             frame_preprocessed = self.preProcess(frame_IPM)
             # choose candidate lines
-            left_lines, right_lines = self.get_candidate_lines(frame_preprocessed)
+            # left_lines, right_lines = self.get_candidate_lines(frame_preprocessed)
 
             # if lines_candidate is not None:
             #     for line in lines_candidate:
