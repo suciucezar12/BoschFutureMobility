@@ -56,7 +56,7 @@ while n_frame <= 10:
         cv.imshow('img', frame)
         cv.waitKey(1000)
         n_frame += 1
-
+    print(n_frame)
 
 cv.destroyAllWindows()
 
