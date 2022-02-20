@@ -7,6 +7,7 @@ class LaneDetection:
     def __init__(self):
         ''' Declare extrinsic and intrinsic parameters '''
         ''' ========================================== '''
+        self.P = self.get_Homography_Matrix()
 
         ''' The coordinates of Region of Interest (ROI) '''
         self.x_top = 270
@@ -19,6 +20,27 @@ class LaneDetection:
         time.sleep(1)
         self.cap = cv2.VideoCapture(0)
 
+    def get_Homography_Matrix(self):
+        K = np.array([[494.47662424, 0., 312.63692855],
+                      [0., 476.72510769, 245.68745036],
+                      [0., 0., 1.]])
+
+        R = np.array([[-0.95558857, 0.24619517, -0.16198279],
+                      [-0.27596785, -0.55468898, 0.78495979],
+                      [0.10340324, 0.79480065, 0.59799641]])
+
+        T = np.array([[1., 0., 0.],
+                      [0., 1., 0.],
+                      [0., 0., 310.]])
+
+        RT = np.zeros((3,3))
+
+        RT[:, 0:2] = R[:, 0:2]  # Z = 0
+        RT[:, 2] = T[:, 2]
+
+        P = K @ RT
+        return P
+
     def run(self):
 
         ret, frame = self.cap.read()
@@ -26,6 +48,10 @@ class LaneDetection:
         while True:
 
             cv2.polylines(frame, [self.roi_coords], True, (0,255,255))
+
+            out = cv2.warpPerspective(frame, self.P, (640, self.x_top), flags=cv2.INTER_LINEAR)
+
+            cv2.imshow("IPM", out)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
             ret, frame = self.cap.read()
