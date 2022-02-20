@@ -39,10 +39,10 @@ class LaneDetection:
 
         RT = np.zeros((3,3))
 
-        # RT[:, 0:2] = R[:, 0:2]  # Z = 0
-        # RT[:, 2] = T[:, 2]
+        RT[:, 0:2] = R[:, 0:2]  # Z = 0
+        RT[:, 2] = T[:, 2]
 
-        RT = R @ R_world2camera @ T
+        # RT = R @ R_world2camera @ T
 
         P = K @ RT
         return P
