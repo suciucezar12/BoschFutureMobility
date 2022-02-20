@@ -31,7 +31,7 @@ class LaneDetection:
 
     def preProcess(self, frame_IPM):
         frame_gray = cv2.cvtColor(frame_IPM, cv2.COLOR_BGR2GRAY)
-        frame_blurred = cv2.GaussianBlur(frame_gray, (9, 9), 0)
+        frame_blurred = cv2.GaussianBlur(frame_gray, (11, 11), 0)
         frame_edge = cv2.Canny(frame_blurred, 50, 200)
         return frame_edge
 
