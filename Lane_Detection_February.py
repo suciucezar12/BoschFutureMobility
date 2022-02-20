@@ -76,10 +76,10 @@ class LaneDetection:
 
             M = cv2.getPerspectiveTransform(np.array(self.roi_coords, dtype=np.float32), output_pts)
             #
-            out = cv2.warpPerspective(frame, M, (600, 600), flags=cv2.INTER_LINEAR)
+            out = cv2.warpPerspective(frame, M, (800, 800), flags=cv2.INTER_LINEAR)
             #
-            M = cv2.getRotationMatrix2D((300, 300), 90, 1.0)
-            rotated = cv2.warpAffine(out, M, (600, 600))
+            M = cv2.getRotationMatrix2D((400, 400), 90, 1.0)
+            rotated = cv2.warpAffine(out, M, (800, 800))
 
             cv2.imshow("IPM", rotated)
             cv2.imshow("Frame", frame)
