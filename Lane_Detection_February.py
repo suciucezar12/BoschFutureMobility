@@ -69,19 +69,19 @@ class LaneDetection:
             #                          [439, 444],
             #                          [205, 410]])
 
-            output_pts = np.float32([[199, 36],
-                                     [417, 0],
-                                     [439, 444],
-                                     [205, 410]])
+            output_pts = np.float32([[199, 107],
+                                     [417, 71],
+                                     [450, 645],
+                                     [483, 481]])
 
-            # M = cv2.getPerspectiveTransform(np.array(self.roi_coords, dtype=np.float32), output_pts)
+            M = cv2.getPerspectiveTransform(np.array(self.roi_coords, dtype=np.float32), output_pts)
             #
-            # out = cv2.warpPerspective(frame, M, (600, 600), flags=cv2.INTER_LINEAR)
+            out = cv2.warpPerspective(frame, M, (600, 600), flags=cv2.INTER_LINEAR)
             #
-            # M = cv2.getRotationMatrix2D((320, 240), 90, 1.0)
-            # rotated = cv2.warpAffine(out, M, (640, 480))
+            M = cv2.getRotationMatrix2D((320, 240), 90, 1.0)
+            rotated = cv2.warpAffine(out, M, (640, 480))
 
-            # cv2.imshow("IPM", rotated)
+            cv2.imshow("IPM", rotated)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
