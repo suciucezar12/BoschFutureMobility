@@ -55,6 +55,8 @@ class LaneDetection:
 
         while True:
 
+            start = time.time()
+
             cv2.polylines(frame, [self.roi_coords], True, (0,255,255))
 
             # out = cv2.warpPerspective(frame, self.P, (640, 480 - self.x_top), flags=cv2.INTER_LINEAR)
@@ -72,7 +74,11 @@ class LaneDetection:
             cv2.imshow("IPM", out)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
+
+            end = time.time()
+            print(end - start)
             ret, frame = self.cap.read()
+
 
 
 LD = LaneDetection()
