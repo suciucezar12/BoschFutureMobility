@@ -78,8 +78,8 @@ class LaneDetection:
             #
             out = cv2.warpPerspective(frame, M, (600, 600), flags=cv2.INTER_LINEAR)
             #
-            M = cv2.getRotationMatrix2D((320, 240), 90, 1.0)
-            rotated = cv2.warpAffine(out, M, (640, 480))
+            # M = cv2.getRotationMatrix2D((320, 240), 90, 1.0)
+            rotated = cv2.warpAffine(out, M, (600, 600))
 
             cv2.imshow("IPM", rotated)
             cv2.imshow("Frame", frame)
