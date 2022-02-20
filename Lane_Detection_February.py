@@ -59,7 +59,7 @@ class LaneDetection:
             if lines_candidate is not None:
                 for line in lines_candidate:
                     x1, y1, x2, y2 = line[0]
-                    self.drawLane(frame_edge, (x1, y1), (x2, y2), (255, 0, 0), 3)
+                    cv2.line(frame_edge, (x1, y1), (x2, y2), (255, 0, 0), 3)
 
 
             cv2.imshow("IPM", frame_IPM)
