@@ -29,6 +29,13 @@ class LaneDetection:
 
         return frame_IPM_final
 
+    def preProcess(self, frame_IPM):
+        frame_gray = cv2.cvtColor(frame_IPM, cv2.COLOR_BGR2GRAY)
+        frame_blurred = cv2.GaussianBlur(frame_gray, (9, 9), 0)
+        frame_edge = cv2.Canny(frame_blurred, 50, 200)
+        return frame_edge
+
+
     def run(self):
 
         ret, frame = self.cap.read()
@@ -40,8 +47,9 @@ class LaneDetection:
             # cv2.polylines(frame, np.int32([self.input_coordinates_IPM]), True, (0, 255, 255))
 
             frame_IPM = self.get_IPM_frame(frame)
+            frame_edge = self.preProcess(frame_IPM)
 
-            cv2.imshow("IPM", frame_IPM)
+            cv2.imshow("IPM", frame_edge)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
