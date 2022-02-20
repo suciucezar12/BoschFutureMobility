@@ -48,8 +48,8 @@ class LaneDetection:
 
             frame_IPM = self.get_IPM_frame(frame)
             frame_edge = self.preProcess(frame_IPM)
-
-            cv2.imshow("IPM", frame_edge)
+            cv2.imshow("IPM", frame_IPM)
+            cv2.imshow("IPM Preprocessed", frame_edge)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
