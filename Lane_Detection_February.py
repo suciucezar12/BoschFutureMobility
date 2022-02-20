@@ -55,7 +55,7 @@ class LaneDetection:
 
             cv2.polylines(frame, [self.roi_coords], True, (0,255,255))
 
-            out = cv2.warpPerspective(frame, self.P, (640, self.x_top), flags=cv2.INTER_LINEAR)
+            out = cv2.warpPerspective(frame, self.P, (640, 480 - self.x_top), flags=cv2.INTER_LINEAR)
 
             cv2.imshow("IPM", out)
             cv2.imshow("Frame", frame)
