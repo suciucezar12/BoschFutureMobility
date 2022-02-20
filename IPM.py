@@ -32,6 +32,7 @@ def rotation_from_euler(roll=1., pitch=1., yaw=1.):
     R[2, 0] = -sj
     R[2, 1] = cj * si
     R[2, 2] = cj * ci
+    print(R)
     return R
 
 
