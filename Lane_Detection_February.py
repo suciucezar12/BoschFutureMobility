@@ -56,9 +56,10 @@ class LaneDetection:
             lines_candidate = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=10, minLineLength=10,
                                     maxLineGap=15)
 
-            for line in lines_candidate:
-                x1, y1, x2, y2 = line[0]
-                self.drawLane(frame_edge, (x1, y1), (x2, y2), (255, 0, 0), 3)
+            if lines_candidate is not None:
+                for line in lines_candidate:
+                    x1, y1, x2, y2 = line[0]
+                    self.drawLane(frame_edge, (x1, y1), (x2, y2), (255, 0, 0), 3)
 
 
             cv2.imshow("IPM", frame_IPM)
