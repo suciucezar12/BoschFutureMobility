@@ -9,18 +9,33 @@ class LaneDetection:
         ''' ========================================== '''
         self.P = self.get_Homography_Matrix()
 
-        ''' The coordinates of Region of Interest (ROI) '''
-        self.x_top = 270
+        ''' Matrix used for IPM '''
+        self.x_top = 270    # Coordinates of the polygon we use for creating the Homography matrix
         self.y_left_top = 80
         self.y_right_top = 560
-        # coords are [y, x]
-        self.roi_coords = np.array([[0, 480], [self.y_left_top, self.x_top], [self.y_right_top, self.x_top], [640, 480]], dtype=np.int32)
+        self.input_coordinates_IPM = np.array([[0, 480], [self.y_left_top, self.x_top], [self.y_right_top, self.x_top], [640, 480]], dtype=np.float32)
+        self.output_coordinates_IPM = np.array([[199, 36], [417, 0], [439, 444], [205, 410]], dtype=np.float32) # Output coordinates calculated manually in our flat real word plane of the road
+        self.matrix_IPM = cv2.getPerspectiveTransform(self.input_coordinates_IPM, self.output_coordinates_IPM)
+
+        ''' The coordinates of Region of Interest (ROI) '''
+        # self.x_top = 270
+        # self.y_left_top = 80
+        # self.y_right_top = 560
+        # # coords are [y, x]
+        # self.roi_coords = np.array([[0, 480], [self.y_left_top, self.x_top], [self.y_right_top, self.x_top], [640, 480]], dtype=np.int32)
         # self.roi_coords = np.array(
         #     [[0, 480], [0, self.x_top], [640, self.x_top], [640, 480]], dtype=np.int32)
         ''' =========================================== '''
 
         time.sleep(1)
         self.cap = cv2.VideoCapture(0)
+
+    def get_IPM_frame(self, frame):
+        frame_IPM = cv2.warpPerspective(frame, self.matrix_IPM, (500, 500), flags=cv2.INTER_LINEAR)
+        rotation_matrix = cv2.getRotationMatrix2D((250, 250), 90, 1.0)
+        frame_IPM_rotated = cv2.warpAffine(out, rotation_matrix, (500, 500))
+        return frame_IPM_rotated
+
 
     def get_Homography_Matrix(self):
         K = np.array([[530.59817269, 0., 315.86549494],
@@ -64,22 +79,21 @@ class LaneDetection:
             # out = cv2.warpPerspective(frame, self.P, (640, 480 - self.x_top), flags=cv2.INTER_LINEAR)
 
             # coordinates correspondents
-            output_pts = np.float32([[199, 36],
-                                     [417, 0],
-                                     [439, 444],
-                                     [205, 410]])
+            # output_pts = np.float32([[199, 36],
+            #                          [417, 0],
+            #                          [439, 444],
+            #                          [205, 410]])
 
             # output_pts = np.float32([[199, 107],
             #                          [417, 0],
             #                          [450, 645],
             #                          [483, 481]])
 
-            M = cv2.getPerspectiveTransform(np.array(self.roi_coords, dtype=np.float32), output_pts)
+            # M = cv2.getPerspectiveTransform(np.array(self.roi_coords, dtype=np.float32), output_pts)
             #
-            out = cv2.warpPerspective(frame, M, (500, 500), flags=cv2.INTER_LINEAR)
+            # out = cv2.warpPerspective(frame, M, (500, 500), flags=cv2.INTER_LINEAR)
             #
-            M = cv2.getRotationMatrix2D((250, 250), 90, 1.0)
-            rotated = cv2.warpAffine(out, M, (500, 500))
+            rotated = self.get_IPM_frame(frame)
 
             cv2.imshow("IPM", rotated)
             cv2.imshow("Frame", frame)
