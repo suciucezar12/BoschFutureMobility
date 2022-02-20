@@ -35,6 +35,10 @@ class LaneDetection:
         frame_edge = cv2.Canny(frame_blurred, 50, 200)
         return frame_edge
 
+    def drawLane(self, image, lane, color):
+        x1, y1, x2, y2 = lane
+        cv2.line(image, (x1, y1), (x2, y2), color, 5)
+
 
     def run(self):
 
@@ -48,6 +52,15 @@ class LaneDetection:
 
             frame_IPM = self.get_IPM_frame(frame)
             frame_edge = self.preProcess(frame_IPM)
+
+            lines_candidate = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=20, minLineLength=10,
+                                    maxLineGap=15)
+
+            for line in lines_candidate:
+                x1, y1, x2, y2 = line[0]
+                self.drawLane(frame_edge, (x1, y1), (x2, y2), (255, 0, 0), 3)
+
+
             cv2.imshow("IPM", frame_IPM)
             cv2.imshow("IPM Preprocessed", frame_edge)
             cv2.imshow("Frame", frame)
