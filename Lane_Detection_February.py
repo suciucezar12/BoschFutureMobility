@@ -15,8 +15,8 @@ class LaneDetection:
         self.y_right_top = 560
         # coords are [y, x]
         self.roi_coords = np.array([[0, 480], [self.y_left_top, self.x_top], [self.y_right_top, self.x_top], [640, 480]], dtype=np.int32)
-        self.roi_coords = np.array(
-            [[0, 480], [0, self.x_top], [640, self.x_top], [640, 480]], dtype=np.int32)
+        # self.roi_coords = np.array(
+        #     [[0, 480], [0, self.x_top], [640, self.x_top], [640, 480]], dtype=np.int32)
         ''' =========================================== '''
 
         time.sleep(1)
@@ -64,15 +64,15 @@ class LaneDetection:
             # out = cv2.warpPerspective(frame, self.P, (640, 480 - self.x_top), flags=cv2.INTER_LINEAR)
 
             # coordinates correspondents
-            # output_pts = np.float32([[199, 36],
-            #                          [417, 0],
-            #                          [439, 444],
-            #                          [205, 410]])
-
-            output_pts = np.float32([[199, 107],
+            output_pts = np.float32([[199, 36],
                                      [417, 0],
-                                     [450, 645],
-                                     [483, 481]])
+                                     [439, 444],
+                                     [205, 410]])
+
+            # output_pts = np.float32([[199, 107],
+            #                          [417, 0],
+            #                          [450, 645],
+            #                          [483, 481]])
 
             M = cv2.getPerspectiveTransform(np.array(self.roi_coords, dtype=np.float32), output_pts)
             #
