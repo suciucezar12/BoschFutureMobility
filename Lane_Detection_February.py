@@ -35,6 +35,8 @@ class LaneDetection:
             start = time.time()  # measure (time_computing / frame)
             frame_IPM = self.get_IPM_frame(frame)
 
+            cv2.polylines(frame, np.int32([self.input_coordinates_IPM]), True, (0, 255, 255))
+
             cv2.imshow("IPM", frame_IPM)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
