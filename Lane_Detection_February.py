@@ -26,7 +26,7 @@ class LaneDetection:
         margin_x_crop = 150
         frame_IPM_final = frame_IPM_rotated[margin_x_crop, frame_IPM_rotated.shape[0] - margin_x_crop:]
 
-        return frame_IPM_rotated
+        return frame_IPM_final
 
     def run(self):
 
