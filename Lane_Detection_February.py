@@ -53,7 +53,7 @@ class LaneDetection:
             frame_IPM = self.get_IPM_frame(frame)
             frame_edge = self.preProcess(frame_IPM)
 
-            lines_candidate = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=10, minLineLength=10,
+            lines_candidate = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=15, minLineLength=10,
                                     maxLineGap=15)
 
             if lines_candidate is not None:
