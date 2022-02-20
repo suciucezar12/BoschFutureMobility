@@ -5,7 +5,6 @@ import cv2
 class LaneDetection:
 
     def __init__(self):
-
         ''' Matrix used for IPM '''
         self.x_top = 270    # Coordinates of the polygon we use for creating the Homography matrix
         self.y_left_top = 80
@@ -19,12 +18,12 @@ class LaneDetection:
         self.cap = cv2.VideoCapture(0)
 
     def get_IPM_frame(self, frame):
-        frame_IPM_size = 450
-        frame_IPM = cv2.warpPerspective(frame, self.matrix_IPM, (frame_IPM_size, frame_IPM_size), flags=cv2.INTER_LINEAR)
-        rotation_matrix = cv2.getRotationMatrix2D((frame_IPM_size / 2, frame_IPM_size / 2), 90, 1.0)
-        frame_IPM_rotated = cv2.warpAffine(frame_IPM, rotation_matrix, (frame_IPM_size, frame_IPM_size))
+        frame_IPM_width = 450
+        frame_IPM_height = 300
+        frame_IPM = cv2.warpPerspective(frame, self.matrix_IPM, (frame_IPM_width, frame_IPM_height), flags=cv2.INTER_LINEAR)
+        rotation_matrix = cv2.getRotationMatrix2D((frame_IPM_width / 2, frame_IPM_height / 2), 90, 1.0)
+        frame_IPM_rotated = cv2.warpAffine(frame_IPM, rotation_matrix, (frame_IPM_width, frame_IPM_height))
         return frame_IPM_rotated
-
 
     def run(self):
 
