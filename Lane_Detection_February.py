@@ -35,10 +35,22 @@ class LaneDetection:
         frame_edge = cv2.Canny(frame_blurred, 50, 200)
         return frame_edge
 
-    def drawLane(self, image, lane, color):
-        x1, y1, x2, y2 = lane
+    def drawLine(self, image, line, color):
+        x1, y1, x2, y2 = line
         cv2.line(image, (x1, y1), (x2, y2), color, 5)
 
+    def get_candidate_lines(self, frame_preprocessed):
+
+        # divide in half on vertical axis our image
+        # left side is for detecting left lines
+        left_side_frame = frame_preprocessed[:, : int(frame_preprocessed.shape[0] / 2)]
+        # right side is for detecting right lines
+        right_side_frame = frame_preprocessed[:, int(frame_preprocessed.shape[0] / 2)]
+
+        lines_candidate = cv2.HoughLinesP(frame_preprocessed, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
+                                          maxLineGap=15)
+
+        return left_lines, right_lines
 
     def run(self):
 
@@ -50,16 +62,16 @@ class LaneDetection:
 
             # cv2.polylines(frame, np.int32([self.input_coordinates_IPM]), True, (0, 255, 255))
 
+            # frame after applying IPM and cropping
             frame_IPM = self.get_IPM_frame(frame)
-            frame_edge = self.preProcess(frame_IPM)
+            # frame after applying preprocessing
+            frame_preprocessed = self.preProcess(frame_IPM)
+            # choose candidate lines
+            left_lines, right_lines = self.get_candidate_lines(frame_preprocessed)
 
-            lines_candidate = cv2.HoughLinesP(frame_edge, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
-                                    maxLineGap=15)
-
-            if lines_candidate is not None:
-                for line in lines_candidate:
-                    x1, y1, x2, y2 = line[0]
-                    cv2.line(frame_IPM, (x1, y1), (x2, y2), (0, 0, 255), 2)
+            # if lines_candidate is not None:
+            #     for line in lines_candidate:
+            #         self.drawLine(frame_IPM, line, (0, 0, 255))
 
 
             cv2.imshow("IPM", frame_IPM)
