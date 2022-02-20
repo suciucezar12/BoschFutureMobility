@@ -59,7 +59,7 @@ class LaneDetection:
             if lines_candidate is not None:
                 for line in lines_candidate:
                     x1, y1, x2, y2 = line[0]
-                    cv2.line(frame_IPM, (x1, y1), (x2, y2), (255, 0, 0), 1)
+                    cv2.line(frame_IPM, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
 
             cv2.imshow("IPM", frame_IPM)
