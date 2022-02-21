@@ -1,8 +1,13 @@
+import math
 import time
 import numpy as np
 import cv2
 
+
 class LaneDetection:
+
+    class Line:
+        pass
 
     def __init__(self):
         ''' Matrix used for IPM '''
@@ -61,6 +66,32 @@ class LaneDetection:
 
         return left_lines_candidate, right_lines_candidate
 
+    def filter_selecting_lines(self, lines, height):
+        # (y1, x1) left-most point, (y2, x2) right-most point (opencv coordinates)
+        # Y1 < Y2 always
+        # x1 < x2 => negative slope (left oriented)
+        # x1 > x2 => positive slope (right oriented)
+        for line in lines:
+            x1, y1, x2, y2 = line[0]
+            if y1 != y2:    # avoid division by zero (=> horizontal)
+                x1 = abs(height - x1)   # flip the image wrt to horizontal axis for better reasoning (real X and Y axis are swapped!)
+                x2 = abs(height - x2)
+                slope = math.atan(float((x2 - x1) / (y2 - y1))) * 57.2958 # in degrees
+                if abs(slope) < 70:  # filter the horizontal lines
+                    self.drawLine(frame_IPM, line, (0, 0, 255), 0)
+
+
+
+
+    def get_Theta(self, frame_preprocessed):    # degree between the axes of our car and the direction of the steers
+        # detect lines by using Probabilistic Hough Line
+        lines_detected = cv2.HoughLinesP(frame_preprocessed, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
+                                          maxLineGap=15)
+        # eliminate if they are horizontal
+        lines = self.filter_selecting_lines(lines_detected, frame_preprocessed.shape[0])
+        # filter and selecting lines as part of left and right lane
+
+
     def run(self):
 
         ret, frame = self.cap.read()
@@ -76,21 +107,21 @@ class LaneDetection:
             # draw the vertical axis on the center of the IPM_frame
             x_vertical_axis = int(frame_IPM.shape[1] / 2)
             cv2.line(frame_IPM, (x_vertical_axis, 480), (x_vertical_axis, 0), (255, 0, 255), 2)
-            # cv2.line()
             # frame after applying preprocessing
             frame_preprocessed = self.preProcess(frame_IPM)
             # choose candidate lines
-            left_lines_candidate, right_lines_candidate = self.get_candidate_lines(frame_preprocessed)
+            # left_lines_candidate, right_lines_candidate = self.get_candidate_lines(frame_preprocessed)
 
-            if left_lines_candidate is not None:
-                for line in left_lines_candidate:
-                    self.drawLine(frame_IPM, line, (0, 0, 255), 0)
+            # if left_lines_candidate is not None:
+            #     for line in left_lines_candidate:
+            #         self.drawLine(frame_IPM, line, (0, 0, 255), 0)
+            #
+            # if right_lines_candidate is not None:
+            #     for line in right_lines_candidate:
+            #         x1, y1, x2, y2 = line[0]
+            #         self.drawLine(frame_IPM, line, (255, 0, 0), int(frame_IPM.shape[1] / 2))
 
-            if right_lines_candidate is not None:
-                for line in right_lines_candidate:
-                    x1, y1, x2, y2 = line[0]
-                    self.drawLine(frame_IPM, line, (255, 0, 0), int(frame_IPM.shape[1] / 2))
-
+            self.get_Theta()
 
             cv2.imshow("IPM", frame_IPM)
             cv2.imshow("IPM Preprocessed", frame_preprocessed)
