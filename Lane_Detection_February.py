@@ -37,7 +37,7 @@ class LaneDetection:
 
     def drawLine(self, image, line, color):
         x1, y1, x2, y2 = line
-        cv2.line(image, (x1, y1), (x2, y2), color, 5)
+        cv2.line(image, (x1, y1), (x2, y2), color, 2)
 
     def get_candidate_lines(self, frame_preprocessed):
 
@@ -47,10 +47,12 @@ class LaneDetection:
         # right side is for detecting right lines
         right_side_frame = frame_preprocessed[:, int(frame_preprocessed.shape[0] / 2)]
 
-        lines_candidate = cv2.HoughLinesP(frame_preprocessed, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
+        left_lines_candidate = cv2.HoughLinesP(left_side_frame, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
                                           maxLineGap=15)
+        right_lines_candidate = cv2.HoughLinesP(right_side_frame, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
+                                               maxLineGap=15)
 
-        return left_lines, right_lines
+        return left_lines_candidate, right_lines_candidate
 
     def run(self):
 
@@ -67,11 +69,15 @@ class LaneDetection:
             # frame after applying preprocessing
             frame_preprocessed = self.preProcess(frame_IPM)
             # choose candidate lines
-            # left_lines, right_lines = self.get_candidate_lines(frame_preprocessed)
+            left_lines_candidate, right_lines_candidate = self.get_candidate_lines(frame_preprocessed)
 
-            # if lines_candidate is not None:
-            #     for line in lines_candidate:
-            #         self.drawLine(frame_IPM, line, (0, 0, 255))
+            if left_lines_candidate is not None:
+                for line in left_lines_candidate:
+                    self.drawLine(frame_IPM, line, (0, 0, 255))
+
+            if right_lines_candidate is not None:
+                for line in right_lines_candidate:
+                    self.drawLine(frame_IPM, line, (255, 0, 0))
 
 
             cv2.imshow("IPM", frame_IPM)
