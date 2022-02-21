@@ -52,6 +52,8 @@ class LaneDetection:
         cv2.imshow("Left_side", left_side_frame)
         cv2.imshow("Right_side", right_side_frame)
 
+
+
         left_lines_candidate = cv2.HoughLinesP(left_side_frame, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
                                           maxLineGap=15)
         right_lines_candidate = cv2.HoughLinesP(right_side_frame, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
@@ -71,6 +73,8 @@ class LaneDetection:
 
             # frame after applying IPM and cropping
             frame_IPM = self.get_IPM_frame(frame)
+            # draw the vertical axis on the ceonter of the IPM_frame
+            cv2.draw(frame_IPM, ((int(frame_IPM.shape[1 / 2]), frame_IPM.shape[0]), (0, frame_IPM.shape[0])), (255, 0, 255), 5)
             # frame after applying preprocessing
             frame_preprocessed = self.preProcess(frame_IPM)
             # choose candidate lines
