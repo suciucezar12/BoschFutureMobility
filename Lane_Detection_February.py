@@ -78,7 +78,7 @@ class LaneDetection:
                 x1_real = abs(height - x1)   # flip the image wrt to horizontal axis for better reasoning (real X and Y axis are swapped!)
                 x2_real = abs(height - x2)
                 coeff_small_values = 7
-                slope = math.atan(float((x2_real - x1_real) / (y2 - y1))) * 57.2958  # in degrees
+                slope = math.atan(float((x2_real * 10 - x1_real * 10) / (y2 * 10 - y1 * 10))) * 57.2958  # in degrees
                 if abs(slope) < 60:  # filter the horizontal lines
                     print(abs(slope))
                     self.drawLine(frame_IPM, line, (0, 0, 255), 0)
