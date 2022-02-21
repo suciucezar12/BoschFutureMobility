@@ -89,7 +89,7 @@ class LaneDetection:
         lines_detected = cv2.HoughLinesP(frame_preprocessed, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
                                           maxLineGap=15)
         # eliminate if they are horizontal
-        lines = self.filter_selecting_lines(lines_detected, frame_preprocessed.shape[0])
+        lines = self.filter_selecting_lines(lines_detected, frame_preprocessed)
         # filter and selecting lines as part of left and right lane
 
 
