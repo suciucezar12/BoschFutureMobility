@@ -79,6 +79,7 @@ class LaneDetection:
                 x2_real = abs(height - x2)
                 slope = math.atan(float((x2_real - x1_real) / (y2 - y1))) * 57.2958 # in degrees
                 if abs(slope) < 70:  # filter the horizontal lines
+                    print(abs(slope))
                     self.drawLine(frame_IPM, line, (0, 0, 255), 0)
 
 
