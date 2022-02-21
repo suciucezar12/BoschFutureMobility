@@ -66,7 +66,7 @@ class LaneDetection:
 
         return left_lines_candidate, right_lines_candidate
 
-    def filter_selecting_lines(self, lines, height):
+    def filter_selecting_lines(self, lines, frame_preprocessed):
         # (y1, x1) left-most point, (y2, x2) right-most point (opencv coordinates)
         # Y1 < Y2 always
         # x1 < x2 => negative slope (left oriented)
@@ -74,11 +74,12 @@ class LaneDetection:
         for line in lines:
             x1, y1, x2, y2 = line[0]
             if y1 != y2:    # avoid division by zero (=> horizontal)
+                height = frame_preprocessed..shape[0]
                 x1 = abs(height - x1)   # flip the image wrt to horizontal axis for better reasoning (real X and Y axis are swapped!)
                 x2 = abs(height - x2)
                 slope = math.atan(float((x2 - x1) / (y2 - y1))) * 57.2958 # in degrees
                 if abs(slope) < 70:  # filter the horizontal lines
-                    self.drawLine(frame_IPM, line, (0, 0, 255), 0)
+                    self.drawLine(frame_preprocessed, line, (0, 0, 255), 0)
 
 
 
