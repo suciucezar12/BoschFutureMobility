@@ -37,7 +37,7 @@ class LaneDetection:
 
     def drawLine(self, image, line, color):
         x1, y1, x2, y2 = line[0]
-        cv2.line(image, (x1, y1), (x2, y2), color, 2)
+        cv2.line(image, (x1, y1), (x2, y2), color, 3)
 
     def get_candidate_lines(self, frame_preprocessed):
 
