@@ -73,8 +73,9 @@ class LaneDetection:
 
             # frame after applying IPM and cropping
             frame_IPM = self.get_IPM_frame(frame)
-            # draw the vertical axis on the ceonter of the IPM_frame
-            cv2.line(frame_IPM, [(int(frame_IPM.shape[1] / 2), int(frame_IPM.shape[0])), (0, int(frame_IPM.shape[0]))], (255, 0, 255), 5)
+            # draw the vertical axis on the center of the IPM_frame
+            x_vertical_axis = int(frame_IPM.shape[1] / 2)
+            cv2.line(frame_IPM, ((x_vertical_axis, 480), (0, 480)), (255, 0, 255), 5)
             # cv2.line()
             # frame after applying preprocessing
             frame_preprocessed = self.preProcess(frame_IPM)
