@@ -74,7 +74,7 @@ class LaneDetection:
         for line in lines:
             x1, y1, x2, y2 = line[0]
             if y1 != y2:    # avoid division by zero (=> horizontal)
-                height = frame_preprocessed..shape[0]
+                height = frame_preprocessed.shape[0]
                 x1 = abs(height - x1)   # flip the image wrt to horizontal axis for better reasoning (real X and Y axis are swapped!)
                 x2 = abs(height - x2)
                 slope = math.atan(float((x2 - x1) / (y2 - y1))) * 57.2958 # in degrees
