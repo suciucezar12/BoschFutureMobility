@@ -39,7 +39,7 @@ class LaneDetection:
         x1, y1, x2, y2 = line[0]
         x1 += margin_y
         x2 += margin_y
-        cv2.line(image, (x1, y1), (x2, y2), color, 3)
+        cv2.line(image, (x1, y1), (x2, y2), color, 2)
 
     def get_candidate_lines(self, frame_preprocessed):
 
@@ -75,7 +75,7 @@ class LaneDetection:
             frame_IPM = self.get_IPM_frame(frame)
             # draw the vertical axis on the center of the IPM_frame
             x_vertical_axis = int(frame_IPM.shape[1] / 2)
-            cv2.line(frame_IPM, (x_vertical_axis, 480), (x_vertical_axis, 0), (255, 0, 255), 5)
+            cv2.line(frame_IPM, (x_vertical_axis, 480), (x_vertical_axis, 0), (255, 0, 255), 2)
             # cv2.line()
             # frame after applying preprocessing
             frame_preprocessed = self.preProcess(frame_IPM)
