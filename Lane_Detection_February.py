@@ -45,9 +45,9 @@ class LaneDetection:
 
         # divide in half on vertical axis our image
         # left side is for detecting left lines
-        left_side_frame = frame_preprocessed[:, : int(frame_preprocessed.shape[0] / 2)]
+        left_side_frame = frame_preprocessed[:, : int(frame_preprocessed.shape[1] / 2)]
         # right side is for detecting right lines
-        right_side_frame = frame_preprocessed[:, int(frame_preprocessed.shape[0] / 2):]
+        right_side_frame = frame_preprocessed[:, int(frame_preprocessed.shape[1] / 2):]
 
         cv2.imshow("Left_side", left_side_frame)
         cv2.imshow("Right_side", right_side_frame)
