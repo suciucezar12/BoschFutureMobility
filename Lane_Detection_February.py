@@ -35,8 +35,10 @@ class LaneDetection:
         frame_edge = cv2.Canny(frame_blurred, 50, 200)
         return frame_edge
 
-    def drawLine(self, image, line, color):
+    def drawLine(self, image, line, color, margin_y):
         x1, y1, x2, y2 = line[0]
+        y1 += margin_y
+        y2 += margin_y
         cv2.line(image, (x1, y1), (x2, y2), color, 3)
 
     def get_candidate_lines(self, frame_preprocessed):
@@ -73,11 +75,12 @@ class LaneDetection:
 
             if left_lines_candidate is not None:
                 for line in left_lines_candidate:
-                    self.drawLine(frame_IPM, line, (0, 0, 255))
+                    self.drawLine(frame_IPM, line, (0, 0, 255), 0)
 
             if right_lines_candidate is not None:
                 for line in right_lines_candidate:
-                    self.drawLine(frame_IPM, line, (255, 0, 0))
+                    x1, y1, x2, y2 = line[0]
+                    self.drawLine(frame_IPM, line, (255, 0, 0), int(frame_IPM.shape[1] / 2))
 
 
             cv2.imshow("IPM", frame_IPM)
