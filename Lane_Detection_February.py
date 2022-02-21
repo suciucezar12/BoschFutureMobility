@@ -45,7 +45,7 @@ class LaneDetection:
         # left side is for detecting left lines
         left_side_frame = frame_preprocessed[:, : int(frame_preprocessed.shape[0] / 2)]
         # right side is for detecting right lines
-        right_side_frame = frame_preprocessed[:, int(frame_preprocessed.shape[0] / 2)]
+        right_side_frame = frame_preprocessed[:, int(frame_preprocessed.shape[0] / 2):]
 
         left_lines_candidate = cv2.HoughLinesP(left_side_frame, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
                                           maxLineGap=15)
