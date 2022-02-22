@@ -124,10 +124,10 @@ class LaneDetection:
             #         x1, y1, x2, y2 = line[0]
             #         self.drawLine(frame_IPM, line, (255, 0, 0), int(frame_IPM.shape[1] / 2))
 
-            self.get_Theta(frame_preprocessed, frame_IPM)
-
-            cv2.imshow("IPM", frame_IPM)
-            cv2.imshow("IPM Preprocessed", frame_preprocessed)
+            # self.get_Theta(frame_preprocessed, frame_IPM)
+            #
+            # cv2.imshow("IPM", frame_IPM)
+            # cv2.imshow("IPM Preprocessed", frame_preprocessed)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
