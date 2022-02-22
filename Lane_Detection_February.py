@@ -93,7 +93,7 @@ class LaneDetection:
 
     def get_Theta(self, frame_preprocessed, frame_IPM):    # degree between the axes of our car and the direction of the steers
         # detect lines by using Probabilistic Hough Line
-        lines_detected = cv2.HoughLinesP(frame_preprocessed, rho=1, theta=np.pi / 180, threshold=5, minLineLength=10,
+        lines_detected = cv2.HoughLinesP(frame_preprocessed, rho=1, theta=np.pi / 180, threshold=2, minLineLength=10,
                                           maxLineGap=50)
         # eliminate if they are horizontal
         if lines_detected is not None:
