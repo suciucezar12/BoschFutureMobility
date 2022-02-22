@@ -31,8 +31,15 @@ class LaneDetection:
         margin_x_crop = 28
         height_crop = 245
         frame_IPM_final = frame_IPM_rotated[: height_crop, margin_x_crop: frame_IPM_rotated.shape[0] - margin_x_crop]
+        #resize our IPM image
+        scale = 2
+        width = frame_IPM_final.shape[1] * 2
+        height = frame_IPM_final.shape[0] * 2
+        dim = (width, height)
 
-        return frame_IPM_final
+        frame_IPM_resized = cv2.resize(frame_IPM_final, dim, interpolation = cv2.INTER_AREA)
+
+        return frame_IPM_resized
 
     def preProcess(self, frame_IPM):
         frame_gray = cv2.cvtColor(frame_IPM, cv2.COLOR_BGR2GRAY)
@@ -56,8 +63,6 @@ class LaneDetection:
 
         cv2.imshow("Left_side", left_side_frame)
         cv2.imshow("Right_side", right_side_frame)
-
-
 
         left_lines_candidate = cv2.HoughLinesP(left_side_frame, rho=1, theta=np.pi / 180, threshold=35, minLineLength=10,
                                           maxLineGap=15)
@@ -124,10 +129,10 @@ class LaneDetection:
             #         x1, y1, x2, y2 = line[0]
             #         self.drawLine(frame_IPM, line, (255, 0, 0), int(frame_IPM.shape[1] / 2))
 
-            # self.get_Theta(frame_preprocessed, frame_IPM)
+            self.get_Theta(frame_preprocessed, frame_IPM)
             #
-            # cv2.imshow("IPM", frame_IPM)
-            # cv2.imshow("IPM Preprocessed", frame_preprocessed)
+            cv2.imshow("IPM", frame_IPM)
+            cv2.imshow("IPM Preprocessed", frame_preprocessed)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
