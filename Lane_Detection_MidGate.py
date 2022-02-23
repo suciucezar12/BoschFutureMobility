@@ -53,7 +53,7 @@ class LaneDetection:
 
         return left_lines_detected, right_lines_detected
 
-    def polyfit(self, lines):
+    def polyfit(self, lines, frame_ROI, left_lines=True):
         x_points = []
         y_points = []
 
@@ -71,7 +71,20 @@ class LaneDetection:
             y_points.append(y2)
 
         coeff = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
-        return coeff
+
+        y1 = 0
+        y2 = self.x_top
+
+        x1 = int((y1 - coeff[0]) / coeff[1])
+        x2 = int((y2 - coeff[0]) / coeff[1])
+
+        y1_cv = x1
+        y2_cv = x2
+
+        x1_cv = abs(y1 - self.x_top)
+        x2_cv = abs(y2 - self.x_top)
+
+        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 3)
 
     def drawLane(self, line, image, color_line):
         y1, x1, y2, x2 = line[0]
@@ -101,29 +114,11 @@ class LaneDetection:
             left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
 
             if left_lines_detected is not None:
-                pass
-                coeff = self.polyfit(left_lines_detected[0])
-                if coeff is not None:
-                    # print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
-                    y1 = 0
-                    y2 = self.x_top
+                self.polyfit(left_lines_detected, frame_ROI)
 
-                    x1 = int((y1 - coeff[0]) / coeff[1])
-                    x2 = int((y2 - coeff[0]) / coeff[1])
-
-                    y1_cv = x1
-                    y2_cv = x2
-
-                    x1_cv = abs(y1 - self.x_top)
-                    x2_cv = abs(y2 - self.x_top)
-
-                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 3)
 
             if right_lines_detected is not None:
-                pass
-                # coeff = self.polyfit(right_lines_detected[0])
-                # if coeff is not None:
-                #     print("right_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
+                self.polyfit(right_lines_detected, frame_ROI, left_lines=False)
 
             cv2.imshow("ROI", frame_ROI)
             # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
