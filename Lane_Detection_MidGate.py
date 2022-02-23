@@ -20,9 +20,13 @@ class LaneDetection:
         self.cap = cv2.VideoCapture(0)
 
     def run(self):
-        
+
         ret, frame = self.cap.read()
         while True:
 
             cv2.imshow("Frame", frame)
             ret, frame = self.cap.read()
+
+LD = LaneDetection()
+
+LD.run()
