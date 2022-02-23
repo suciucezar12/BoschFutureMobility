@@ -115,6 +115,11 @@ class LaneDetection:
                     y1_cv = abs(x1_cv - self.height)
                     y2_cv = abs(x2_cv - self.height)
 
+                    print("x1_cv = " + str(x1_cv))
+                    print("y1_cv = " + str(y1_cv))
+                    print("x2_cv = " + str(x2_cv))
+                    print("y2_cv = " + str(y2_cv))
+
                     cv2.line(frame_ROI, (x1_cv, y1_cv), (x2_cv, y2_cv), (10, 10, 10), 3)
 
             if right_lines_detected is not None:
