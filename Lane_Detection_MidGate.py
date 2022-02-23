@@ -63,7 +63,7 @@ class LaneDetection:
             # y_points.append(line[1])
             # y_points.append(line[3])
 
-            x1, y1, x2, y2 = line[0]
+            x1, y1, x2, y2 = line
 
             x_points.append(y1)
             x_points.append(int(abs(x1 - self.height)))
