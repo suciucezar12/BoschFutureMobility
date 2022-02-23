@@ -33,7 +33,7 @@ class LaneDetection:
         ret, frame = self.cap.read()
         while True:
 
-            cv2.line(frame, (0, self.x_top), (640, self.x_top), (0, 0, 255), 2)  # delimiting the ROI
+            cv2.line(frame, (0, self.x_top + 5), (640, self.x_top), (0, 0, 255), 2)  # delimiting the ROI
             frame_ROI = frame[self.x_top:, :]
 
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
