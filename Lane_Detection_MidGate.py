@@ -63,7 +63,7 @@ class LaneDetection:
 
         coeff = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
         print(type(coeff))
-        return  coeff
+        return coeff
 
     def drawLane(self, line, image, color_line):
         x1, y1, x2, y2 = line[0]
@@ -93,7 +93,7 @@ class LaneDetection:
                 if coeff is not None:
                     print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
             if right_lines_detected is not None:
-                self.polyfit(right_lines_detected[0])
+                coeff = self.polyfit(right_lines_detected[0])
                 if coeff is not None:
                     print("right_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
 
