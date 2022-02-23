@@ -25,7 +25,7 @@ class LaneDetection:
         frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (11, 11), 0)
         # cv2.imshow("ROI_Blurred", frame_ROI_blurred)
 
-        frame_ROI_preprocessed = cv2.Canny(frame_ROI_blurred, 125, 255)
+        frame_ROI_preprocessed = cv2.Canny(frame_ROI_blurred, 110, 255)
 
         return frame_ROI_preprocessed
 
