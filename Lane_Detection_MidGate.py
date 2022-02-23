@@ -101,7 +101,7 @@ class LaneDetection:
                     print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
                     y1 = int(coeff[1] * 480 + coeff[0])
                     y2 = int(coeff[1] * 0 + coeff[0])
-                    cv2.line(frame, (y1, 480), (y2, 0), (21, 32, 2), 5)
+                    cv2.line(frame, (480, y1), (0 y2), (21, 32, 2), 5)
             if right_lines_detected is not None:
                 coeff = self.polyfit(right_lines_detected[0])
                 if coeff is not None:
