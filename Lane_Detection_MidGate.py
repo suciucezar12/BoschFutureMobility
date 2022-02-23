@@ -47,8 +47,9 @@ class LaneDetection:
     def run(self):
 
         ret, frame = self.cap.read()
-        while True:
 
+        while True:
+            start = time.time()
             cv2.line(frame, (0, self.x_top - 5), (640, self.x_top - 5), (0, 0, 255), 2)  # delimiting the ROI
             frame_ROI = frame[self.x_top:, :]
 
@@ -63,6 +64,8 @@ class LaneDetection:
             cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
+            end = time.time()
+            print(end - start)
             ret, frame = self.cap.read()
 
 LD = LaneDetection()
