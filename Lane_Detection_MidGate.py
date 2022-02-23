@@ -6,6 +6,8 @@ class LaneDetection:
 
     def __init__(self):
         ''' Matrix used for IPM '''
+        self.width = 640
+        self.height = 480
         self.x_top = 270  # Coordinates of the polygon we use for creating the Homography matrix
         self.y_left_top = 80
         self.y_right_top = 560
