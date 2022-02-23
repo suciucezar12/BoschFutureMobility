@@ -89,10 +89,10 @@ class LaneDetection:
             left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
 
             if left_lines_detected is not None:
-                coeff = self.polyfit(left_lines_detected)
+                coeff = self.polyfit(left_lines_detected[0])
                 print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
             if right_lines_detected is not None:
-                self.polyfit(right_lines_detected)
+                self.polyfit(right_lines_detected[0])
                 print("right_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
 
             cv2.imshow("ROI", frame_ROI)
