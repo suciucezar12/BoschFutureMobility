@@ -56,10 +56,10 @@ class LaneDetection:
         y_points = []
 
         for line in lines:
-            x_points.__add__(line[0])
-            x_points.__add__(line[2])
-            y_points.__add__(line[1])
-            y_points.__add__(line[3])
+            x_points.__add__([line[0]])
+            x_points.__add__([line[2]])
+            y_points.__add__([line[1]])
+            y_points.__add__([line[3]])
 
         coeff = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
 
