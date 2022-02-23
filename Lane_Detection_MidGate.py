@@ -58,7 +58,7 @@ class LaneDetection:
         y_points = []
 
         for line in lines:
-            y1_cv, x1_cv, y2_cv, x2_cv = line
+            y1_cv, x1_cv, y2_cv, x2_cv = line[0]
 
             x1 = y1_cv
             x2 = y2_cv
