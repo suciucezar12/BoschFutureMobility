@@ -19,6 +19,14 @@ class LaneDetection:
         time.sleep(1)
         self.cap = cv2.VideoCapture(0)
 
+    # preprocess our frame_ROI
+    def preProcess(self, frame_ROI):
+        frame_ROI_gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
+        frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (9, 9), 0)
+        frame_ROI_preprocessed = frame_ROI_blurred
+
+        return frame_ROI_preprocessed
+
     def run(self):
 
         ret, frame = self.cap.read()
@@ -27,7 +35,10 @@ class LaneDetection:
             cv2.line(frame, (0, self.x_top), (640, self.x_top), (0, 0, 255), 2)  # delimiting the ROI
             frame_ROI = frame[self.x_top:, :]
 
+            frame_ROI_preprocessed = self.preProcess(frame_ROI)
+
             cv2.imshow("ROI", frame_ROI)
+            cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
             ret, frame = self.cap.read()
