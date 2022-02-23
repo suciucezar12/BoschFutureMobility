@@ -56,7 +56,7 @@ class LaneDetection:
             lines_detected = self.hough_transform(frame_ROI_preprocessed)
             if lines_detected is not None:
                 for line_detected in lines_detected:
-                    self.drawLane(line_detected, frame_ROI_preprocessed)
+                    self.drawLane(line_detected, frame_ROI)
 
             cv2.imshow("ROI", frame_ROI)
             cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
