@@ -90,10 +90,12 @@ class LaneDetection:
 
             if left_lines_detected is not None:
                 coeff = self.polyfit(left_lines_detected[0])
-                print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
+                if coeff is not None:
+                    print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
             if right_lines_detected is not None:
                 self.polyfit(right_lines_detected[0])
-                print("right_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
+                if coeff is not None:
+                    print("right_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
 
             cv2.imshow("ROI", frame_ROI)
             # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
