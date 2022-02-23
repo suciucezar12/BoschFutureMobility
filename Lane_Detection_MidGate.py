@@ -23,7 +23,8 @@ class LaneDetection:
     def preProcess(self, frame_ROI):
         frame_ROI_gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
         frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (9, 9), 0)
-        frame_ROI_preprocessed = frame_ROI_blurred
+
+        frame_ROI_preprocessed = cv2.Canny(frame_ROI_blurred, 50, 200)
 
         return frame_ROI_preprocessed
 
