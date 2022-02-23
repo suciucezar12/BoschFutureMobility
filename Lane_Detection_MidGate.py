@@ -117,7 +117,7 @@ class LaneDetection:
                     x1_cv = abs(y1 - self.x_top)
                     x2_cv = abs(y2 - self.x_top)
 
-                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (10, 10, 10), 3)
+                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 3)
 
             if right_lines_detected is not None:
                 pass
