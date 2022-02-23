@@ -23,7 +23,7 @@ class LaneDetection:
     def preProcess(self, frame_ROI):
         frame_ROI_gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
         frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (11, 11), 0)
-        cv2.imshow("ROI_Blurred", frame_ROI_blurred)
+        # cv2.imshow("ROI_Blurred", frame_ROI_blurred)
 
         frame_ROI_preprocessed = cv2.Canny(frame_ROI_blurred, 50, 200)
 
@@ -60,9 +60,9 @@ class LaneDetection:
                 for line_detected in lines_detected:
                     self.drawLane(line_detected, frame_ROI)
 
-            cv2.imshow("ROI", frame_ROI)
-            cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
-            cv2.imshow("Frame", frame)
+            # cv2.imshow("ROI", frame_ROI)
+            # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
+            # cv2.imshow("Frame", frame)
             cv2.waitKey(1)
             end = time.time()
             print(end - start)
