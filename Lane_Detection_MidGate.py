@@ -104,7 +104,7 @@ class LaneDetection:
                 pass
                 coeff = self.polyfit(left_lines_detected[0])
                 if coeff is not None:
-                    print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
+                    # print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
                     y1 = 0
                     y2 = self.x_top
 
@@ -130,7 +130,7 @@ class LaneDetection:
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
             end = time.time()
-            # print(end - start)
+            print(end - start)
             ret, frame = self.cap.read()
 
 LD = LaneDetection()
