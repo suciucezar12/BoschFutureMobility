@@ -30,18 +30,22 @@ class LaneDetection:
         return frame_ROI_preprocessed
 
     def hough_transform(self, frame_ROI_preprocessed):
-        lines_detected = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=75, minLineLength=30,
+        left_side_ROI = frame_ROI_preprocessed[:, 0: int(frame_ROI_preprocessed / 2)]
+        right_side_ROI = frame_ROI_preprocessed[:, int(frame_ROI_preprocessed / 2):]
+        right_lines_detected = cv2.HoughLinesP(right_side_ROI, rho=1, theta=np.pi / 180, threshold=75, minLineLength=30,
                                          maxLineGap=70)
-        return lines_detected
+        left_lines_detected = cv2.HoughLinesP(left_side_ROI, rho=1, theta=np.pi / 180, threshold=75, minLineLength=30,
+                                               maxLineGap=70)
+        return left_lines_detected, right_lines_detected
 
-    def drawLane(self, line, image):
+    def drawLane(self, line, image, color_line):
         x1, y1, x2, y2 = line[0]
         radius = 10
         color_left_most_point = (0, 255, 0)
         color_right_most_point = (255, 0, 0)
         cv2.circle(image, (x1, y1), radius, color_left_most_point, 1)
         cv2.circle(image, (x2, y2), radius, color_right_most_point, 1)
-        cv2.line(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+        cv2.line(image, (x1, y1), (x2, y2), color_line, 2)
 
 
     def run(self):
@@ -55,10 +59,14 @@ class LaneDetection:
 
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
 
-            lines_detected = self.hough_transform(frame_ROI_preprocessed)
-            if lines_detected is not None:
-                for line_detected in lines_detected:
-                    self.drawLane(line_detected, frame_ROI)
+            left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed)
+            if left_lines_detected is not None:
+                for line_detected in left_lines_detected:
+                    self.drawLane(line_detected, frame_ROI, (255, 0, 0))
+
+            if right_lines_detected is not None:
+                for line_detected in right_lines_detected:
+                    self.drawLane(line_detected, frame_ROI, (0, 0, 255))
 
             cv2.imshow("ROI", frame_ROI)
             # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
