@@ -83,6 +83,10 @@ class LaneDetection:
         radius = 10
         color_left_most_point = (0, 255, 0)
         color_right_most_point = (255, 0, 0)
+        print("x1 = " + x1)
+        print("y1 = " + y1)
+        print("x2 = " + x2)
+        print("y2 = " + y2)
         cv2.circle(image, (x1, y1), radius, color_left_most_point, 1)
         cv2.circle(image, (x2, y2), radius, color_right_most_point, 1)
         cv2.line(image, (x1, y1), (x2, y2), color_line, 2)
@@ -102,30 +106,32 @@ class LaneDetection:
             left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
 
             if left_lines_detected is not None:
-                coeff = self.polyfit(left_lines_detected[0])
-                if coeff is not None:
-                    print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
-                    y1 = 0
-                    x1 = int((y1 - coeff[0]) / coeff[1])
-                    x2 = int((480 - coeff[0]) / coeff[1])
-                    y2 = 480
-
-                    x1_cv = abs(y1 - self.height)
-                    x2_cv = abs(x1 - self.height)
-                    y1_cv = x1
-                    y2_cv = x2
-
-                    print("x1_cv = " + str(x1_cv))
-                    print("y1_cv = " + str(y1_cv))
-                    print("x2_cv = " + str(x2_cv))
-                    print("y2_cv = " + str(y2_cv))
-
-                    cv2.line(frame, (y1_cv, x1_cv), (y2_cv, x2_cv), (10, 10, 10), 3)
+                pass
+                # coeff = self.polyfit(left_lines_detected[0])
+                # if coeff is not None:
+                #     print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
+                #     y1 = 0
+                #     x1 = int((y1 - coeff[0]) / coeff[1])
+                #     x2 = int((480 - coeff[0]) / coeff[1])
+                #     y2 = 480
+                #
+                #     x1_cv = abs(y1 - self.height)
+                #     x2_cv = abs(x1 - self.height)
+                #     y1_cv = x1
+                #     y2_cv = x2
+                #
+                #     print("x1_cv = " + str(x1_cv))
+                #     print("y1_cv = " + str(y1_cv))
+                #     print("x2_cv = " + str(x2_cv))
+                #     print("y2_cv = " + str(y2_cv))
+                #
+                #     cv2.line(frame, (y1_cv, x1_cv), (y2_cv, x2_cv), (10, 10, 10), 3)
 
             if right_lines_detected is not None:
-                coeff = self.polyfit(right_lines_detected[0])
-                if coeff is not None:
-                    print("right_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
+                pass
+                # coeff = self.polyfit(right_lines_detected[0])
+                # if coeff is not None:
+                #     print("right_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
 
             cv2.imshow("ROI", frame_ROI)
             # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
