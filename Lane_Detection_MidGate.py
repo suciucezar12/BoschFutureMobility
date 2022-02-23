@@ -31,7 +31,7 @@ class LaneDetection:
 
     def hough_transform(self, frame_ROI_preprocessed):
         lines_detected = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=85, minLineLength=30,
-                                         maxLineGap=50)
+                                         maxLineGap=70)
         return lines_detected
 
     def drawLane(self, line, image):
