@@ -79,17 +79,17 @@ class LaneDetection:
         return coeff
 
     def drawLane(self, line, image, color_line):
-        x1, y1, x2, y2 = line[0]
+        y1, x1, y2, x2 = line[0]
         radius = 10
         color_left_most_point = (0, 255, 0)
         color_right_most_point = (255, 0, 0)
-        print("x1 = " + str(x1))
-        print("y1 = " + str(y1))
-        print("x2 = " + str(x2))
-        print("y2 = " + str(y2))
-        cv2.circle(image, (x1, y1), radius, color_left_most_point, 1)
-        cv2.circle(image, (x2, y2), radius, color_right_most_point, 1)
-        cv2.line(image, (x1, y1), (x2, y2), color_line, 2)
+        print("x1 = " + str(y1))
+        print("y1 = " + str(x1))
+        print("x2 = " + str(y2))
+        print("y2 = " + str(x2))
+        cv2.circle(image, (y1, x1), radius, color_left_most_point, 1)
+        cv2.circle(image, (y2, x2), radius, color_right_most_point, 1)
+        cv2.line(image, (y1, x1), (y2, x2), color_line, 2)
 
 
     def run(self):
