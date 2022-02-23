@@ -58,16 +58,12 @@ class LaneDetection:
         y_points = []
 
         for line in lines:
-            # x_points.append(line[0])
-            # x_points.append(line[2])
-            # y_points.append(line[1])
-            # y_points.append(line[3])
+            y1_cv, x1_cv, y2_cv, x2_cv = line
 
-            x1_cv, y1_cv, x2_cv, y2_cv = line
             x1 = y1_cv
             x2 = y2_cv
-            y1 = abs(x1_cv - self.height)
-            y2 = abs(x2_cv - self.height)
+            y1 = abs(x1_cv - self.x_top)
+            y2 = abs(x2_cv - self.x_top)
 
             x_points.append(x1)
             x_points.append(x2)
@@ -75,7 +71,6 @@ class LaneDetection:
             y_points.append(y2)
 
         coeff = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
-        # print(type(coeff))
         return coeff
 
     def drawLane(self, line, image, color_line):
@@ -107,25 +102,11 @@ class LaneDetection:
 
             if left_lines_detected is not None:
                 pass
-                # coeff = self.polyfit(left_lines_detected[0])
-                # if coeff is not None:
-                #     print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
-                #     y1 = 0
-                #     x1 = int((y1 - coeff[0]) / coeff[1])
-                #     x2 = int((480 - coeff[0]) / coeff[1])
-                #     y2 = 480
-                #
-                #     x1_cv = abs(y1 - self.height)
-                #     x2_cv = abs(x1 - self.height)
-                #     y1_cv = x1
-                #     y2_cv = x2
-                #
-                #     print("x1_cv = " + str(x1_cv))
-                #     print("y1_cv = " + str(y1_cv))
-                #     print("x2_cv = " + str(x2_cv))
-                #     print("y2_cv = " + str(y2_cv))
-                #
-                #     cv2.line(frame, (y1_cv, x1_cv), (y2_cv, x2_cv), (10, 10, 10), 3)
+                coeff = self.polyfit(left_lines_detected[0])
+                if coeff is not None:
+                    print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
+
+                    # cv2.line(frame, (y1_cv, x1_cv), (y2_cv, x2_cv), (10, 10, 10), 3)
 
             if right_lines_detected is not None:
                 pass
