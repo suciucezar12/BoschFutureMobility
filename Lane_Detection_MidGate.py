@@ -30,8 +30,8 @@ class LaneDetection:
         return frame_ROI_preprocessed
 
     def hough_transform(self, frame_ROI_preprocessed):
-        left_side_ROI = frame_ROI_preprocessed[:, 0: int(frame_ROI_preprocessed / 2)]
-        right_side_ROI = frame_ROI_preprocessed[:, int(frame_ROI_preprocessed / 2):]
+        left_side_ROI = frame_ROI_preprocessed[:, 0: int(frame_ROI_preprocessed.shape[1] / 2)]
+        right_side_ROI = frame_ROI_preprocessed[:, int(frame_ROI_preprocessed.shape[1] / 2):]
         right_lines_detected = cv2.HoughLinesP(right_side_ROI, rho=1, theta=np.pi / 180, threshold=75, minLineLength=30,
                                          maxLineGap=70)
         left_lines_detected = cv2.HoughLinesP(left_side_ROI, rho=1, theta=np.pi / 180, threshold=75, minLineLength=30,
