@@ -29,7 +29,7 @@ class LaneDetection:
 
         return frame_ROI_preprocessed
 
-    def hough_transform(self, frame_ROI_preprocessed):
+    def hough_transform(self, frame_ROI_preprocessed, frame_ROI):
         left_side_ROI = frame_ROI_preprocessed[:, 0: int(frame_ROI_preprocessed.shape[1] / 2)]
         right_side_ROI = frame_ROI_preprocessed[:, int(frame_ROI_preprocessed.shape[1] / 2):]
         right_lines_detected = cv2.HoughLinesP(right_side_ROI, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
@@ -40,7 +40,30 @@ class LaneDetection:
             for line in right_lines_detected:
                 line[0][0] += int(frame_ROI_preprocessed.shape[1] / 2)
                 line[0][2] += int(frame_ROI_preprocessed.shape[1] / 2)
+
+        if left_lines_detected is not None:
+            for line_detected in left_lines_detected:
+                self.drawLane(line_detected, frame_ROI, (255, 0, 0))
+
+        if right_lines_detected is not None:
+            for line_detected in right_lines_detected:
+                self.drawLane(line_detected, frame_ROI, (0, 0, 255))
+
         return left_lines_detected, right_lines_detected
+
+    def polyfit(self, lines):
+        x_points = []
+        y_points = []
+
+        for line in lines:
+            x_points.__add__(line[0])
+            x_points.__add__(line[2])
+            y_points.__add__(line[1])
+            y_points.__add__(line[3])
+
+        coeff = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
+
+
 
     def drawLane(self, line, image, color_line):
         x1, y1, x2, y2 = line[0]
@@ -63,14 +86,14 @@ class LaneDetection:
 
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
 
-            left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed)
-            if left_lines_detected is not None:
-                for line_detected in left_lines_detected:
-                    self.drawLane(line_detected, frame_ROI, (255, 0, 0))
+            left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
 
+            if left_lines_detected is not None:
+                coeff = self.polyfit(left_lines_detected)
+                print("left_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
             if right_lines_detected is not None:
-                for line_detected in right_lines_detected:
-                    self.drawLane(line_detected, frame_ROI, (0, 0, 255))
+                self.polyfit(right_lines_detected)
+                print("right_line: " + str(coeff[1]) + "*x + " + str(coeff[0]))
 
             cv2.imshow("ROI", frame_ROI)
             # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
