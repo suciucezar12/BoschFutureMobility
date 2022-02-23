@@ -36,6 +36,9 @@ class LaneDetection:
                                          maxLineGap=70)
         left_lines_detected = cv2.HoughLinesP(left_side_ROI, rho=1, theta=np.pi / 180, threshold=75, minLineLength=30,
                                                maxLineGap=70)
+        for line in right_lines_detected:
+            line[0][0] += int(frame_ROI_preprocessed.shape[1] / 2)
+            line[0][2] += int(frame_ROI_preprocessed.shape[1] / 2)
         return left_lines_detected, right_lines_detected
 
     def drawLane(self, line, image, color_line):
