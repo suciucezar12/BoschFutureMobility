@@ -25,6 +25,7 @@ class LaneDetection:
         while True:
 
             cv2.imshow("Frame", frame)
+            cv2.waitKey(1)
             ret, frame = self.cap.read()
 
 LD = LaneDetection()
