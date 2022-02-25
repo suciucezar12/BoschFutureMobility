@@ -31,6 +31,7 @@ class LaneDetection:
 
         return frame_ROI_preprocessed
 
+    # detect and filter the candidate lines
     def hough_transform(self, frame_ROI_preprocessed, frame_ROI):
         left_side_ROI = frame_ROI_preprocessed[:, 0: int(frame_ROI_preprocessed.shape[1] / 2)]
         right_side_ROI = frame_ROI_preprocessed[:, int(frame_ROI_preprocessed.shape[1] / 2):]
@@ -53,13 +54,15 @@ class LaneDetection:
 
         return left_lines_detected, right_lines_detected
 
-    def polyfit(self, lines, frame_ROI, left_lines=True):
+    def polyfit(self, lines, frame_ROI):
+        # coordinates used for estimating our line
         x_points = []
         y_points = []
 
         for line in lines:
-            y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+            y1_cv, x1_cv, y2_cv, x2_cv = line[0]    # coordinates in cv2 coordinate system
 
+            # conversion to usual XoY coordinate system
             x1 = y1_cv
             x2 = y2_cv
             y1 = abs(x1_cv - self.x_top)
@@ -70,31 +73,30 @@ class LaneDetection:
             y_points.append(y1)
             y_points.append(y2)
 
+        # get our estimated line
         coeff = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
 
+        # expand our estimated line from bottom to the top of the ROI
         y1 = 0
         y2 = self.x_top
-
         x1 = int((y1 - coeff[0]) / coeff[1])
         x2 = int((y2 - coeff[0]) / coeff[1])
 
+        # convert our estimated line from XoY in cv2 coordinate system
         y1_cv = x1
         y2_cv = x2
-
         x1_cv = abs(y1 - self.x_top)
         x2_cv = abs(y2 - self.x_top)
 
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+
+        return (y1_cv, x1_cv, y2_cv, x2_cv), coeff   # return the coordinates of our estimated line and its line equation
 
     def drawLane(self, line, image, color_line):
         y1, x1, y2, x2 = line[0]
         radius = 10
         color_left_most_point = (0, 255, 0)
         color_right_most_point = (255, 0, 0)
-        # print("x1 = " + str(y1))
-        # print("y1 = " + str(x1))
-        # print("x2 = " + str(y2))
-        # print("y2 = " + str(x2))
         cv2.circle(image, (y1, x1), radius, color_left_most_point, 1)
         cv2.circle(image, (y2, x2), radius, color_right_most_point, 1)
         cv2.line(image, (y1, x1), (y2, x2), color_line, 2)
@@ -106,24 +108,27 @@ class LaneDetection:
 
         while True:
             start = time.time()
-            cv2.line(frame, (0, self.x_top - 5), (640, self.x_top - 5), (0, 0, 255), 2)  # delimiting the ROI
+
+            # choosing our ROI
+            cv2.line(frame, (0, self.x_top - 5), (640, self.x_top - 5), (0, 0, 255), 2)
             frame_ROI = frame[self.x_top:, :]
 
+            # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
 
+            # detect and filter candidate lines
             left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
 
-            if left_lines_detected is not None:
-                self.polyfit(left_lines_detected, frame_ROI)
-
-
-            if right_lines_detected is not None:
-                self.polyfit(right_lines_detected, frame_ROI, left_lines=False)
+            if left_lines_detected is not None and right_lines_detected is not None:
+                # estimate each lane (1 degree polynomial)
+                left_lane, coeff_left_line = self.polyfit(left_lines_detected, frame_ROI)    # return coordinates of the line
+                right_lane, coeff_right_lane = self.polyfit(right_lines_detected, frame_ROI)    # and line equation
 
             cv2.imshow("ROI", frame_ROI)
             # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
+
             end = time.time()
             print(end - start)
             ret, frame = self.cap.read()
