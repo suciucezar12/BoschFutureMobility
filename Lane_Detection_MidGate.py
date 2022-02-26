@@ -44,10 +44,11 @@ class LaneDetection:
         y2 = abs(x2_cv - height_ROI)
 
         # get intercept and theta -> apply np.polyfit
+        # y = slope * x + intercept
         coefficients = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), 1)
-        theta = coefficients[1]
+        slope = coefficients[1]
         intercept = coefficients[0]
-        print("theta = " + str(theta) + ";   intercept = " + str(coefficients[0]))
+        print("slope = " + str(slope) + ";   intercept = " + str(coefficients[0]))
 
     def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
         height_ROI = frame_ROI.shape[0]
