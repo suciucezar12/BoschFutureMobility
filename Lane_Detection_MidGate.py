@@ -109,36 +109,6 @@ class LaneDetection:
 
         return left_lines, right_lines
 
-    # def get_theta(self, frame_ROI_preprocessed, frame_ROI):
-    #     left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed,frame_ROI)
-    #     if left_lines is not None:
-    #         for line in left_lines:
-    #     if right_lines is not None:
-
-
-    # detect and filter the candidate lines
-    def hough_transform(self, frame_ROI_preprocessed, frame_ROI):
-        left_side_ROI = frame_ROI_preprocessed[:, 0: int(frame_ROI_preprocessed.shape[1] / 2)]
-        right_side_ROI = frame_ROI_preprocessed[:, int(frame_ROI_preprocessed.shape[1] / 2):]
-        right_lines_detected = cv2.HoughLinesP(right_side_ROI, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
-                                         maxLineGap=70)
-        left_lines_detected = cv2.HoughLinesP(left_side_ROI, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
-                                               maxLineGap=70)
-        if right_lines_detected is not None:
-            for line in right_lines_detected:
-                line[0][0] += int(frame_ROI_preprocessed.shape[1] / 2)
-                line[0][2] += int(frame_ROI_preprocessed.shape[1] / 2)
-
-        if left_lines_detected is not None:
-            for line_detected in left_lines_detected:
-                self.drawLane(line_detected, frame_ROI, (255, 0, 0))
-
-        if right_lines_detected is not None:
-            for line_detected in right_lines_detected:
-                self.drawLane(line_detected, frame_ROI, (0, 0, 255))
-
-        return left_lines_detected, right_lines_detected
-
     def polyfit(self, lines, frame_ROI):
         # coordinates used for estimating our line
         x_points = []
@@ -179,6 +149,17 @@ class LaneDetection:
 
         return (y1_cv, x1_cv, y2_cv, x2_cv)  # return the coordinates of our estimated line and its line equation
 
+    def get_theta(self, frame_ROI_preprocessed, frame_ROI):
+        left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed,frame_ROI)
+        if left_lines is not None:
+            left_line = self.polyfit(left_lines, frame_ROI)
+        if right_lines is not None:
+            right_line = self.polyfit(right_lines, frame_ROI)
+        if left_lines is not None:
+            self.drawLane(left_line, frame_ROI, (50, 50, 50))
+        if right_line is not None:
+            self.drawLane(right_line, frame_ROI,(50, 50, 50))
+
     def drawLane(self, line, image, color_line):
         y1, x1, y2, x2 = line[0]
         radius = 10
@@ -187,7 +168,6 @@ class LaneDetection:
         cv2.circle(image, (y1, x1), radius, color_left_most_point, 1)
         cv2.circle(image, (y2, x2), radius, color_right_most_point, 1)
         cv2.line(image, (y1, x1), (y2, x2), color_line, 2)
-
 
     def run(self):
 
@@ -202,7 +182,7 @@ class LaneDetection:
 
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
-            self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
+            self.get_theta(frame_ROI_preprocessed, frame_ROI)
 
             # # detect and filter candidate lines
             # left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
