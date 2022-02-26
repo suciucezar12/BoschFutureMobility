@@ -85,12 +85,9 @@ class LaneDetection:
         right_lines = []
 
         width_ROI = frame_ROI.shape[1]
-        # print("width_ROI = " + str(width_ROI))
         y_cv_margin = 145  # margin wrt to vertical center of frame_ROI
         margin_y_cv_left = int(width_ROI / 2) + y_cv_margin
         margin_y_cv_right = int(width_ROI / 2) - y_cv_margin
-        # print("margin_y_cv_left = " + str(margin_y_cv_left))
-        # print("margin_y_cv_right = " + str(margin_y_cv_right))
         # draw lines for margin admitted
         cv2.line(frame_ROI, (int(width_ROI / 2) - y_cv_margin, 0), (int(width_ROI / 2) - y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
         cv2.line(frame_ROI, (int(width_ROI / 2) + y_cv_margin, 0),
@@ -202,11 +199,10 @@ class LaneDetection:
             # choosing our ROI
             cv2.line(frame, (0, self.x_top - 5), (640, self.x_top - 5), (0, 0, 255), 2)
             frame_ROI = frame[self.x_top:, :]
+            frame_ROI = frame_ROI + 30
 
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
-
-            left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
 
             # # detect and filter candidate lines
             # left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
