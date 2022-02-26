@@ -152,11 +152,11 @@ class LaneDetection:
     def get_theta(self, frame_ROI_preprocessed, frame_ROI):
         left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
         print(type(left_lines))
-        if left_lines is not None:
+        if left_lines:
             print("exista left lines")
             left_line = self.polyfit(left_lines, frame_ROI)
             self.drawLane(left_line, frame_ROI, (50, 50, 50))
-        if right_lines is not None:
+        if right_lines:
             right_line = self.polyfit(right_lines, frame_ROI)
             self.drawLane(right_line, frame_ROI, (50, 50, 50))
 
@@ -184,15 +184,6 @@ class LaneDetection:
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
             self.get_theta(frame_ROI_preprocessed, frame_ROI)
-
-            # # detect and filter candidate lines
-            # left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
-            #
-            # if left_lines_detected is not None:
-            #     # estimate each lane (1 degree polynomial)
-            #     left_lane, coeff_left_line = self.polyfit(left_lines_detected, frame_ROI)    # return coordinates of the line and line equation
-            # if right_lines_detected is not None:
-            #     right_lane, coeff_right_lane = self.polyfit(right_lines_detected, frame_ROI)
 
             cv2.imshow("ROI", frame_ROI)
             # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
