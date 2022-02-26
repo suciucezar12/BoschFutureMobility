@@ -171,6 +171,26 @@ class LaneDetection:
         pass
 
     def only_one_line_detected(self, line_coefficients, frame_ROI, is_left_line=True):
+        height_ROI = frame_ROI.shape[0]
+        offset_center_road = 190    # experimental value
+        x_cv_theta = -50  # the x_cv2 coordinate where we intersect -> wrt to ROI
+
+        # transform in XoY coordinate
+        y_theta = abs(x_cv_theta - height_ROI)
+        x_theta = int((y_theta - line_coefficients[0]) / line_coefficients[1])
+
+        y_cv_line = x_theta
+        y_cv_vanishing_point = x_theta
+
+        if is_left_line:
+            y_cv_vanishing_point += offset_center_road
+        else:
+            y_cv_vanishing_point -= offset_center_road
+
+        cv2.line(frame_ROI, (y_cv_vanishing_point, x_cv_theta), (y_cv_line, x_cv_theta), (200, 200, 200), 2)
+        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta),
+                 (232, 32, 1))
+
         pass
 
     def get_theta(self, frame_ROI_preprocessed, frame_ROI):
