@@ -78,7 +78,7 @@ class LaneDetection:
         return -1
 
     def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
-        lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=25,
+        lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
                                          maxLineGap=70)
         left_lines = []
         right_lines = []
