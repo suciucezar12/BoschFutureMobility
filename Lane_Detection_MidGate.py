@@ -58,7 +58,7 @@ class LaneDetection:
             return theta, intercept_oX
 
     def filter_line(self, theta, intercept_oX, width_ROI):
-        y_cv_margin = 100    # margin wrt to vertical center of frame_ROI
+        y_cv_margin = 50    # margin wrt to vertical center of frame_ROI
         if abs(theta) >= 30:    # if it's not horizontal
             # check by intercept_oX -> highest priority
             if -50 <= intercept_oX <= width_ROI - y_cv_margin:
