@@ -78,7 +78,7 @@ class LaneDetection:
         return -1
 
     def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
-        lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
+        lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=25,
                                          maxLineGap=70)
         left_lines = []
         right_lines = []
@@ -168,6 +168,7 @@ class LaneDetection:
         cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0] + 100), (y_cv_vanishing_point, x_cv_theta), (232, 32, 1))
 
         return y_cv_vanishing_point
+
     def only_one_line_detected(self, line_coefficients, frame_ROI, is_left_line=True):
         height_ROI = frame_ROI.shape[0]
         offset_center_road = 190    # experimental value
