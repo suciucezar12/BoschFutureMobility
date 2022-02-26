@@ -1,3 +1,5 @@
+import math
+
 import cv2
 import numpy as np
 import time
@@ -47,10 +49,11 @@ class LaneDetection:
         # y = slope * x + intercept_oY
         coefficients = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), 1)
         slope = coefficients[1]
+        theta = math.atan(slope)
         intercept_oY = coefficients[0]
         # get intercept_oX  -> when y = 0;
         intercept_oX = int((-intercept_oY) / slope)
-        # print("slope = " + str(slope) + ";   intercept_oX = " + str(intercept_oX))
+        print("theta = " + str(theta) + ";   intercept_oX = " + str(intercept_oX))
 
     def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
         height_ROI = frame_ROI.shape[0]
@@ -163,7 +166,7 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            print(end - start)
+            # print(end - start)
             ret, frame = self.cap.read()
 
 LD = LaneDetection()
