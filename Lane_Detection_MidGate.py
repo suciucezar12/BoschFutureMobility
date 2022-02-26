@@ -200,14 +200,14 @@ class LaneDetection:
             left_line_coefficients = self.polyfit(left_lines, frame_ROI)
             right_line_coefficients = self.polyfit(right_lines, frame_ROI)
             self.both_lines_detected(left_line_coefficients, right_line_coefficients, frame_ROI)
-
-        if right_lines:
-            right_line_coefficients = self.polyfit(right_lines, frame_ROI)
-            self.only_one_line_detected(right_line_coefficients, frame_ROI, is_left_line=False)
-
-        if left_lines:
-            left_line_coefficients = self.polyfit(left_lines, frame_ROI)
-            self.only_one_line_detected(left_line_coefficients, frame_ROI, is_left_line=True)
+        else:
+            if right_lines:
+                right_line_coefficients = self.polyfit(right_lines, frame_ROI)
+                self.only_one_line_detected(right_line_coefficients, frame_ROI, is_left_line=False)
+            else:
+                if left_lines:
+                    left_line_coefficients = self.polyfit(left_lines, frame_ROI)
+                    self.only_one_line_detected(left_line_coefficients, frame_ROI, is_left_line=True)
 
     def drawLane(self, line, image, color_line):
         y1, x1, y2, x2 = line[0]
