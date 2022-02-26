@@ -31,6 +31,30 @@ class LaneDetection:
 
         return frame_ROI_preprocessed
 
+    def get_intercept_theta_line(self, line, height):
+        # get cv2 coordinates of our line
+        y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+
+        # conversion to usual XoY coordinate system
+        x1 = y1_cv
+        x2 = y2_cv
+        y1 = abs(x1_cv - height)
+        y2 = abs(x2_cv - height)
+
+        # get intercept and theta -> apply np.polyfit
+        coefficients = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), 1)
+        theta = coefficients[1]
+        intercept = coefficients[0]
+        print("theta = " + str(theta) + ";   intercept = " + str(coefficients[0]))
+
+    def get_and_filter_lines(self, frame_ROI):
+        height_ROI = frame_ROI.shape[0]
+        lines = cv2.HoughLinesP(frame_ROI, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
+                                         maxLineGap=70)
+        if lines is not None:
+            for line in lines:
+                self.get_intercept_theta_line(line, height_ROI)
+
     # detect and filter the candidate lines
     def hough_transform(self, frame_ROI_preprocessed, frame_ROI):
         left_side_ROI = frame_ROI_preprocessed[:, 0: int(frame_ROI_preprocessed.shape[1] / 2)]
@@ -117,14 +141,16 @@ class LaneDetection:
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
 
-            # detect and filter candidate lines
-            left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
+            self.get_and_filter_lines(frame_ROI)
 
-            if left_lines_detected is not None:
-                # estimate each lane (1 degree polynomial)
-                left_lane, coeff_left_line = self.polyfit(left_lines_detected, frame_ROI)    # return coordinates of the line and line equation
-            if right_lines_detected is not None:
-                right_lane, coeff_right_lane = self.polyfit(right_lines_detected, frame_ROI)
+            # # detect and filter candidate lines
+            # left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
+            #
+            # if left_lines_detected is not None:
+            #     # estimate each lane (1 degree polynomial)
+            #     left_lane, coeff_left_line = self.polyfit(left_lines_detected, frame_ROI)    # return coordinates of the line and line equation
+            # if right_lines_detected is not None:
+            #     right_lane, coeff_right_lane = self.polyfit(right_lines_detected, frame_ROI)
 
             cv2.imshow("ROI", frame_ROI)
             # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
