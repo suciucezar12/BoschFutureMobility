@@ -77,7 +77,6 @@ class LaneDetection:
                     return 1
         return -1
 
-
     def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
         lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
                                          maxLineGap=70)
@@ -147,19 +146,41 @@ class LaneDetection:
 
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
-        return [[y1_cv, x1_cv, y2_cv, x2_cv]]  # return the coordinates of our estimated line and its line equation
+        return coefficient  # return the coordinates of our estimated line and its line equation
+
+    def both_lines_detected(self, left_line_coefficients, right_line_coefficients, frame_ROI):
+        height_ROI = frame_ROI.shape[0]
+        x_cv_theta = frame_ROI.shape[0] - 10   # the x_cv2 coordinate where we intersect
+
+        y_theta = abs(x_cv_theta - height_ROI)
+        x_left_theta = int(left_line_coefficients[1] * y_theta - left_line_coefficients[0])
+        x_right_theta = int(right_line_coefficients[1] * y_theta - right_line_coefficients[0])
+
+        y_cv_left_line = x_left_theta
+        y_cv_right_line = x_right_theta
+
+        cv2.line(frame_ROI, (y_cv_left_line, x_cv_theta), (y_cv_right_line, x_cv_theta), (200, 200, 200), 2)
+
+
+        pass
+
+    def only_one_line_detected(self, line_coefficients, frame_ROI, is_left_line=True):
+        pass
 
     def get_theta(self, frame_ROI_preprocessed, frame_ROI):
         left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
-        # print(type(left_lines))
-        if left_lines:
-            # print("exista left lines")
-            left_line = self.polyfit(left_lines, frame_ROI)
-            self.drawLane(left_line, frame_ROI, (50, 50, 50))
-        if right_lines:
-            right_line = self.polyfit(right_lines, frame_ROI)
-            self.drawLane(right_line, frame_ROI, (50, 50, 50))
+        if left_lines and right_lines:
+            left_line_coefficients = self.polyfit(left_lines, frame_ROI)
+            right_line_coefficients = self.polyfit(right_lines, frame_ROI)
+            self.both_lines_detected(left_line_coefficients, right_line_coefficients, frame_ROI)
 
+        if right_lines:
+            right_line_coefficients = self.polyfit(right_lines, frame_ROI)
+            self.only_one_line_detected(right_line_coefficients, frame_ROI, is_left_line=False)
+
+        if left_lines:
+            left_line_coefficients = self.polyfit(left_lines, frame_ROI)
+            self.only_one_line_detected(left_line_coefficients, frame_ROI, is_left_line=True)
 
     def drawLane(self, line, image, color_line):
         y1, x1, y2, x2 = line[0]
@@ -186,7 +207,6 @@ class LaneDetection:
             self.get_theta(frame_ROI_preprocessed, frame_ROI)
 
             cv2.imshow("ROI", frame_ROI)
-            # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
