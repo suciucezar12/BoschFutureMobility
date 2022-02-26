@@ -48,12 +48,13 @@ class LaneDetection:
         # get intercept and theta -> apply np.polyfit
         # y = slope * x + intercept_oY
         coefficients = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), 1)
-        # coefficients[1] = slope
-        # coefficients[0] = intercept_oY
-        theta = math.degrees(math.atan(coefficients[1]))
-        # get intercept_oX  -> when y = 0;
-        intercept_oX = int((-coefficients[0]) / coefficients[1])
-        print("theta = " + str(theta) + ";   intercept_oX = " + str(intercept_oX))
+        if coefficients is not None:
+            # coefficients[1] = slope
+            # coefficients[0] = intercept_oY
+            theta = math.degrees(math.atan(coefficients[1]))
+            # get intercept_oX  -> when y = 0;
+            intercept_oX = int((-coefficients[0]) / coefficients[1])
+            print("theta = " + str(theta) + ";   intercept_oX = " + str(intercept_oX))
 
     def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
         lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
