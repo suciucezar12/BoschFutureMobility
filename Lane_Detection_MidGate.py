@@ -219,7 +219,7 @@ class LaneDetection:
 
         if found_line:
             x_cv_center = frame_ROI.shape[0]
-            y_cv_center = frame_ROI.shape[1]
+            y_cv_center = int(frame_ROI.shape[1] / 2)
 
             theta = math.degrees(math.atan((y_cv_center - y_cv_vanishing_point) / (x_cv_center - y_cv_vanishing_point)))
             return theta
