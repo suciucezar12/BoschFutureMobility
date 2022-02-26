@@ -192,26 +192,37 @@ class LaneDetection:
         cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta),
                  (232, 32, 1), 5)
 
-        return y_cv_vanishing_point
+        return y_cv_vanishing_point, x_cv_theta
 
         pass
 
     def get_theta(self, frame_ROI_preprocessed, frame_ROI):
         left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
+        found_line = False
         if left_lines and right_lines:
             # print("right and left")
+            found_line = True
             left_line_coefficients = self.polyfit(left_lines, frame_ROI)
             right_line_coefficients = self.polyfit(right_lines, frame_ROI)
-            y_cv_vanishing_point = self.both_lines_detected(left_line_coefficients, right_line_coefficients, frame_ROI)
+            y_cv_vanishing_point, x_cv_theta = self.both_lines_detected(left_line_coefficients, right_line_coefficients, frame_ROI)
 
         else:
             if right_lines:
+                found_line = True
                 right_line_coefficients = self.polyfit(right_lines, frame_ROI)
-                self.only_one_line_detected(right_line_coefficients, frame_ROI, is_left_line=False)
+                y_cv_vanishing_point, x_cv_theta = self.only_one_line_detected(right_line_coefficients, frame_ROI, is_left_line=False)
             else:
                 if left_lines:
+                    found_line = True
                     left_line_coefficients = self.polyfit(left_lines, frame_ROI)
-                    self.only_one_line_detected(left_line_coefficients, frame_ROI, is_left_line=True)
+                    y_cv_vanishing_point, x_cv_theta = self.only_one_line_detected(left_line_coefficients, frame_ROI, is_left_line=True)
+
+        if found_line:
+            x_cv_center = frame_ROI.shape[0]
+            y_cv_center = frame_ROI.shape[1]
+
+            theta = math.degrees(math.atan((y_cv_center - y_cv_vanishing_point) / (x_cv_center - y_cv_vanishing_point)))
+            return theta
 
     def drawLane(self, line, image, color_line):
         y1, x1, y2, x2 = line[0]
@@ -235,7 +246,7 @@ class LaneDetection:
 
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
-            self.get_theta(frame_ROI_preprocessed, frame_ROI)
+            print(self.get_theta(frame_ROI_preprocessed, frame_ROI))
 
             cv2.imshow("ROI", frame_ROI)
             cv2.imshow("Frame", frame)
