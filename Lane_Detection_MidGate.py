@@ -153,12 +153,11 @@ class LaneDetection:
         left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed,frame_ROI)
         if left_lines is not None:
             left_line = self.polyfit(left_lines, frame_ROI)
+            self.drawLane(left_line, frame_ROI, (50, 50, 50))
         if right_lines is not None:
             right_line = self.polyfit(right_lines, frame_ROI)
-        if left_lines is not None:
-            self.drawLane(left_line, frame_ROI, (50, 50, 50))
-        if right_line is not None:
-            self.drawLane(right_line, frame_ROI,(50, 50, 50))
+            self.drawLane(right_line, frame_ROI, (50, 50, 50))
+
 
     def drawLane(self, line, image, color_line):
         y1, x1, y2, x2 = line[0]
