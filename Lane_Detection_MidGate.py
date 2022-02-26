@@ -82,8 +82,12 @@ class LaneDetection:
         right_lines = []
 
         width_ROI = frame_ROI.shape[1]
-        print(width_ROI)
+        print("width_ROI = " + str(width_ROI))
         y_cv_margin = 50  # margin wrt to vertical center of frame_ROI
+        margin_y_cv_left = int(width_ROI / 2) - y_cv_margin
+        margin_y_cv_right = int(width_ROI / 2) - y_cv_margin
+        print("margin_y_cv_left = " + str(margin_y_cv_left))
+        print("margin_y_cv_right = " + str(margin_y_cv_right))
         # draw lines for margin admitted
         cv2.line(frame_ROI, (int(width_ROI / 2) - y_cv_margin, 0), (int(width_ROI / 2) - y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
         cv2.line(frame_ROI, (int(width_ROI / 2) + y_cv_margin, 0),
