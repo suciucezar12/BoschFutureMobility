@@ -141,7 +141,7 @@ class LaneDetection:
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
 
-            self.get_and_filter_lines(frame_ROI)
+            self.get_and_filter_lines(frame_ROI_preprocessed)
 
             # # detect and filter candidate lines
             # left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
