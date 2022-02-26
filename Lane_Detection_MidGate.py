@@ -151,9 +151,9 @@ class LaneDetection:
 
     def get_theta(self, frame_ROI_preprocessed, frame_ROI):
         left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
-        print(type(left_lines))
+        # print(type(left_lines))
         if left_lines:
-            print("exista left lines")
+            # print("exista left lines")
             left_line = self.polyfit(left_lines, frame_ROI)
             self.drawLane(left_line, frame_ROI, (50, 50, 50))
         if right_lines:
@@ -191,7 +191,7 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            # print(end - start)
+            print(end - start)
             ret, frame = self.cap.read()
 
 LD = LaneDetection()
