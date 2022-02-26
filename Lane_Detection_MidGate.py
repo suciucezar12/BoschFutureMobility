@@ -99,7 +99,7 @@ class LaneDetection:
                 line_code = self.filter_line(theta, intercept_oX, width_ROI, y_cv_margin)
                 if line_code == 0:
                     y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-                    self.drawLane(line, frame_ROI, (0, 0, 255), 2)
+                    self.drawLane(line, frame_ROI, (0, 0, 255))
                     # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)     # RED color -> left_line
                     left_lines.append(line)
                 if line_code == 1:
