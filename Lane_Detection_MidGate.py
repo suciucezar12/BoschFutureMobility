@@ -55,7 +55,7 @@ class LaneDetection:
                                          maxLineGap=70)
         if lines is not None:
             for line in lines:
-                self.get_intercept_theta_line(line, height_ROI, frame_ROI)
+                self.get_intercept_theta_line(line, frame_ROI)
 
     # detect and filter the candidate lines
     def hough_transform(self, frame_ROI_preprocessed, frame_ROI):
