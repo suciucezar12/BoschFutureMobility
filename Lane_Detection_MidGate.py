@@ -171,7 +171,7 @@ class LaneDetection:
     def only_one_line_detected(self, line_coefficients, frame_ROI, is_left_line=True):
         height_ROI = frame_ROI.shape[0]
         offset_center_road = 190    # experimental value
-        x_cv_theta = -50  # the x_cv2 coordinate where we intersect -> wrt to ROI
+        x_cv_theta = -100  # the x_cv2 coordinate where we intersect -> wrt to ROI
 
         # transform in XoY coordinate
         y_theta = abs(x_cv_theta - height_ROI)
