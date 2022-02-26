@@ -57,8 +57,8 @@ class LaneDetection:
             # print("theta = " + str(theta) + ";   intercept_oX = " + str(intercept_oX))
             return theta, intercept_oX
 
-    def filter_line(self, theta, intercept_oX, width_ROI):
-        y_cv_margin = 50    # margin wrt to vertical center of frame_ROI
+    def filter_line(self, theta, intercept_oX, width_ROI, y_cv_margin):
+
         if abs(theta) >= 30:    # if it's not horizontal
             # check by intercept_oX -> highest priority
             if -50 <= intercept_oX <= width_ROI - y_cv_margin:
@@ -67,7 +67,7 @@ class LaneDetection:
                 return 1
             # check by theta and intercept_oX
             if theta > 0:   # candidate left line
-                if width_ROI - y_cv_margin <= intercept_oX <= int(width_ROI / 2):
+                if int(width_ROI / 2) - y_cv_margin <= intercept_oX <= int(width_ROI / 2):
                     return 0
             if theta < 0:   # candidate right line
                 if int(width_ROI / 2) <= intercept_oX <= int(width_ROI / 2) + y_cv_margin:
@@ -82,11 +82,17 @@ class LaneDetection:
         right_lines = []
 
         width_ROI = frame_ROI.shape[1]
+        y_cv_margin = 50  # margin wrt to vertical center of frame_ROI
+        # draw lines for margin admitted
+        cv2.line(frame_ROI, (int(width_ROI / 2) - y_cv_margin, 0), (int(width_ROI / 2) - y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
+        cv2.line(frame_ROI, (int(width_ROI / 2) + y_cv_margin, 0),
+                 (int(width_ROI / 2) + y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
+
 
         if lines is not None:
             for line in lines:
                 theta, intercept_oX = self.get_intercept_theta_line(line, frame_ROI)
-                line_code = self.filter_line(theta, intercept_oX, width_ROI)
+                line_code = self.filter_line(theta, intercept_oX, width_ROI, y_cv_margin)
                 if line_code == 0:
                     y1_cv, x1_cv, y2_cv, x2_cv = line[0]
                     cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)     # RED color -> left_line
