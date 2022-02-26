@@ -200,6 +200,7 @@ class LaneDetection:
             left_line_coefficients = self.polyfit(left_lines, frame_ROI)
             right_line_coefficients = self.polyfit(right_lines, frame_ROI)
             self.both_lines_detected(left_line_coefficients, right_line_coefficients, frame_ROI)
+
         else:
             if right_lines:
                 right_line_coefficients = self.polyfit(right_lines, frame_ROI)
