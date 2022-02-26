@@ -223,6 +223,8 @@ class LaneDetection:
 
             theta = math.degrees(math.atan((y_cv_center - y_cv_vanishing_point) / (x_cv_center - x_cv_theta)))
             return theta
+        else:
+            return -1000
 
     def drawLane(self, line, image, color_line):
         y1, x1, y2, x2 = line[0]
@@ -236,6 +238,7 @@ class LaneDetection:
     def run(self):
 
         ret, frame = self.cap.read()
+        theta_average = 0
 
         while True:
             start = time.time()
@@ -246,7 +249,10 @@ class LaneDetection:
 
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
-            print(self.get_theta(frame_ROI_preprocessed, frame_ROI))
+            theta = self.get_theta(frame_ROI_preprocessed, frame_ROI)
+            if theta != -1000:  # we didn't detect any line
+                theta_average = 0.4 * theta_average + 0.6 * theta
+
 
             cv2.imshow("ROI", frame_ROI)
             cv2.imshow("Frame", frame)
