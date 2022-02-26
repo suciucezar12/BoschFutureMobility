@@ -59,18 +59,21 @@ class LaneDetection:
 
     def filter_line(self, theta, intercept_oX, width_ROI, y_cv_margin):
 
+        margin_y_cv_left = int(width_ROI / 2) - y_cv_margin
+        margin_y_cv_right = int(width_ROI / 2) + y_cv_margin
+
         if abs(theta) >= 30:    # if it's not horizontal
             # check by intercept_oX -> highest priority
-            if -50 <= intercept_oX <= width_ROI - y_cv_margin:
+            if -50 <= intercept_oX <= margin_y_cv_left:    # left line
                 return 0
-            if int(width_ROI / 2) + y_cv_margin <= intercept_oX <= width_ROI + 50:
+            if margin_y_cv_right <= intercept_oX <= width_ROI + 50:  # right line
                 return 1
             # check by theta and intercept_oX
             if theta > 0:   # candidate left line
-                if int(width_ROI / 2) - y_cv_margin <= intercept_oX <= int(width_ROI / 2):
+                if -50 <= intercept_oX <= margin_y_cv_right:
                     return 0
             if theta < 0:   # candidate right line
-                if int(width_ROI / 2) <= intercept_oX <= int(width_ROI / 2) + y_cv_margin:
+                if margin_y_cv_left <= intercept_oX <= width_ROI + 50:
                     return 1
         return -1
 
