@@ -131,7 +131,7 @@ class LaneDetection:
 
         # get our estimated line
         coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
-        print(str(coefficient[1]) + "*x + " + str(coefficient[0]))
+        # print(str(coefficient[1]) + "*x + " + str(coefficient[0]))
 
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
@@ -198,7 +198,7 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            print(end - start)
+            # print(end - start)
             ret, frame = self.cap.read()
 
 LD = LaneDetection()
