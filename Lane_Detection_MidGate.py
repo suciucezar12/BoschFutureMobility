@@ -165,13 +165,13 @@ class LaneDetection:
 
         y_cv_vanishing_point = int((y_cv_right_line + y_cv_left_line) / 2)
         print(y_cv_vanishing_point - y_cv_right_line)
-        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta), (232, 32, 1))
+        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0] + 100), (y_cv_vanishing_point, x_cv_theta), (232, 32, 1))
 
         return y_cv_vanishing_point
     def only_one_line_detected(self, line_coefficients, frame_ROI, is_left_line=True):
         height_ROI = frame_ROI.shape[0]
         offset_center_road = 190    # experimental value
-        x_cv_theta = -400  # the x_cv2 coordinate where we intersect -> wrt to ROI
+        x_cv_theta = -50  # the x_cv2 coordinate where we intersect -> wrt to ROI
 
         # transform in XoY coordinate
         y_theta = abs(x_cv_theta - height_ROI)
@@ -186,7 +186,7 @@ class LaneDetection:
             y_cv_vanishing_point -= offset_center_road
 
         cv2.line(frame_ROI, (y_cv_vanishing_point, x_cv_theta), (y_cv_line, x_cv_theta), (200, 200, 200), 2)
-        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta),
+        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0] + 100), (y_cv_vanishing_point, x_cv_theta),
                  (232, 32, 1))
 
         return y_cv_vanishing_point
