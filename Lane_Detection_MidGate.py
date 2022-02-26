@@ -251,7 +251,7 @@ class LaneDetection:
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
             theta = self.get_theta(frame_ROI_preprocessed, frame_ROI)
             if theta != -1000:  # we didn't detect any line
-                theta_average = 0.4 * theta_average + 0.6 * theta
+                theta_average = 0.6 * theta_average + 0.4 * theta
             print(theta_average)
 
 
