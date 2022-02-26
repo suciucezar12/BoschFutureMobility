@@ -221,7 +221,7 @@ class LaneDetection:
             x_cv_center = frame_ROI.shape[0]
             y_cv_center = int(frame_ROI.shape[1] / 2)
 
-            theta = math.degrees(math.atan((y_cv_center - y_cv_vanishing_point) / (x_cv_center - y_cv_vanishing_point)))
+            theta = math.degrees(math.atan((y_cv_center - y_cv_vanishing_point) / (x_cv_center - x_cv_theta)))
             return theta
 
     def drawLane(self, line, image, color_line):
