@@ -167,7 +167,7 @@ class LaneDetection:
 
         print("height = " + str(frame_ROI.shape[0]))
         print("width = " + str(frame_ROI.shape[1]))
-        cv2.line(frame_ROI, (frame_ROI.shape[0], int(frame_ROI.shape[1] / 2)), (y_cv_vanishing_point, x_cv_theta), (232, 32, 1))
+        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta), (232, 32, 1))
 
 
         pass
