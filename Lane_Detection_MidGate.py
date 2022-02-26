@@ -150,8 +150,10 @@ class LaneDetection:
         return [[y1_cv, x1_cv, y2_cv, x2_cv]]  # return the coordinates of our estimated line and its line equation
 
     def get_theta(self, frame_ROI_preprocessed, frame_ROI):
-        left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed,frame_ROI)
+        left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
+        print(type(left_lines))
         if left_lines is not None:
+            print("exista left lines")
             left_line = self.polyfit(left_lines, frame_ROI)
             self.drawLane(left_line, frame_ROI, (50, 50, 50))
         if right_lines is not None:
