@@ -167,7 +167,7 @@ class LaneDetection:
 
         y_cv_vanishing_point = int((y_cv_right_line + y_cv_left_line) / 2)
         print(y_cv_vanishing_point - y_cv_right_line)
-        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2) - 20, frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta), (232, 32, 1), 5)
+        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2) - 25, frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta), (232, 32, 1), 5)
 
         return y_cv_vanishing_point, x_cv_theta
 
@@ -189,7 +189,7 @@ class LaneDetection:
             y_cv_vanishing_point -= offset_center_road
 
         cv2.line(frame_ROI, (y_cv_vanishing_point, x_cv_theta), (y_cv_line, x_cv_theta), (200, 200, 200), 2)
-        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2) - 20, frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta),
+        cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2) - 25, frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta),
                  (232, 32, 1), 5)
 
         return y_cv_vanishing_point, x_cv_theta
@@ -219,7 +219,7 @@ class LaneDetection:
 
         if found_line:
             x_cv_center = frame_ROI.shape[0]
-            y_cv_center = int(frame_ROI.shape[1] / 2) - 20  # camera lasata in partea stanga
+            y_cv_center = int(frame_ROI.shape[1] / 2) - 25  # camera lasata in partea stanga
 
             theta = math.degrees(math.atan((y_cv_center - y_cv_vanishing_point) / (x_cv_center - x_cv_theta)))
             return theta
