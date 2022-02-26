@@ -199,7 +199,6 @@ class LaneDetection:
             # choosing our ROI
             cv2.line(frame, (0, self.x_top - 5), (640, self.x_top - 5), (0, 0, 255), 2)
             frame_ROI = frame[self.x_top:, :]
-            frame_ROI = frame_ROI + 50
 
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
