@@ -170,7 +170,7 @@ class LaneDetection:
     def get_theta(self, frame_ROI_preprocessed, frame_ROI):
         left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
         if left_lines and right_lines:
-            print("right and left")
+            # print("right and left")
             left_line_coefficients = self.polyfit(left_lines, frame_ROI)
             right_line_coefficients = self.polyfit(right_lines, frame_ROI)
             self.both_lines_detected(left_line_coefficients, right_line_coefficients, frame_ROI)
