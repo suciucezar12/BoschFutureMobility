@@ -31,15 +31,17 @@ class LaneDetection:
 
         return frame_ROI_preprocessed
 
-    def get_intercept_theta_line(self, line, height):
+    def get_intercept_theta_line(self, line, frame_ROI):
+        height_ROI = frame_ROI.shape[0]
         # get cv2 coordinates of our line
         y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
 
         # conversion to usual XoY coordinate system
         x1 = y1_cv
         x2 = y2_cv
-        y1 = abs(x1_cv - height)
-        y2 = abs(x2_cv - height)
+        y1 = abs(x1_cv - height_ROI)
+        y2 = abs(x2_cv - height_ROI)
 
         # get intercept and theta -> apply np.polyfit
         coefficients = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), 1)
@@ -53,7 +55,7 @@ class LaneDetection:
                                          maxLineGap=70)
         if lines is not None:
             for line in lines:
-                self.get_intercept_theta_line(line, height_ROI)
+                self.get_intercept_theta_line(line, height_ROI, frame_ROI)
 
     # detect and filter the candidate lines
     def hough_transform(self, frame_ROI_preprocessed, frame_ROI):
