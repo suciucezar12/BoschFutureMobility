@@ -120,10 +120,11 @@ class LaneDetection:
             # detect and filter candidate lines
             left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
 
-            if left_lines_detected is not None and right_lines_detected is not None:
+            if left_lines_detected is not None:
                 # estimate each lane (1 degree polynomial)
-                left_lane, coeff_left_line = self.polyfit(left_lines_detected, frame_ROI)    # return coordinates of the line
-                right_lane, coeff_right_lane = self.polyfit(right_lines_detected, frame_ROI)    # and line equation
+                left_lane, coeff_left_line = self.polyfit(left_lines_detected, frame_ROI)    # return coordinates of the line and line equation
+            if right_lines_detected is not None:
+                right_lane, coeff_right_lane = self.polyfit(right_lines_detected, frame_ROI)
 
             cv2.imshow("ROI", frame_ROI)
             # cv2.imshow("ROI preprocessed", frame_ROI_preprocessed)
