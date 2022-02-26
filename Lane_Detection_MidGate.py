@@ -47,9 +47,9 @@ class LaneDetection:
         intercept = coefficients[0]
         print("theta = " + str(theta) + ";   intercept = " + str(coefficients[0]))
 
-    def get_and_filter_lines(self, frame_ROI):
+    def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
         height_ROI = frame_ROI.shape[0]
-        lines = cv2.HoughLinesP(frame_ROI, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
+        lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
                                          maxLineGap=70)
         if lines is not None:
             for line in lines:
@@ -141,7 +141,7 @@ class LaneDetection:
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
 
-            self.get_and_filter_lines(frame_ROI_preprocessed)
+            self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
 
             # # detect and filter candidate lines
             # left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
