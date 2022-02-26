@@ -93,7 +93,7 @@ class LaneDetection:
                     left_lines.append(line)
                 if line_code == 1:
                     y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 2)     # GREEN color -> right_line
+                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 2)     # BLUE color -> right_line
                     right_lines.append(line)
 
         return left_lines, right_lines
