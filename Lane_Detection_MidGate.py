@@ -153,8 +153,8 @@ class LaneDetection:
         x_cv_theta = 10   # the x_cv2 coordinate where we intersect -> wrt to ROI
 
         y_theta = abs(x_cv_theta - height_ROI)
-        x_left_theta = int(left_line_coefficients[1] * y_theta - left_line_coefficients[0])
-        x_right_theta = int(right_line_coefficients[1] * y_theta - right_line_coefficients[0])
+        x_left_theta = int(left_line_coefficients[0] * y_theta - left_line_coefficients[1])
+        x_right_theta = int(right_line_coefficients[0] * y_theta - right_line_coefficients[1])
 
         y_cv_left_line = x_left_theta
         y_cv_right_line = x_right_theta
