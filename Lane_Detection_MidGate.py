@@ -62,7 +62,7 @@ class LaneDetection:
         margin_y_cv_left = int(width_ROI / 2) - y_cv_margin
         margin_y_cv_right = int(width_ROI / 2) + y_cv_margin
 
-        if abs(theta) >= 30:    # if it's not horizontal
+        if abs(theta) >= 35:    # if it's not horizontal
             # check by intercept_oX -> highest priority
             if -50 <= intercept_oX <= margin_y_cv_left:    # left line
                 return 0
@@ -86,7 +86,7 @@ class LaneDetection:
 
         width_ROI = frame_ROI.shape[1]
         print("width_ROI = " + str(width_ROI))
-        y_cv_margin = 50  # margin wrt to vertical center of frame_ROI
+        y_cv_margin = 80  # margin wrt to vertical center of frame_ROI
         margin_y_cv_left = int(width_ROI / 2) + y_cv_margin
         margin_y_cv_right = int(width_ROI / 2) - y_cv_margin
         print("margin_y_cv_left = " + str(margin_y_cv_left))
