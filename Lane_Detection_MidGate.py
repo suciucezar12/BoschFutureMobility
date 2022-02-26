@@ -74,7 +74,7 @@ class LaneDetection:
             y_points.append(y2)
 
         # get our estimated line
-        coeff = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
+        coeff = np.polynomial.polynomial.polyfit(x_points, y_points, 1, full=True)
         print(str(coeff[1]) + "*x + " + str(coeff[0]))
 
         # expand our estimated line from bottom to the top of the ROI
