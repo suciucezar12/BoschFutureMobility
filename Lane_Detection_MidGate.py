@@ -88,9 +88,9 @@ class LaneDetection:
         margin_y_cv_left = int(width_ROI / 2) + y_cv_margin
         margin_y_cv_right = int(width_ROI / 2) - y_cv_margin
         # draw lines for margin admitted
-        # cv2.line(frame_ROI, (int(width_ROI / 2) - y_cv_margin, 0), (int(width_ROI / 2) - y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
-        # cv2.line(frame_ROI, (int(width_ROI / 2) + y_cv_margin, 0),
-        #          (int(width_ROI / 2) + y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
+        cv2.line(frame_ROI, (int(width_ROI / 2) - y_cv_margin, 0), (int(width_ROI / 2) - y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
+        cv2.line(frame_ROI, (int(width_ROI / 2) + y_cv_margin, 0),
+                 (int(width_ROI / 2) + y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
 
 
         if lines is not None:
