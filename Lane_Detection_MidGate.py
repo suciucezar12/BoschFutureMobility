@@ -167,9 +167,7 @@ class LaneDetection:
         print(y_cv_vanishing_point - y_cv_right_line)
         cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta), (232, 32, 1))
 
-
-        pass
-
+        return y_cv_vanishing_point
     def only_one_line_detected(self, line_coefficients, frame_ROI, is_left_line=True):
         height_ROI = frame_ROI.shape[0]
         offset_center_road = 190    # experimental value
@@ -190,6 +188,8 @@ class LaneDetection:
         cv2.line(frame_ROI, (y_cv_vanishing_point, x_cv_theta), (y_cv_line, x_cv_theta), (200, 200, 200), 2)
         cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2), frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta),
                  (232, 32, 1))
+
+        return y_cv_vanishing_point
 
         pass
 
