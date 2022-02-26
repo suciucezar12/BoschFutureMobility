@@ -50,7 +50,7 @@ class LaneDetection:
         intercept_oY = coefficients[0]
         # get intercept_oX  -> when y = 0;
         intercept_oX = int((-intercept_oY) / slope)
-        print("slope = " + str(slope) + ";   intercept_oX = " + str(intercept_oX))
+        # print("slope = " + str(slope) + ";   intercept_oX = " + str(intercept_oX))
 
     def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
         height_ROI = frame_ROI.shape[0]
@@ -163,7 +163,7 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            # print(end - start)
+            print(end - start)
             ret, frame = self.cap.read()
 
 LD = LaneDetection()
