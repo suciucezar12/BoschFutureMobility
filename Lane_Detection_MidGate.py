@@ -88,9 +88,9 @@ class LaneDetection:
         margin_y_cv_left = int(width_ROI / 2) + y_cv_margin
         margin_y_cv_right = int(width_ROI / 2) - y_cv_margin
         # draw lines for margin admitted
-        cv2.line(frame_ROI, (int(width_ROI / 2) - y_cv_margin, 0), (int(width_ROI / 2) - y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
-        cv2.line(frame_ROI, (int(width_ROI / 2) + y_cv_margin, 0),
-                 (int(width_ROI / 2) + y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
+        # cv2.line(frame_ROI, (int(width_ROI / 2) - y_cv_margin, 0), (int(width_ROI / 2) - y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
+        # cv2.line(frame_ROI, (int(width_ROI / 2) + y_cv_margin, 0),
+        #          (int(width_ROI / 2) + y_cv_margin, frame_ROI.shape[0]), (0, 255, 0), 2)
 
 
         if lines is not None:
@@ -208,7 +208,7 @@ class LaneDetection:
             start = time.time()
 
             # choosing our ROI
-            cv2.line(frame, (0, self.x_top - 5), (640, self.x_top - 5), (0, 0, 255), 2)
+            # cv2.line(frame, (0, self.x_top - 5), (640, self.x_top - 5), (0, 0, 255), 2)
             frame_ROI = frame[self.x_top:, :]
 
             # preprocessing our ROI of the frame
