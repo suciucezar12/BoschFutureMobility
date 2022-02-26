@@ -37,7 +37,7 @@ class LaneDetection:
         height_ROI = frame_ROI.shape[0]
         # get cv2 coordinates of our line
         y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
+        # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
 
         # conversion to usual XoY coordinate system
         x1 = y1_cv
@@ -54,14 +54,56 @@ class LaneDetection:
             theta = math.degrees(math.atan(coefficients[1]))
             # get intercept_oX  -> when y = 0;
             intercept_oX = int((-coefficients[0]) / coefficients[1])
-            print("theta = " + str(theta) + ";   intercept_oX = " + str(intercept_oX))
+            # print("theta = " + str(theta) + ";   intercept_oX = " + str(intercept_oX))
+            return theta, intercept_oX
+
+    def filter_line(self, theta, intercept_oX, width_ROI):
+        y_cv_margin = 100    # margin wrt to vertical center of frame_ROI
+        if abs(theta) >= 30:    # if it's not horizontal
+            # check by intercept_oX -> highest priority
+            if -50 <= intercept_oX <= width_ROI - y_cv_margin:
+                return 0
+            if int(width_ROI / 2) + y_cv_margin <= intercept_oX <= width_ROI + 50:
+                return 1
+            # check by theta and intercept_oX
+            if theta > 0:   # candidate left line
+                if width_ROI - y_cv_margin <= intercept_oX <= int(width_ROI / 2):
+                    return 0
+            if theta < 0:   # candidate right line
+                if int(width_ROI / 2) <= intercept_oX <= int(width_ROI / 2) + y_cv_margin:
+                    return 1
+        return -1
+
 
     def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
         lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=70, minLineLength=30,
                                          maxLineGap=70)
+        left_lines = []
+        right_lines = []
+
+        width_ROI = frame_ROI.shape[1]
+
         if lines is not None:
             for line in lines:
-                self.get_intercept_theta_line(line, frame_ROI)
+                theta, intercept_oX = self.get_intercept_theta_line(line, frame_ROI)
+                line_code = self.filter_line(theta, intercept_oX, width_ROI)
+                if line_code == 0:
+                    y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)     # RED color -> left_line
+                    left_lines.append(line)
+                if line_code == 1:
+                    y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 2)     # GREEN color -> right_line
+                    right_lines.append(line)
+
+        return left_lines, right_lines
+
+    # def get_theta(self, frame_ROI_preprocessed, frame_ROI):
+    #     left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed,frame_ROI)
+    #     if left_lines is not None:
+    #         for line in left_lines:
+    #     if right_lines is not None:
+
 
     # detect and filter the candidate lines
     def hough_transform(self, frame_ROI_preprocessed, frame_ROI):
@@ -93,6 +135,7 @@ class LaneDetection:
 
         for line in lines:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]    # coordinates in cv2 coordinate system
+            # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), ())
 
             # conversion to usual XoY coordinate system
             x1 = y1_cv
@@ -106,14 +149,14 @@ class LaneDetection:
             y_points.append(y2)
 
         # get our estimated line
-        coeff = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
-        print(str(coeff[1]) + "*x + " + str(coeff[0]))
+        coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
+        print(str(coefficient[1]) + "*x + " + str(coefficient[0]))
 
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
         y2 = self.x_top
-        x1 = int((y1 - coeff[0]) / coeff[1])
-        x2 = int((y2 - coeff[0]) / coeff[1])
+        x1 = int((y1 - coefficient[0]) / coefficient[1])
+        x2 = int((y2 - coefficient[0]) / coefficient[1])
 
         # convert our estimated line from XoY in cv2 coordinate system
         y1_cv = x1
@@ -123,7 +166,7 @@ class LaneDetection:
 
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
-        return (y1_cv, x1_cv, y2_cv, x2_cv), coeff   # return the coordinates of our estimated line and its line equation
+        return (y1_cv, x1_cv, y2_cv, x2_cv)  # return the coordinates of our estimated line and its line equation
 
     def drawLane(self, line, image, color_line):
         y1, x1, y2, x2 = line[0]
@@ -149,7 +192,7 @@ class LaneDetection:
             # preprocessing our ROI of the frame
             frame_ROI_preprocessed = self.preProcess(frame_ROI)
 
-            self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
+            left_lines, right_lines = self.get_and_filter_lines(frame_ROI_preprocessed, frame_ROI)
 
             # # detect and filter candidate lines
             # left_lines_detected, right_lines_detected = self.hough_transform(frame_ROI_preprocessed, frame_ROI)
