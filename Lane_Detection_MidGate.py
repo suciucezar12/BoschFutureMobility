@@ -49,7 +49,7 @@ class LaneDetection:
         # y = slope * x + intercept_oY
         coefficients = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), 1)
         slope = coefficients[1]
-        theta = math.atan(slope)
+        theta = math.degrees(math.atan(slope))
         intercept_oY = coefficients[0]
         # get intercept_oX  -> when y = 0;
         intercept_oX = int((-intercept_oY) / slope)
