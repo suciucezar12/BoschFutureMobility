@@ -150,7 +150,7 @@ class LaneDetection:
 
     def both_lines_detected(self, left_line_coefficients, right_line_coefficients, frame_ROI):
         height_ROI = frame_ROI.shape[0]
-        x_cv_theta = frame_ROI.shape[0] - 10   # the x_cv2 coordinate where we intersect
+        x_cv_theta = 10   # the x_cv2 coordinate where we intersect -> wrt to ROI
 
         y_theta = abs(x_cv_theta - height_ROI)
         x_left_theta = int(left_line_coefficients[1] * y_theta - left_line_coefficients[0])
