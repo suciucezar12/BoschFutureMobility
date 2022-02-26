@@ -166,7 +166,7 @@ class LaneDetection:
         cv2.line(frame_ROI, (y_cv_left_line, x_cv_theta), (y_cv_right_line, x_cv_theta), (200, 200, 200), 2)
 
         y_cv_vanishing_point = int((y_cv_right_line + y_cv_left_line) / 2)
-        print(y_cv_vanishing_point - y_cv_right_line)
+        # print(y_cv_vanishing_point - y_cv_right_line)
         cv2.line(frame_ROI, (int(frame_ROI.shape[1] / 2) - 25, frame_ROI.shape[0]), (y_cv_vanishing_point, x_cv_theta), (232, 32, 1), 5)
 
         return y_cv_vanishing_point, x_cv_theta
