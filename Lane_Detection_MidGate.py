@@ -53,7 +53,10 @@ class LaneDetection:
             # coefficients[0] = intercept_oY
             theta = math.degrees(math.atan(coefficients[1]))
             # get intercept_oX  -> when y = 0;
-            intercept_oX = int((-coefficients[0]) / coefficients[1])
+            try:
+                intercept_oX = int((-coefficients[0]) / coefficients[1])
+            except OverflowError:
+                intercept_oX = 30000
             # print("theta = " + str(theta) + ";   intercept_oX = " + str(intercept_oX))
             return theta, intercept_oX
 
