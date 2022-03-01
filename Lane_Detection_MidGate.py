@@ -18,6 +18,7 @@ class LaneDetection:
         self.output_coordinates_IPM = np.array([[199, 36], [417, 0], [439, 444], [205, 410]],
                                                dtype=np.float32)  # Output coordinates calculated manually in our flat real word plane of the road
         self.matrix_IPM = cv2.getPerspectiveTransform(self.input_coordinates_IPM, self.output_coordinates_IPM)
+        print(self.matrix_IPM)
         ''' ================================================================================================================================ '''
 
         time.sleep(1)
@@ -167,6 +168,7 @@ class LaneDetection:
         y2_cv = x2
         x1_cv = abs(y1 - self.x_top)
         x2_cv = abs(y2 - self.x_top)
+        print("y1_cv = {}, x1_cv = {}, y2_cv = {}, x2_cv = {}".format(y1_cv, x1_cv, y2_cv, x2_cv))
 
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
@@ -224,18 +226,22 @@ class LaneDetection:
         if left_lines and right_lines:
             # print("right and left")
             found_line = True
+            print("left line: ")
             left_line_coefficients = self.polyfit(left_lines, frame_ROI)
+            print("right line: ")
             right_line_coefficients = self.polyfit(right_lines, frame_ROI)
             y_cv_vanishing_point, x_cv_theta = self.both_lines_detected(left_line_coefficients, right_line_coefficients, frame_ROI)
 
         else:
             if right_lines:
                 found_line = True
+                print("left line:")
                 right_line_coefficients = self.polyfit(right_lines, frame_ROI)
                 y_cv_vanishing_point, x_cv_theta = self.only_one_line_detected(right_line_coefficients, frame_ROI, is_left_line=False)
             else:
                 if left_lines:
                     found_line = True
+                    print("right line: ")
                     left_line_coefficients = self.polyfit(left_lines, frame_ROI)
                     y_cv_vanishing_point, x_cv_theta = self.only_one_line_detected(left_line_coefficients, frame_ROI, is_left_line=True)
 
