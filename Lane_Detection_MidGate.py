@@ -10,7 +10,7 @@ class LaneDetection:
         ''' Matrix used for IPM '''
         self.width = 640
         self.height = 480
-        self.x_top = 270  # Coordinates of the polygon we use for creating the Homography matrix
+        self.x_top = 270  # Coordinates of the polygon we use for creating the Homography matrix (also for ROI)
         self.y_left_top = 80
         self.y_right_top = 560
         self.input_coordinates_IPM = np.array(
@@ -22,6 +22,25 @@ class LaneDetection:
 
         time.sleep(1)
         self.cap = cv2.VideoCapture(0)
+
+    def get_IPM_frame(self, frame):
+        frame_IPM_width = 450
+        frame_IPM_height = 450
+        frame_IPM = cv2.warpPerspective(frame, self.matrix_IPM, (frame_IPM_width, frame_IPM_height), flags=cv2.INTER_LINEAR)
+        rotation_matrix = cv2.getRotationMatrix2D((frame_IPM_width / 2, frame_IPM_height / 2), 90, 1.0)
+        frame_IPM_rotated = cv2.warpAffine(frame_IPM, rotation_matrix, (frame_IPM_width, frame_IPM_height))
+        margin_x_crop = 28
+        height_crop = 245
+        frame_IPM_final = frame_IPM_rotated[: height_crop, margin_x_crop: frame_IPM_rotated.shape[0] - margin_x_crop]
+        #resize our IPM image
+        scale = 1.5
+        width = int(frame_IPM_final.shape[1] * scale)
+        height = int(frame_IPM_final.shape[0] * 2)
+        dim = (width, height)
+
+        frame_IPM_resized = cv2.resize(frame_IPM_final, dim, interpolation = cv2.INTER_AREA)
+
+        return frame_IPM_resized
 
     # preprocess our frame_ROI
     def preProcess(self, frame_ROI):
@@ -256,6 +275,8 @@ class LaneDetection:
             if theta != -1000:  # we didn't detect any line
                 theta_average = 0.6 * theta_average + 0.4 * theta
             print(theta_average)
+
+            frame_ROI_IPM = self.get_IPM_frame(frame_ROI)
 
 
             cv2.imshow("ROI", frame_ROI)
