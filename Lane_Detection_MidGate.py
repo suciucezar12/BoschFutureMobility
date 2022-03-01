@@ -274,7 +274,7 @@ class LaneDetection:
             theta = self.get_theta(frame_ROI_preprocessed, frame_ROI)
             if theta != -1000:  # we didn't detect any line
                 theta_average = 0.6 * theta_average + 0.4 * theta
-            print(theta_average)
+            print("theta_average = {}".format(theta_average))
 
             frame_IPM = self.get_IPM_frame(frame)
 
@@ -284,7 +284,7 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            # print(end - start)
+            print(end - start)
             ret, frame = self.cap.read()
 
 LD = LaneDetection()
