@@ -276,9 +276,9 @@ class LaneDetection:
                 theta_average = 0.6 * theta_average + 0.4 * theta
             print(theta_average)
 
-            frame_ROI_IPM = self.get_IPM_frame(frame_ROI)
+            frame_IPM = self.get_IPM_frame(frame)
 
-            cv2.imshow("IPM", frame_ROI_IPM)
+            cv2.imshow("IPM", frame_IPM)
             cv2.imshow("ROI", frame_ROI)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
