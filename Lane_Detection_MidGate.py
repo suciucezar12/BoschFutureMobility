@@ -278,7 +278,7 @@ class LaneDetection:
 
             frame_ROI_IPM = self.get_IPM_frame(frame_ROI)
 
-
+            cv2.imshow("IPM", frame_ROI_IPM)
             cv2.imshow("ROI", frame_ROI)
             cv2.imshow("Frame", frame)
             cv2.waitKey(1)
