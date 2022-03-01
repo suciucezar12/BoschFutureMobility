@@ -40,7 +40,7 @@ class LaneDetection:
         #
         # frame_IPM_resized = cv2.resize(frame_IPM_final, dim, interpolation = cv2.INTER_AREA)
 
-        return frame_IPM_rotated
+        return frame_IPM_final
 
     # preprocess our frame_ROI
     def preProcess(self, frame_ROI):
