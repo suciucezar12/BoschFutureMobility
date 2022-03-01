@@ -33,14 +33,14 @@ class LaneDetection:
         height_crop = 245
         frame_IPM_final = frame_IPM_rotated[: height_crop, margin_x_crop: frame_IPM_rotated.shape[0] - margin_x_crop]
         #resize our IPM image
-        scale = 1.5
-        width = int(frame_IPM_final.shape[1] * scale)
-        height = int(frame_IPM_final.shape[0] * 2)
-        dim = (width, height)
+        # scale = 1.5
+        # width = int(frame_IPM_final.shape[1] * scale)
+        # height = int(frame_IPM_final.shape[0] * 2)
+        # dim = (width, height)
+        #
+        # frame_IPM_resized = cv2.resize(frame_IPM_final, dim, interpolation = cv2.INTER_AREA)
 
-        frame_IPM_resized = cv2.resize(frame_IPM_final, dim, interpolation = cv2.INTER_AREA)
-
-        return frame_IPM_resized
+        return frame_IPM_rotated
 
     # preprocess our frame_ROI
     def preProcess(self, frame_ROI):
