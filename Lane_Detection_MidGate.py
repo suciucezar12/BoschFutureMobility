@@ -169,14 +169,12 @@ class LaneDetection:
         x1_cv = abs(y1 - self.x_top)
         x2_cv = abs(y2 - self.x_top)
 
-        # coordinate1_cv_vector = [[y1_cv], [x1_cv], [1]]
-        # coordinate2_cv_vector = [[y2_cv], [x2_cv], [1]]
         coordinate1_cv_vector = [[y1_cv], [x1_cv], [1]]
         coordinate2_cv_vector = [[y2_cv], [x2_cv], [1]]
 
         # find correspondents: from frame_ROI to IPM plane
-        coordinate1_cv_vector_IPM = self.matrix_IPM @ coordinate1_cv_vector
-        coordinate2_cv_vector_IPM = self.matrix_IPM @ coordinate2_cv_vector
+        # coordinate1_cv_vector_IPM = self.matrix_IPM @ coordinate1_cv_vector
+        # coordinate2_cv_vector_IPM = self.matrix_IPM @ coordinate2_cv_vector
         # coordinate1_cv_vector_IPM[:2, 0] /= coordinate1_cv_vector_IPM[2, 0]
         # coordinate2_cv_vector_IPM[:2, 0] /= coordinate2_cv_vector_IPM[2, 0]
         # print("z_a_1 = {}".format(coordinate1_cv_vector_IPM[2, 0]))
@@ -299,7 +297,7 @@ class LaneDetection:
                 theta_average = 0.6 * theta_average + 0.4 * theta
             # print("theta_average = {}".format(theta_average))
 
-            frame_IPM = self.get_IPM_frame(frame)
+            # frame_IPM = self.get_IPM_frame(frame)
 
             cv2.imshow("IPM", frame_IPM)
             cv2.imshow("ROI", frame_ROI)
