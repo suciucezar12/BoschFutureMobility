@@ -301,8 +301,8 @@ class LaneDetection:
 
             # cv2.imshow("IPM", frame_IPM)
             # cv2.imshow("Frame_ROI Preprocessed", frame_ROI_preprocessed)
-            cv2.imshow("ROI", frame_ROI)
-            # cv2.imshow("Frame", frame)
+            # cv2.imshow("ROI", frame_ROI)
+            cv2.imshow("Frame", frame)
             cv2.waitKey(1)
 
             end = time.time()
