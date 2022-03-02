@@ -18,7 +18,7 @@ class LaneDetection:
         self.output_coordinates_IPM = np.array([[199, 36], [417, 0], [439, 444], [205, 410]],
                                                dtype=np.float32)  # Output coordinates calculated manually in our flat real word plane of the road
         self.matrix_IPM = cv2.getPerspectiveTransform(self.input_coordinates_IPM, self.output_coordinates_IPM)
-        # print(self.matrix_IPM)
+        print(self.matrix_IPM)
         ''' ================================================================================================================================ '''
 
         time.sleep(1)
