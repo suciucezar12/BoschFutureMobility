@@ -173,6 +173,10 @@ class LaneDetection:
         coordinate2_cv_vector = [[y2_cv], [x2_cv], [1]]
 
         # find correspondents: from frame_ROI to IPM plane
+
+        print(coordinate1_cv_vector)
+        print(coordinate2_cv_vector)
+
         # coordinate1_cv_vector_IPM = self.matrix_IPM @ coordinate1_cv_vector
         # coordinate2_cv_vector_IPM = self.matrix_IPM @ coordinate2_cv_vector
         # coordinate1_cv_vector_IPM[:2, 0] /= coordinate1_cv_vector_IPM[2, 0]
