@@ -101,7 +101,7 @@ class LaneDetection:
         return -1
 
     def get_and_filter_lines(self, frame_ROI_preprocessed, frame_ROI):
-        lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=55, minLineLength=20,
+        lines = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=20,
                                          maxLineGap=80)
         left_lines = []
         right_lines = []
@@ -295,7 +295,7 @@ class LaneDetection:
             theta = self.get_theta(frame_ROI_preprocessed, frame_ROI)
             if theta != -1000:  # we didn't detect any line
                 theta_average = 0.6 * theta_average + 0.4 * theta
-            print("theta_average = {}".format(theta_average))
+            # print("theta_average = {}".format(theta_average))
 
             # frame_IPM = self.get_IPM_frame(frame)
 
@@ -306,7 +306,7 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            print(end - start)
+            # print(end - start)
             ret, frame = self.cap.read()
 
 LD = LaneDetection()
