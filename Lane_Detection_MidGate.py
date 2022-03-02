@@ -169,14 +169,16 @@ class LaneDetection:
         x1_cv = abs(y1 - self.x_top)
         x2_cv = abs(y2 - self.x_top)
 
+        # coordinate1_cv_vector = [[y1_cv], [x1_cv], [1]]
+        # coordinate2_cv_vector = [[y2_cv], [x2_cv], [1]]
         coordinate1_cv_vector = [[y1_cv], [x1_cv], [1]]
         coordinate2_cv_vector = [[y2_cv], [x2_cv], [1]]
 
         # find correspondents: from frame_ROI to IPM plane
         coordinate1_cv_vector_IPM = self.matrix_IPM @ coordinate1_cv_vector
         coordinate2_cv_vector_IPM = self.matrix_IPM @ coordinate2_cv_vector
-        coordinate1_cv_vector_IPM[:, 0] /= coordinate1_cv_vector_IPM[2, 0]
-        coordinate2_cv_vector_IPM[:, 0] /= coordinate2_cv_vector_IPM[2, 0]
+        # coordinate1_cv_vector_IPM[:, 0] /= coordinate1_cv_vector_IPM[2, 0]
+        # coordinate2_cv_vector_IPM[:, 0] /= coordinate2_cv_vector_IPM[2, 0]
         print("y1_cv_IPM: {}, x1_cv_IPM: {}".format(coordinate1_cv_vector_IPM[0, 0], coordinate1_cv_vector_IPM[1, 0]))
         print("y2_cv_IPM: {}, x2_cv_IPM: {}".format(coordinate2_cv_vector_IPM[0, 0], coordinate2_cv_vector_IPM[1, 0]))
 
