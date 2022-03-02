@@ -177,8 +177,8 @@ class LaneDetection:
         coordinate2_cv_vector_IPM = self.matrix_IPM @ coordinate2_cv_vector
         coordinate1_cv_vector_IPM[:, 0] /= coordinate1_cv_vector_IPM[2, 0]
         coordinate2_cv_vector_IPM[:, 0] /= coordinate2_cv_vector_IPM[2, 0]
-        print("y1_cv_IPM: {}, x1_cv_IPM: {}".format(coordinate1_cv_vector_IPM[0, 0], coordinate1_cv_vector_IPM[0, 1]))
-        print("y2_cv_IPM: {}, x2_cv_IPM: {}".format(coordinate2_cv_vector_IPM[0, 0], coordinate2_cv_vector_IPM[0, 1]))
+        print("y1_cv_IPM: {}, x1_cv_IPM: {}".format(coordinate1_cv_vector_IPM[0, 0], coordinate1_cv_vector_IPM[1, 0]))
+        print("y2_cv_IPM: {}, x2_cv_IPM: {}".format(coordinate2_cv_vector_IPM[0, 0], coordinate2_cv_vector_IPM[1, 0]))
 
 
         # print("y1_cv = {}, x1_cv = {}, y2_cv = {}, x2_cv = {}".format(y1_cv, x1_cv, y2_cv, x2_cv))
