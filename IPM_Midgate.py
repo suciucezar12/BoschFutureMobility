@@ -20,9 +20,9 @@ while True:
     # clockwise selection of corners
     src_points = np.array([[0, 0], [width_ROI_IPM, 0], [width_ROI_IPM, height_ROI_IPM], [0, height_ROI_IPM]], dtype=np.float32)
     # testing
-    dst_points = np.array([[0, 0], [63.7, 0], [52.7, 25.6], [11, 25.6]])
+    # dst_points = np.array([[0, 0], [63.7, 0], [52.7, 25.6], [11, 25.6]])
     # initial
-    # dst_points = np.array([[0, 3.1], [66.7, 0], [53.5, 24.6], [11, 25.6]])
+    dst_points = np.array([[0, 3.1], [66.7, 0], [53.5, 24.6], [11, 25.6]])
     dst_points = np.array([[int(y_cv / pixel_resolution), int(x_cv / pixel_resolution)] for [y_cv, x_cv] in dst_points], dtype=np.float32)
 
     H = cv2.getPerspectiveTransform(src_points, dst_points)
