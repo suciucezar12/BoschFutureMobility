@@ -4,7 +4,7 @@ import numpy as np
 x_cv_ROI = 270
 cap = cv2.VideoCapture(0)
 
-pixel_resolution = 0.122 # how many centimeters per pixel
+pixel_resolution = 0.122  # centimeters per pixel
 height_ROI_IPM = 210    # calculated related to pixel_resolution and the real dimensions
 width_ROI_IPM = 547
 width_ROI = 640
@@ -26,12 +26,8 @@ H = cv2.getPerspectiveTransform(src_points, dst_points)
 while True:
 
     cv2.line(frame, (0, x_cv_ROI + 5), (640, x_cv_ROI + 5), (0, 0, 255), 1)
-
     frame_ROI = frame[x_cv_ROI:, :]
     frame_ROI_IPM = cv2.warpPerspective(frame_ROI, H, (width_ROI_IPM, height_ROI_IPM), flags=cv2.INTER_LINEAR)
-
-    print("height: {}".format(frame_ROI_IPM.shape[0]))
-    print("width: {}".format(frame_ROI_IPM.shape[1]))
 
     cv2.imshow("IPM", frame_ROI_IPM)
     cv2.imshow("ROI", frame_ROI)
