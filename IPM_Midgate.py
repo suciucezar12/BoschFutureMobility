@@ -1,6 +1,6 @@
 import cv2
 
-x_cv_ROI = 210
+x_cv_ROI = 270
 cap = cv2.VideoCapture(0)
 
 ret, frame = cap.read()
