@@ -8,7 +8,7 @@ pixel_resolution = 0.122 # how many centimeters per pixel
 height_ROI_IPM = 210    # calculated related to pixel_resolution and the real dimensions
 width_ROI_IPM = 547
 width_ROI = 640
-height_ROI = 480
+height_ROI = 210
 
 
 ret, frame = cap.read()
