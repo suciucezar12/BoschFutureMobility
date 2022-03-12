@@ -28,6 +28,9 @@ while True:
     frame_ROI = frame[x_cv_ROI:, :]
     frame_ROI_IPM = cv2.warpPerspective(frame_ROI, H, (width_ROI_IPM, height_ROI_IPM), flags=cv2.INTER_LINEAR)
 
+    print("height: {}".format(frame_ROI_IPM.shape[0]))
+    print("width: {}".format(frame_ROI_IPM.shape[1]))
+
     cv2.imshow("IPM", frame_ROI_IPM)
     cv2.imshow("ROI", frame_ROI)
     cv2.imshow("Frame", frame)
