@@ -32,7 +32,7 @@ while True:
     # test transformation on a set of points
     set_points = np.array([[[20, 30]]], dtype=np.float32)
     print(set_points[0][0])
-    # cv2.circle(frame_ROI, tuple(set_points[0][0]), 5, (0, 255, 0), 1)
+    cv2.circle(frame_ROI, tuple(set_points[0][0]), 5, (0, 255, 0), 1)
     # transform set points in new plane
     IPM_set_points = cv2.perspectiveTransform(set_points, H)[0]
     # cv2.circle(frame_ROI_IPM, tuple(IPM_set_points[0][0]), 5, (255, 0, 0), 1)
