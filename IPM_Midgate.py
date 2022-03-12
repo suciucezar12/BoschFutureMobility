@@ -7,7 +7,7 @@ ret, frame = cap.read()
 
 while True:
 
-    cv2.line(frame, (0, x_cv_ROI + 5), (640, x_cv_ROI), (0, 0, 255), 1)
+    cv2.line(frame, (0, x_cv_ROI + 5), (640, x_cv_ROI + 5), (0, 0, 255), 1)
 
     frame_ROI = frame[x_cv_ROI:, :]
 
