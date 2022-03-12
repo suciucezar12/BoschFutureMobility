@@ -7,12 +7,14 @@ cap = cv2.VideoCapture(0)
 pixel_resolution = 0.122 # how many centimeters per pixel
 height_ROI_IPM = 210    # calculated related to pixel_resolution and the real dimensions
 width_ROI_IPM = 547
+width_ROI = 640
+height_ROI = 480
 
 
 ret, frame = cap.read()
 
 # clockwise selection of corners
-src_points = np.array([[0, 0], [width_ROI_IPM, 0], [width_ROI_IPM, height_ROI_IPM], [0, height_ROI_IPM]], dtype=np.float32)
+src_points = np.array([[0, 0], [width_ROI, 0], [width_ROI, height_ROI], [0, height_ROI]], dtype=np.float32)
 # testing
 # dst_points = np.array([[0, 0], [63.7, 0], [52.7, 25.6], [11, 25.6]])
 # initial
