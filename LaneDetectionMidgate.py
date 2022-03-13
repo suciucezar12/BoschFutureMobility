@@ -244,7 +244,7 @@ class LaneDetection:
             frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM), flags=cv2.INTER_NEAREST)
 
             theta = self.get_theta(frame_ROI, frame_ROI_IPM)
-            print("time: {}".format(time.time() - start))
+            # print("time: {}".format(time.time() - start))
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("ROI", frame_ROI)
