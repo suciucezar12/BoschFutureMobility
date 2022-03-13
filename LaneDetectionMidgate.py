@@ -126,15 +126,15 @@ class LaneDetection:
 
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
-        y2 = self.x_cv_ROI
+        y2 = self.height_ROI
         x1 = int((y1 - coefficient[0]) / coefficient[1])
         x2 = int((y2 - coefficient[0]) / coefficient[1])
 
         # convert our estimated line from XoY in cv2 coordinate system
         y1_cv = x1
         y2_cv = x2
-        x1_cv = abs(y1 - self.x_cv_ROI)
-        x2_cv = abs(y2 - self.x_cv_ROI)
+        x1_cv = abs(y1 - self.height_ROI)
+        x2_cv = abs(y2 - self.height_ROI)
 
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
