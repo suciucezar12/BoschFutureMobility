@@ -33,11 +33,23 @@ class LaneDetection:
         frame_ROI_preprocessed = cv2.Canny(frame_ROI_blurred, 30, 255)
         return frame_ROI_preprocessed
 
+    def draw_line(self, line, color, image):
+        y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+        radius = 10
+        color_left_most_point = (0, 255, 0)  # GREEN for left_most point
+        color_right_most_point = (255, 0, 0)  # BLUE fpr right_most point
+        cv2.circle(image, (y1_cv, x1_cv), radius, color_left_most_point, 1)
+        cv2.circle(image, (y2_cv, x2_cv), radius, color_right_most_point, 1)
+        cv2.line(image, (y1_cv, x1_cv), (y2_cv, x2_cv), color, 2)
+
     def get_left_and_right_lines(self, frame_ROI, frame_ROI_IPM=None):   # get left and right lines of the road
         frame_ROI_preprocessed = self.preprocess(frame_ROI)
         # detected possible lines of our road
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=20,
                                 maxLineGap=80)
+        if lines_candidate is not None:
+            for line in lines_candidate:
+                self.draw_line(line, (0, 0, 255), frame_ROI)
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angl
         self.get_left_and_right_lines(frame_ROI, frame_ROI_IPM)
