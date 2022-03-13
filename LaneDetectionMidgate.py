@@ -184,9 +184,9 @@ class LaneDetection:
 
     def only_one_line_detected(self, line_IPM, frame_ROI_IPM, is_left_line=False):
         if is_left_line:
-            offset_road = 100
+            offset_road = 150
         else:
-            offset_road = -100
+            offset_road = -150
 
         y_cv_IPM_vp = int(line_IPM[0][2] + offset_road)
         x_cv_IPM_vp = int(line_IPM[0][3])
