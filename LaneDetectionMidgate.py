@@ -47,6 +47,7 @@ class LaneDetection:
         # detected possible lines of our road
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=20,
                                 maxLineGap=80)
+        print(type(lines_candidate))
         if lines_candidate is not None:
             for line in lines_candidate:
                 self.draw_line(line, (0, 0, 255), frame_ROI)
