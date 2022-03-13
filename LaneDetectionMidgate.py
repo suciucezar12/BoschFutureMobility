@@ -13,6 +13,7 @@ class LaneDetection:
         self.width_ROI = 640
         self.pixel_resolution = 0.122  # centimeters per pixel
         self.H = self.get_homography_matrix()   # Homography Matrix for IPM
+        self.inv_H = np.linalg.inv(self.H)
         self.offset_origin = -20  # to correct the inclination of our camera
         # size of ROI_IPM
         self.height_ROI_IPM = 210  # calculated related to pixel_resolution and the real dimensions
@@ -167,6 +168,12 @@ class LaneDetection:
             return left_line, right_line, horizontal_lines
         return None, None, None
 
+    def get_inverse_line_IPM(self, line, image):
+        y1_cv, x1_cv, y2_cv, x2_cv = line
+        src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
+        dest_points = cv2.perspectiveTransform(src_points, self.inv_H)[0]
+        return [[dest_points[0][0], dest_points[0][1], dest_points[1][0], dest_points[1][1]]]
+
     def get_line_IPM(self, line, image):
         y1_cv, x1_cv, y2_cv, x2_cv = line
         src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
@@ -221,10 +228,8 @@ class LaneDetection:
                     self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
                     y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(left_line_IPM, frame_ROI_IPM,
                                                                            is_left_line=True)
-
-
-
         if vp_exists:
+            line_vp = self.get_inverse_line_IPM([y_cv_IPM_vp, x_cv_IPM_vp, int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM], frame_ROI)
             theta = math.degrees(math.atan((self.y_cv_IPM_center - y_cv_IPM_vp) / (self.height_ROI_IPM - x_cv_IPM_vp)))
             if theta > 23:
                 theta = 23
@@ -232,7 +237,6 @@ class LaneDetection:
                 theta = -23
         else:
             theta = -10000
-        # print(theta)
         return theta
 
     def run(self):
