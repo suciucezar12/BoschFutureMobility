@@ -35,6 +35,7 @@ class LaneDetection:
 
     def draw_line(self, line, color, image):
         y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+        print(type(y1_cv))
         radius = 10
         color_left_most_point = (0, 255, 0)  # GREEN for left_most point
         color_right_most_point = (255, 0, 0)  # BLUE fpr right_most point
@@ -47,7 +48,6 @@ class LaneDetection:
         # detected possible lines of our road
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=20,
                                 maxLineGap=80)
-        print(type(lines_candidate))
         if lines_candidate is not None:
             for line in lines_candidate:
                 self.draw_line(line, (0, 0, 255), frame_ROI)
