@@ -35,6 +35,7 @@ while True:
     cv2.circle(frame_ROI, tuple(set_points[0][0]), 5, (0, 255, 0), 1)
     # transform set points in new plane
     IPM_set_points = cv2.perspectiveTransform(set_points, H)[0]
+    print(IPM_set_points)
     cv2.circle(frame_ROI_IPM, tuple(IPM_set_points[0]), 5, (255, 0, 0), 1)
 
     cv2.imshow("IPM", frame_ROI_IPM)

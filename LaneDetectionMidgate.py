@@ -166,10 +166,7 @@ class LaneDetection:
             return left_line, right_line, horizontal_lines
 
     def get_line_IPM(self, line, image):
-        [y1_cv, x1_cv, y2_cv, x2_cv] = np.array(line, dtype=np.float32)
-        y1_cv, x1_cv, y2_cv, x2_cv = cv2.perspectiveTransform([[y1_cv, x1_cv], [y2_cv, x2_cv]], self.H)
-        # (y1_cv, x1_cv), (y2_cv, x2_cv) = cv2.perspectiveTransform((y1_cv, x1_cv), self.H, image)
-        # (y1_cv, x1_cv) = cv2.perspectiveTransform((y1_cv, x1_cv), self.H, image)
+        y1_cv, x1_cv, y2_cv, x2_cv = line
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
