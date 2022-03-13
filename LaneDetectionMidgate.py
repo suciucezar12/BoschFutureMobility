@@ -164,6 +164,7 @@ class LaneDetection:
                         left_line = None
                         right_line = None
             return left_line, right_line, horizontal_lines
+        return None, None, None
 
     def get_line_IPM(self, line, image):
         y1_cv, x1_cv, y2_cv, x2_cv = line
