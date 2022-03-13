@@ -148,9 +148,9 @@ class LaneDetection:
         # filter lines which are not candidate for road's lanes
         if lines_candidate is not None:
             left_lines, right_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
-            if left_lines is not None:
+            if len(left_lines) != 0:
                 left_line = self.polyfit(left_lines, frame_ROI)
-            if right_lines is not None:
+            if len(right_lines) != 0:
                 right_line = self.polyfit(right_lines, frame_ROI)
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
