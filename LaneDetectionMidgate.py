@@ -27,24 +27,31 @@ class LaneDetection:
         H = cv2.getPerspectiveTransform(src_points, dst_points)  # Homography matrix for IPM
         return H
 
-    def preprocess(self, frame_ROI):
+    def preprocess(self, frame_ROI):    # preprocessing phase of our pipeline
         frame_ROI_gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
         frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (11, 11), 0)
         frame_ROI_preprocessed = cv2.Canny(frame_ROI_blurred, 30, 255)
         return frame_ROI_preprocessed
 
-    def get_theta(self, frame_ROI):
+    def get_left_and_right_lines(self, frame_ROI, frame_ROI_IPM=None):   # get left and right lines of the road
         frame_ROI_preprocessed = self.preprocess(frame_ROI)
-        cv2.imshow("Frame Preprocessed", frame_ROI_preprocessed)
+        # detected possible lines of our road
+        lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=20,
+                                maxLineGap=80)
+
+    def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angl
+        self.get_left_and_right_lines(frame_ROI, frame_ROI_IPM)
 
     def run(self):
         ret, frame = self.cap.read()
 
         while True:
+            start = time.time()
             frame_ROI = frame[self.x_cv_ROI:, :]
             frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM), flags=cv2.INTER_LINEAR)
 
-            self.get_theta(frame_ROI)
+            self.get_theta(frame_ROI, frame_ROI_IPM)
+            print("time: {}".format(time.time() - start))
 
             cv2.imshow("Frame", frame)
             # cv2.imshow("ROI", frame_ROI)
