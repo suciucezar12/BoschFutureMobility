@@ -47,9 +47,9 @@ class LaneDetection:
         # detected possible lines of our road
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=20,
                                 maxLineGap=80)
-        if lines_candidate is not None:
-            for line in lines_candidate:
-                self.draw_line(line, (0, 0, 255), frame_ROI)
+        # if lines_candidate is not None:
+        #     for line in lines_candidate:
+        #         self.draw_line(line, (0, 0, 255), frame_ROI)
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angl
         self.get_left_and_right_lines(frame_ROI, frame_ROI_IPM)
