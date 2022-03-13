@@ -139,7 +139,7 @@ class LaneDetection:
 
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
-        return coefficient  # return the coordinates of our estimated line and its line equation
+        return y1_cv, x1_cv, y2_cv, x2_cv  # return the coordinates of our estimated line and its line equation
 
     def get_road_lines(self, frame_ROI, frame_ROI_IPM=None):   # get left and right lines of the road
         frame_ROI_preprocessed = self.preprocess(frame_ROI)
