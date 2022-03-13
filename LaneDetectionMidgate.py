@@ -170,7 +170,7 @@ class LaneDetection:
         src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
         dest_points = cv2.perspectiveTransform(src_points, self.H)[0]
         print(dest_points[0][0])
-        return np.array([dest_points[0][0], dest_points[0][1], dest_points[1][0], dest_points[1][1]])
+        return dest_points[0][0], dest_points[0][1], dest_points[1][0], dest_points[1][1]
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
