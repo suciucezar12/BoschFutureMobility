@@ -167,7 +167,7 @@ class LaneDetection:
 
     def get_line_IPM(self, line, image):
         y1_cv, x1_cv, y2_cv, x2_cv = line
-        src_points = np.array([[[y1_cv. x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
+        src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
         dest_points = cv2.perspectiveTransform(src_points, self.H)[0][0]
         print(dest_points)
 
