@@ -106,6 +106,40 @@ class LaneDetection:
                     self.draw_line(line, (0, 0, 255), frame_ROI)    # RED = RIGHT
                     right_lines.append(line)
 
+        return left_lines, right_lines
+
+    def polyfit(self, lines, frame_ROI):    # polyfit on a set of coordinates of lines
+        # coordinates used for estimating our line
+        x_points = []
+        y_points = []
+
+        for line in lines:
+            x1, y1, x2, y2 = self.get_XoY_coordinates(line)
+            x_points.append(x1)
+            x_points.append(x2)
+            y_points.append(y1)
+            y_points.append(y2)
+
+        # get our estimated line
+        coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
+        # print(str(coefficient[1]) + "*x + " + str(coefficient[0]))
+
+        # expand our estimated line from bottom to the top of the ROI
+        y1 = 0
+        y2 = self.x_cv_ROI
+        x1 = int((y1 - coefficient[0]) / coefficient[1])
+        x2 = int((y2 - coefficient[0]) / coefficient[1])
+
+        # convert our estimated line from XoY in cv2 coordinate system
+        y1_cv = x1
+        y2_cv = x2
+        x1_cv = abs(y1 - self.x_cv_ROI)
+        x2_cv = abs(y2 - self.x_cv_ROI)
+
+        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+
+        return coefficient  # return the coordinates of our estimated line and its line equation
+
     def get_left_and_right_line(self, frame_ROI, frame_ROI_IPM=None):   # get left and right lines of the road
         frame_ROI_preprocessed = self.preprocess(frame_ROI)
         # detected possible lines of our road
@@ -113,7 +147,11 @@ class LaneDetection:
                                 maxLineGap=80)
         # filter lines which are not candidate for road's lanes
         if lines_candidate is not None:
-            self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+            left_lines, right_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+            if left_lines is not None:
+                left_line = self.polyfit(left_lines, frame_ROI)
+            if right_lines is not None:
+                right_line = self.polyfit(right_lines, frame_ROI)
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         self.get_left_and_right_line(frame_ROI, frame_ROI_IPM)
