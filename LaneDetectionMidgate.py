@@ -188,8 +188,8 @@ class LaneDetection:
         else:
             offset_road = -100
 
-        y_cv_IPM_vp = line_IPM[0][2] + offset_road
-        x_cv_IPM_vp = line_IPM[0][3]
+        y_cv_IPM_vp = int(line_IPM[0][2] + offset_road)
+        x_cv_IPM_vp = int(line_IPM[0][3])
         cv2.circle(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), 10, (255, 255, 255))
         cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM), (255, 255, 255), 2)
         return y_cv_IPM_vp, x_cv_IPM_vp
