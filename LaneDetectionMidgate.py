@@ -109,7 +109,7 @@ class LaneDetection:
     def get_left_and_right_line(self, frame_ROI, frame_ROI_IPM=None):   # get left and right lines of the road
         frame_ROI_preprocessed = self.preprocess(frame_ROI)
         # detected possible lines of our road
-        lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=30,
+        lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=35,
                                 maxLineGap=80)
         # filter lines which are not candidate for road's lanes
         if lines_candidate is not None:
