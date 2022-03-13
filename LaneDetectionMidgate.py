@@ -13,7 +13,7 @@ class LaneDetection:
         self.width_ROI = 640
         self.pixel_resolution = 0.122  # centimeters per pixel
         self.H = self.get_homography_matrix()   # Homography Matrix for IPM
-
+        self.offset_origin = 20  # to correct the inclination of our camera
         # size of ROI_IPM
         self.height_ROI_IPM = 210  # calculated related to pixel_resolution and the real dimensions
         self.width_ROI_IPM = 547
@@ -181,7 +181,8 @@ class LaneDetection:
         # print(y_cv_IPM_vp)
         # print(x_cv_IPM_vp)
         cv2.circle(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), 10, (255, 255, 255))
-        cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (self.height_ROI_IPM, self.width_ROI_IPM), (255, 255, 255), 2)
+
+        cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (self.height_ROI_IPM, self.width_ROI_IPM + self.offset_origin), (255, 255, 255), 2)
 
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
