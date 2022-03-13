@@ -165,8 +165,17 @@ class LaneDetection:
                         right_line = None
             return left_line, right_line, horizontal_lines
 
+    def get_line_IPM(self, line, image):
+        y1_cv, x1_cv, y2_cv, x2_cv = cv2.perspectiveTransform(line[0], self.H)[0]
+        # (y1_cv, x1_cv), (y2_cv, x2_cv) = cv2.perspectiveTransform((y1_cv, x1_cv), self.H, image)
+        # (y1_cv, x1_cv) = cv2.perspectiveTransform((y1_cv, x1_cv), self.H, image)
+
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
+
+        # testing IPM
+        self.get_line_IPM(left_line, frame_ROI_IPM)
+
 
     def run(self):
         ret, frame = self.cap.read()
@@ -174,13 +183,13 @@ class LaneDetection:
         while True:
             start = time.time()
             frame_ROI = frame[self.x_cv_ROI:, :]
-            # frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM), flags=cv2.INTER_NEAREST)
+            frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM), flags=cv2.INTER_NEAREST)
 
             self.get_theta(frame_ROI)
             print("time: {}".format(time.time() - start))
 
             # cv2.imshow("Frame", frame)
-            cv2.imshow("ROI", frame_ROI)
+            cv2.imshow("ROI", frame_ROI, frame_ROI_IPM)
             # cv2.imshow("IPM", frame_ROI_IPM)
             cv2.waitKey(1)
 
