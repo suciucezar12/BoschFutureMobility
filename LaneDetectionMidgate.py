@@ -175,14 +175,20 @@ class LaneDetection:
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
 
-        # testing IPM
-        if left_line is not None:
+        # transforming in IPM
+        if left_line is not None and right_line is not None:
             left_line_IPM = self.get_line_IPM(left_line, frame_ROI_IPM)
-            self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
-        if right_line is not None:
             right_line_IPM = self.get_line_IPM(right_line, frame_ROI_IPM)
             self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
-
+            self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
+        else:
+            if right_line is not None:
+                right_line_IPM = self.get_line_IPM(right_line, frame_ROI_IPM)
+                self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
+            else:
+                if left_line is not None:
+                    left_line_IPM = self.get_line_IPM(left_line, frame_ROI_IPM)
+                    self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
 
     def run(self):
         ret, frame = self.cap.read()
