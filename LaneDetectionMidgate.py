@@ -178,11 +178,21 @@ class LaneDetection:
         # middle of the line determined by these 2 points will be our vanishing point
         y_cv_IPM_vp = int((left_line_IPM[0][2] + right_line_IPM[0][2]) / 2)
         x_cv_IPM_vp = int((left_line_IPM[0][3] + right_line_IPM[0][3]) / 2)
-        # print(y_cv_IPM_vp)
-        # print(x_cv_IPM_vp)
         cv2.circle(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), 10, (255, 255, 255))
-        print(int(self.width_ROI_IPM / 2 + self.offset_origin))
         cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM), (255, 255, 255), 2)
+        return y_cv_IPM_vp, x_cv_IPM_vp
+
+    def only_one_line_detected(self, line_IPM, frame_ROI_IPM, is_left_line=False):
+        if is_left_line:
+            offset_road = 100
+        else:
+            offset_road = -100
+
+        y_cv_IPM_vp = line_IPM[0][2] + offset_road
+        x_cv_IPM_vp = line_IPM[0][3]
+        cv2.circle(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), 10, (255, 255, 255))
+        cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM), (255, 255, 255), 2)
+        return y_cv_IPM_vp, x_cv_IPM_vp
 
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
@@ -194,15 +204,18 @@ class LaneDetection:
             right_line_IPM = self.get_line_IPM(right_line, frame_ROI_IPM)
             self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
             self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
-            self.both_line_detected(left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM)
+            y_cv_IPM_vp, x_cv_IPM_vp = self.both_line_detected(left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM)
         else:
             if right_line is not None:
                 right_line_IPM = self.get_line_IPM(right_line, frame_ROI_IPM)
                 self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
+                y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(right_line_IPM, frame_ROI_IPM, is_left_line=False)
             else:
                 if left_line is not None:
                     left_line_IPM = self.get_line_IPM(left_line, frame_ROI_IPM)
                     self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
+                    y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(left_line_IPM, frame_ROI_IPM,
+                                                                           is_left_line=True)
 
     def run(self):
         ret, frame = self.cap.read()
