@@ -30,7 +30,7 @@ while True:
     frame_ROI_IPM = cv2.warpPerspective(frame_ROI, H, (width_ROI_IPM, height_ROI_IPM), flags=cv2.INTER_LINEAR)  # CV2.INTER_LINEAR
 
     # test transformation on a set of points
-    set_points = np.array([[20, 30]], dtype=np.float32)
+    set_points = np.array([[[20, 30]]], dtype=np.float32)
     # print(set_points[0][0])
     cv2.circle(frame_ROI, tuple(set_points[0]), 5, (0, 255, 0), 1)
     # transform set points in new plane
