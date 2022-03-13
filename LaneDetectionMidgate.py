@@ -40,3 +40,6 @@ class LaneDetection:
             cv2.waitKey(1)
 
             ret, frame = self.cap.read()
+
+LD = LaneDetection()
+LD.run()
