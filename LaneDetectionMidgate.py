@@ -13,7 +13,7 @@ class LaneDetection:
         self.width_ROI = 640
         self.pixel_resolution = 0.122  # centimeters per pixel
         self.H = self.get_homography_matrix()   # Homography Matrix for IPM
-        self.offset_origin = 20  # to correct the inclination of our camera
+        self.offset_origin = -20  # to correct the inclination of our camera
         # size of ROI_IPM
         self.height_ROI_IPM = 210  # calculated related to pixel_resolution and the real dimensions
         self.width_ROI_IPM = 547
