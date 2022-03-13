@@ -146,7 +146,6 @@ class LaneDetection:
         # detected possible lines of our road
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=35,
                                 maxLineGap=80)
-        print(lines_candidate)
         # filter lines which are not candidate for road's lanes
         if lines_candidate is not None:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
@@ -170,8 +169,7 @@ class LaneDetection:
         y1_cv, x1_cv, y2_cv, x2_cv = line
         src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
         dest_points = cv2.perspectiveTransform(src_points, self.H)[0]
-        print(dest_points[0][0])
-        return dest_points[0][0], dest_points[0][1], dest_points[1][0], dest_points[1][1]
+        return [dest_points[0][0], dest_points[0][1], dest_points[1][0], dest_points[1][1]]
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
