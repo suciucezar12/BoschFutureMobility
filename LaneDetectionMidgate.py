@@ -17,6 +17,8 @@ class LaneDetection:
         # size of ROI_IPM
         self.height_ROI_IPM = 210  # calculated related to pixel_resolution and the real dimensions
         self.width_ROI_IPM = 547
+        self.y_cv_IPM_center = int(self.width_ROI_IPM / 2 + self.offset_origin)
+        self.x_cv_IPM_center
 
     def get_homography_matrix(self):
         src_points = np.array([[0, 0], [self.width_ROI, 0], [self.width_ROI, self.height_ROI], [0, self.height_ROI]],
@@ -197,9 +199,11 @@ class LaneDetection:
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
+        vp_exists = False
 
         # transforming in IPM
         if left_line is not None and right_line is not None:
+            vp_exists = True
             left_line_IPM = self.get_line_IPM(left_line, frame_ROI_IPM)
             right_line_IPM = self.get_line_IPM(right_line, frame_ROI_IPM)
             self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
@@ -207,15 +211,26 @@ class LaneDetection:
             y_cv_IPM_vp, x_cv_IPM_vp = self.both_line_detected(left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM)
         else:
             if right_line is not None:
+                vp_exists = True
                 right_line_IPM = self.get_line_IPM(right_line, frame_ROI_IPM)
                 self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
                 y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(right_line_IPM, frame_ROI_IPM, is_left_line=False)
             else:
                 if left_line is not None:
+                    vp_exists = True
                     left_line_IPM = self.get_line_IPM(left_line, frame_ROI_IPM)
                     self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
                     y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(left_line_IPM, frame_ROI_IPM,
                                                                            is_left_line=True)
+
+
+
+        if vp_exists:
+            theta = math.degrees(math.atan((self.y_cv_IPM_center - y_cv_IPM_vp) / (self.height_ROI_IPM - x_cv_IPM_vp)))
+        else:
+            theta = -10000
+        print(theta)
+        return theta
 
     def run(self):
         ret, frame = self.cap.read()
@@ -225,7 +240,7 @@ class LaneDetection:
             frame_ROI = frame[self.x_cv_ROI:, :]
             frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM), flags=cv2.INTER_NEAREST)
 
-            self.get_theta(frame_ROI, frame_ROI_IPM)
+            theta = self.get_theta(frame_ROI, frame_ROI_IPM)
             print("time: {}".format(time.time() - start))
 
             # cv2.imshow("Frame", frame)
