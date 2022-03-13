@@ -178,8 +178,8 @@ class LaneDetection:
         # middle of the line determined by these 2 points will be our vanishing point
         y_cv_IPM_vp = int(left_line_IPM[0][2] + right_line_IPM[0][2]) / 2
         x_cv_IPM_vp = int(left_line_IPM[0][1] + right_line_IPM[0][3]) / 2
-        print(y_cv_IPM_vp)
-        print(x_cv_IPM_vp)
+        # print(y_cv_IPM_vp)
+        # print(x_cv_IPM_vp)
         cv2.circle(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), 10, (0, 0, 0))
 
 
@@ -192,6 +192,7 @@ class LaneDetection:
             right_line_IPM = self.get_line_IPM(right_line, frame_ROI_IPM)
             self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
             self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
+            self.both_line_detected(left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM)
         else:
             if right_line is not None:
                 right_line_IPM = self.get_line_IPM(right_line, frame_ROI_IPM)
