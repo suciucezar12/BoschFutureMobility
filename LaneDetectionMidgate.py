@@ -166,7 +166,8 @@ class LaneDetection:
             return left_line, right_line, horizontal_lines
 
     def get_line_IPM(self, line, image):
-        y1_cv, x1_cv, y2_cv, x2_cv = cv2.perspectiveTransform(line[0], self.H)[0]
+        y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+        y1_cv, x1_cv, y2_cv, x2_cv = cv2.perspectiveTransform([[y1_cv, x1_cv], [y2_cv, x2_cv]], self.H)
         # (y1_cv, x1_cv), (y2_cv, x2_cv) = cv2.perspectiveTransform((y1_cv, x1_cv), self.H, image)
         # (y1_cv, x1_cv) = cv2.perspectiveTransform((y1_cv, x1_cv), self.H, image)
 
