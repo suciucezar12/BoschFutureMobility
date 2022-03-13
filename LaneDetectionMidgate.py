@@ -146,6 +146,7 @@ class LaneDetection:
         # detected possible lines of our road
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=35,
                                 maxLineGap=80)
+        print(lines_candidate)
         # filter lines which are not candidate for road's lanes
         if lines_candidate is not None:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
