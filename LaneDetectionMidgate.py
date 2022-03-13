@@ -56,7 +56,7 @@ class LaneDetection:
     def get_intercept_theta_line(self, line):
         # conversion to usual XoY coordinate system
         x1, y1, x2, y2 = self.get_XoY_coordinates(line)
-        coefficients = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), 1)
+        coefficients = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), deg=1)
         if coefficients is not None:
             # coefficients[1] = slope
             # coefficients[0] = intercept on oY
@@ -121,7 +121,7 @@ class LaneDetection:
             y_points.append(y2)
 
         # get our estimated line
-        coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, 1)
+        coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
         # print(str(coefficient[1]) + "*x + " + str(coefficient[0]))
 
         # expand our estimated line from bottom to the top of the ROI
