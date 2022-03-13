@@ -35,8 +35,7 @@ class LaneDetection:
 
     def draw_line(self, line, color, image):
         y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-        print(type(y1_cv))
-        radius = 10
+        radius = 5
         color_left_most_point = (0, 255, 0)  # GREEN for left_most point
         color_right_most_point = (255, 0, 0)  # BLUE fpr right_most point
         cv2.circle(image, (y1_cv, x1_cv), radius, color_left_most_point, 1)
@@ -61,14 +60,14 @@ class LaneDetection:
         while True:
             start = time.time()
             frame_ROI = frame[self.x_cv_ROI:, :]
-            frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM), flags=cv2.INTER_LINEAR)
+            # frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM), flags=cv2.INTER_LINEAR)
 
-            self.get_theta(frame_ROI, frame_ROI_IPM)
+            self.get_theta(frame_ROI)
             print("time: {}".format(time.time() - start))
 
             cv2.imshow("Frame", frame)
             # cv2.imshow("ROI", frame_ROI)
-            cv2.imshow("IPM", frame_ROI_IPM)
+            # cv2.imshow("IPM", frame_ROI_IPM)
             cv2.waitKey(1)
 
             ret, frame = self.cap.read()
