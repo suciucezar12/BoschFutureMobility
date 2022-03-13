@@ -141,7 +141,7 @@ class LaneDetection:
 
         return coefficient  # return the coordinates of our estimated line and its line equation
 
-    def get_left_and_right_line(self, frame_ROI, frame_ROI_IPM=None):   # get left and right lines of the road
+    def get_road_lines(self, frame_ROI, frame_ROI_IPM=None):   # get left and right lines of the road
         frame_ROI_preprocessed = self.preprocess(frame_ROI)
         # detected possible lines of our road
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50, minLineLength=35,
@@ -152,13 +152,21 @@ class LaneDetection:
             if len(left_lines) != 0 and len(right_lines) != 0:
                 left_line = self.polyfit(left_lines, frame_ROI)
                 right_line = self.polyfit(right_lines, frame_ROI)
-            if len(left_lines) != 0:
-                left_line = self.polyfit(left_lines, frame_ROI)
-            if len(right_lines) != 0:
-                right_line = self.polyfit(right_lines, frame_ROI)
+            else:
+                if len(left_lines) != 0:
+                    left_line = self.polyfit(left_lines, frame_ROI)
+                    right_line = None
+                else:
+                    if len(right_lines) != 0:
+                        left_line = None
+                        right_line = self.polyfit(right_lines, frame_ROI)
+                    else:
+                        left_line = None
+                        right_line = None
+            return left_line, right_line, horizontal_lines
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
-        self.get_left_and_right_line(frame_ROI, frame_ROI_IPM)
+        left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
 
     def run(self):
         ret, frame = self.cap.read()
