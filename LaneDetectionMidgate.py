@@ -226,6 +226,10 @@ class LaneDetection:
 
         if vp_exists:
             theta = math.degrees(math.atan((self.y_cv_IPM_center - y_cv_IPM_vp) / (self.height_ROI_IPM - x_cv_IPM_vp)))
+            if theta > 23:
+                theta = 23
+            if theta < -23:
+                theta = -23
         else:
             theta = -10000
         print(theta)
