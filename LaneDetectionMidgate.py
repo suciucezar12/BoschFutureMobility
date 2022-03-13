@@ -95,6 +95,7 @@ class LaneDetection:
             intercept_oX, theta = self.get_intercept_theta_line(line)
             # horizontal line
             if abs(theta) <= 35:
+                self.draw_line(line, (50, 50, 50), frame_ROI)
                 horizontal_lines.append(line)
             else:
                 # left/right lane
@@ -106,7 +107,7 @@ class LaneDetection:
                     self.draw_line(line, (0, 0, 255), frame_ROI)    # RED = RIGHT
                     right_lines.append(line)
 
-        return left_lines, right_lines
+        return left_lines, right_lines, horizontal_lines
 
     def polyfit(self, lines, frame_ROI):    # polyfit on a set of coordinates of lines
         # coordinates used for estimating our line
@@ -147,7 +148,10 @@ class LaneDetection:
                                 maxLineGap=80)
         # filter lines which are not candidate for road's lanes
         if lines_candidate is not None:
-            left_lines, right_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+            left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+            if len(left_lines) != 0 and len(right_lines) != 0:
+                left_line = self.polyfit(left_lines, frame_ROI)
+                right_line = self.polyfit(right_lines, frame_ROI)
             if len(left_lines) != 0:
                 left_line = self.polyfit(left_lines, frame_ROI)
             if len(right_lines) != 0:
