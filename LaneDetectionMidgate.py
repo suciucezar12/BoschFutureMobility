@@ -138,7 +138,7 @@ class LaneDetection:
         x2_cv = abs(y2 - self.height_ROI)
 
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
-
+        # (y1_cv, x1_cv) -> bottom of the image;   (y2_cv, x2_cv) -> top of the image
         return y1_cv, x1_cv, y2_cv, x2_cv  # return the coordinates of our estimated line and its line equation
 
     def get_road_lines(self, frame_ROI, frame_ROI_IPM=None):   # get left and right lines of the road
@@ -171,6 +171,15 @@ class LaneDetection:
         src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
         dest_points = cv2.perspectiveTransform(src_points, self.H)[0]
         return [[dest_points[0][0], dest_points[0][1], dest_points[1][0], dest_points[1][1]]]
+
+    def both_line_detected(self, left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM):
+        # determine vanishing point
+        # take the top points of our lines
+        # middle of the line determined by these 2 points will be our vanishing point
+        y_cv_IPM_vp = int(left_line_IPM[0][2] + right_line_IPM[0][2]) / 2
+        x_cv_IPM_vp = int(left_line_IPM[0][1] + right_line_IPM[0][3]) / 2
+        cv2.circle(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), 5, (0, 0, 0))
+
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
