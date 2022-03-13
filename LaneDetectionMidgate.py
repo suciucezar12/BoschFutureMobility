@@ -18,7 +18,6 @@ class LaneDetection:
         self.height_ROI_IPM = 210  # calculated related to pixel_resolution and the real dimensions
         self.width_ROI_IPM = 547
         self.y_cv_IPM_center = int(self.width_ROI_IPM / 2 + self.offset_origin)
-        self.x_cv_IPM_center
 
     def get_homography_matrix(self):
         src_points = np.array([[0, 0], [self.width_ROI, 0], [self.width_ROI, self.height_ROI], [0, self.height_ROI]],
