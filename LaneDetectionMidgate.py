@@ -181,6 +181,7 @@ class LaneDetection:
         # print(y_cv_IPM_vp)
         # print(x_cv_IPM_vp)
         cv2.circle(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), 10, (255, 255, 255))
+        cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (self.height_ROI_IPM, self.width_ROI_IPM), (255, 255, 255), 2)
 
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
