@@ -235,7 +235,7 @@ class LaneDetection:
         if vp_exists:
             line_vp = self.get_inverse_line_IPM([y_cv_IPM_vp, x_cv_IPM_vp, int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM], frame_ROI)
             self.draw_line(line_vp, (255, 255, 255), frame_ROI)
-            theta = math.degrees(math.atan((self.y_cv_IPM_center - y_cv_IPM_vp) / (self.height_ROI_IPM - x_cv_IPM_vp)))
+            theta = round(math.degrees(math.atan((self.y_cv_IPM_center - y_cv_IPM_vp) / (self.height_ROI_IPM - x_cv_IPM_vp))))
             if theta > 23:
                 theta = 23
             if theta < -23:
@@ -257,7 +257,7 @@ class LaneDetection:
 
             theta = self.get_theta(frame_ROI, frame_ROI_IPM=None)
 
-            cv2.putText(img=frame_ROI, text=str(theta), org=(150, 150), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1,
+            cv2.putText(img=frame_ROI, text="{:.2f}".format(theta), org=(self.width_ROI + 100, self.height_ROI -50), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1,
                         color=(0, 255, 0), thickness=3)
 
             print("time: {}".format(time.time() - start))
