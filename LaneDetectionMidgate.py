@@ -257,7 +257,7 @@ class LaneDetection:
 
             theta = self.get_theta(frame_ROI, frame_ROI_IPM=None)
 
-            cv2.putText(img=frame_ROI, text=str(theta), org=(150, 150), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale1,
+            cv2.putText(img=frame_ROI, text=str(theta), org=(150, 150), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1,
                         color=(0, 255, 0), thickness=3)
 
             print("time: {}".format(time.time() - start))
