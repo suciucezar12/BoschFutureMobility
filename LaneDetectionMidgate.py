@@ -204,7 +204,6 @@ class LaneDetection:
             cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM), (255, 255, 255), 2)
         return y_cv_IPM_vp, x_cv_IPM_vp
 
-
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
         vp_exists = False
@@ -243,6 +242,9 @@ class LaneDetection:
                 theta = -23
         else:
             theta = -10000
+
+
+
         return theta
 
     def run(self):
@@ -254,6 +256,10 @@ class LaneDetection:
             # frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM), flags=cv2.INTER_NEAREST)
 
             theta = self.get_theta(frame_ROI, frame_ROI_IPM=None)
+
+            cv2.putText(img=frame_ROI, text='Hello', org=(150, 250), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=3,
+                        color=(0, 255, 0), thickness=3)
+
             print("time: {}".format(time.time() - start))
 
             # cv2.imshow("Frame", frame)
