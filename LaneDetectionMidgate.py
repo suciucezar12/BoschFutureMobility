@@ -232,6 +232,9 @@ class LaneDetection:
                         self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
                     y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(left_line_IPM, frame_ROI_IPM,
                                                                            is_left_line=True)
+
+
+
         if vp_exists:
             line_vp = self.get_inverse_line_IPM([y_cv_IPM_vp, x_cv_IPM_vp, int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM], frame_ROI)
             self.draw_line(line_vp, (255, 255, 255), frame_ROI)
@@ -242,9 +245,6 @@ class LaneDetection:
                 theta = -23
         else:
             theta = -10000
-
-
-
         return theta
 
     def run(self):
