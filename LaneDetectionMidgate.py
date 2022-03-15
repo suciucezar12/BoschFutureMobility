@@ -98,7 +98,7 @@ class LaneDetection:
             intercept_oX, theta = self.get_intercept_theta_line(line)
             # horizontal line
             if abs(theta) <= 35:
-                self.draw_line(line, (50, 50, 50), frame_ROI)
+                self.draw_line(line, (255,255,0), frame_ROI)
                 horizontal_lines.append(line)
             else:
                 # left/right lane
