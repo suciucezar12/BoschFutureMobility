@@ -19,6 +19,7 @@ class LaneDetection:
         self.height_ROI_IPM = 210  # calculated related to pixel_resolution and the real dimensions
         self.width_ROI_IPM = 547
         self.y_cv_IPM_center = int(self.width_ROI_IPM / 2 + self.offset_origin)
+        self.x_cv_IPM_horizontal_ROI = 100
 
     def get_homography_matrix(self):
         src_points = np.array([[0, 0], [self.width_ROI, 0], [self.width_ROI, self.height_ROI], [0, self.height_ROI]],
@@ -204,6 +205,22 @@ class LaneDetection:
             cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM), (255, 255, 255), 2)
         return y_cv_IPM_vp, x_cv_IPM_vp
 
+    def get_horizontal_line(self, horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=None, right_line_IPM=None):
+        # get our margin points where we find our horizontal line
+        if left_line_IPM is not None and right_line_IPM is not None:    # detect both left and right lines
+            margin_y_left_IPM = left_line_IPM[0][0]
+            margin_y_right_IPM = right_line_IPM[0][0]
+        else:
+            if left_line_IPM is not None:
+                margin_y_left_IPM = left_line_IPM[0][0]
+                margin_y_right_IPM = left_line_IPM[0][0] + 300
+            else:
+                if right_line_IPM is not None:
+                    margin_y_left_IPM = right_line_IPM[0][0] - 300
+                    margin_y_right_IPM = right_line_IPM[0][0]
+
+        cv2.line(frame_ROI_IPM, (margin_y_left_IPM, self.x_cv_IPM_horizontal_ROI), (margin_y_right_IPM, self.x_cv_IPM_horizontal_ROI), (123, 22, 23), 2)
+
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
         vp_exists = False
@@ -217,6 +234,7 @@ class LaneDetection:
                 self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
                 self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
             y_cv_IPM_vp, x_cv_IPM_vp = self.both_line_detected(left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM)
+            self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM, right_line_IPM,)
         else:
             if right_line is not None:
                 vp_exists = True
