@@ -227,11 +227,17 @@ class LaneDetection:
         for line in horizontal_lines:
             # y1_cv, x1_cv, y2_cv, x2_cv = line[0]
             line_IPM = self.get_line_IPM(line[0], frame_ROI_IPM)
+            # get top coordinate of line (x coordinate in opencv)
             y1_cv, x1_cv, y2_cv, x2_cv = line_IPM[0]
-            if y1_cv >= margin_y_left_IPM and y2_cv <= margin_y_right_IPM:
-                filtered_horizontal_lines.append(line)
-                self.draw_line(line_IPM, (255,255,0), frame_ROI_IPM)
-                sum += math.sqrt((y2_cv - y1_cv) ** 2 + (x2_cv - x1_cv) ** 2)
+            if x1_cv > x2_cv:
+                x_top_cv_h_line = x1_cv
+            else:
+                x_top_cv_h_line = x2_cv
+            if x_top_cv_h_line > self.x_cv_IPM_horizontal_ROI:
+                if y1_cv >= margin_y_left_IPM and y2_cv <= margin_y_right_IPM:
+                    filtered_horizontal_lines.append(line)
+                    self.draw_line(line_IPM, (255,255,0), frame_ROI_IPM)
+                    sum += math.sqrt((y2_cv - y1_cv) ** 2 + (x2_cv - x1_cv) ** 2)
 
         print("Sum = {}".format(sum))
 
