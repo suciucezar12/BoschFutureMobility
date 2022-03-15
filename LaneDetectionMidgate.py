@@ -205,10 +205,6 @@ class LaneDetection:
             cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM), (255, 255, 255), 2)
         return y_cv_IPM_vp, x_cv_IPM_vp
 
-    def filter_horiz_line(self, line):
-        y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-        if y1_cv
-
     def get_horizontal_line(self, horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=None, right_line_IPM=None):
         # get our margin points where we find our horizontal line
         if left_line_IPM is not None and right_line_IPM is not None:    # detect both left and right lines
