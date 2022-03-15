@@ -208,16 +208,16 @@ class LaneDetection:
     def get_horizontal_line(self, horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=None, right_line_IPM=None):
         # get our margin points where we find our horizontal line
         if left_line_IPM is not None and right_line_IPM is not None:    # detect both left and right lines
-            margin_y_left_IPM = left_line_IPM[0][0]
-            margin_y_right_IPM = right_line_IPM[0][0]
+            margin_y_left_IPM = int(left_line_IPM[0][0])
+            margin_y_right_IPM = int(right_line_IPM[0][0])
         else:
             if left_line_IPM is not None:
-                margin_y_left_IPM = left_line_IPM[0][0]
-                margin_y_right_IPM = left_line_IPM[0][0] + 300
+                margin_y_left_IPM = int(left_line_IPM[0][0])
+                margin_y_right_IPM = int(left_line_IPM[0][0] + 300)
             else:
                 if right_line_IPM is not None:
-                    margin_y_left_IPM = right_line_IPM[0][0] - 300
-                    margin_y_right_IPM = right_line_IPM[0][0]
+                    margin_y_left_IPM = int(right_line_IPM[0][0] - 300)
+                    margin_y_right_IPM = int(right_line_IPM[0][0])
 
         cv2.line(frame_ROI_IPM, (margin_y_left_IPM, self.x_cv_IPM_horizontal_ROI), (margin_y_right_IPM, self.x_cv_IPM_horizontal_ROI), (123, 22, 23), 2)
 
