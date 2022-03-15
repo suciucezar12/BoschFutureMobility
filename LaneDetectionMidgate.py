@@ -234,7 +234,7 @@ class LaneDetection:
                 self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
                 self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
             y_cv_IPM_vp, x_cv_IPM_vp = self.both_line_detected(left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM)
-            self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM, right_line_IPM,)
+            self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM, right_line_IPM)
         else:
             if right_line is not None:
                 vp_exists = True
@@ -242,6 +242,7 @@ class LaneDetection:
                 if frame_ROI_IPM is not None:
                     self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
                 y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(right_line_IPM, frame_ROI_IPM, is_left_line=False)
+                self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=None, right_line_IPM=right_line_IPM)
             else:
                 if left_line is not None:
                     vp_exists = True
@@ -250,6 +251,8 @@ class LaneDetection:
                         self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
                     y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(left_line_IPM, frame_ROI_IPM,
                                                                            is_left_line=True)
+                    self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=left_line_IPM,
+                                             right_line_IPM=None)
 
 
 
