@@ -225,9 +225,8 @@ class LaneDetection:
         filtered_horizontal_lines = []
         for line in horizontal_lines:
             # y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-            print("line = {}".format(line))
             line_IPM = self.get_line_IPM(line[0], frame_ROI_IPM)
-            y1_cv, x1_cv, y2_cv, x2_cv = line_IPM[0]
+            y1_cv, x1_cv, y2_cv, x2_cv = line_IPM[0][0]
             if y1_cv >= margin_y_left_IPM and y2_cv <= margin_y_right_IPM:
                 filtered_horizontal_lines.append(line)
                 self.draw_line(line, (50, 50, 50), frame_ROI_IPM)
