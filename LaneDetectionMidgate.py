@@ -205,19 +205,9 @@ class LaneDetection:
             cv2.line(frame_ROI_IPM, (y_cv_IPM_vp, x_cv_IPM_vp), (int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM), (255, 255, 255), 2)
         return y_cv_IPM_vp, x_cv_IPM_vp
 
-    def find_right_left_most_coords(self, line):
+    def filter_horiz_line(self, line):
         y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-        if y1_cv < y2_cv:
-            left_y_cv = y1_cv
-            left_x_cv = x1_cv
-            right_y_cv = y2_cv
-            right_x_cv = x2_cv
-        else:
-            left_y_cv = y2_cv
-            left_x_cv = x2_cv
-            right_y_cv = y1_cv
-            right_x_cv = x1_cv
-        return [left_y_cv, left_x_cv, right_y_cv, right_x_cv]
+        if y1_cv
 
     def get_horizontal_line(self, horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=None, right_line_IPM=None):
         # get our margin points where we find our horizontal line
@@ -236,9 +226,14 @@ class LaneDetection:
         cv2.line(frame_ROI_IPM, (margin_y_left_IPM, self.x_cv_IPM_horizontal_ROI), (margin_y_right_IPM, self.x_cv_IPM_horizontal_ROI), (123, 22, 23), 2)
 
         # filter horizontal lines which do not belong to our region
+        filtered_horizontal_lines = []
         for line in horizontal_lines:
-            h_line = self.find_right_left_most_coords(line)
-            
+            y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+            if not(y1_cv >= margin_y_left_IPM and y2_cv <= margin_y_right_IPM):
+                filtered_horizontal_lines.append(line)
+                self.draw_line(line, (50, 50, 50), frame_ROI_IPM)
+
+
 
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
