@@ -297,7 +297,7 @@ class LaneDetection:
             cv2.putText(img=frame_ROI, text=str(theta), org=(350, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1,
                         color=(0, 255, 0), thickness=3)
 
-            print("time: {}".format(time.time() - start))
+            # print("time: {}".format(time.time() - start))
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("ROI", frame_ROI)
