@@ -36,7 +36,7 @@ class LDTest:
     def detect_lines(self, canny_contrast, canny_gray):
         lines_contrast = cv2.HoughLinesP(canny_contrast, rho=1, theta=np.pi / 180, threshold=50, minLineLength=35,
                         maxLineGap=80)
-        lines_gray = cv2.HoughLinesP(canny_gray, rho=1, theta=np.pi / 180, threshold=50, minLineLength=35,
+        lines_gray = cv2.HoughLinesP(canny_gray, rho=1, theta=np.pi / 180, threshold=40, minLineLength=35,
                         maxLineGap=80)
         self.show_lines(lines_contrast, canny_contrast)
         self.show_lines(lines_gray, canny_gray)
