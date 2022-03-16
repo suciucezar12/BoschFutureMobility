@@ -9,7 +9,7 @@ class LDTest:
 
     def preprocess(self, frame_ROI):
         gray = cv2.cvtColor(frame_ROI, code=cv2.COLOR_BGR2GRAY)
-        contrast = cv2.convertScaleAbs(frame_ROI, alpha=1.3, beta=0)
+        contrast = cv2.convertScaleAbs(gray, alpha=1.3, beta=0)
         # hist_eq = cv2.equalizeHist(gray)
         cv2.imshow("ROI preprocessed", gray)
         cv2.imshow("Contrast", contrast)
