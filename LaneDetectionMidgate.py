@@ -285,13 +285,10 @@ class LaneDetection:
 
         print("Sum = {}".format(sum))
 
-
-
     def get_theta(self, frame_ROI, frame_ROI_IPM=None):  # get the steering angle
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
         vp_exists = False
-
-        cv2.line(frame_ROI_IPM, (self.width_ROI_IPM // 2 - 22, 0), (self.width_ROI_IPM // 2 - 22, self.height_ROI_IPM), (80, 70, 50), 2)
+        sum_h = 0
 
         # transforming in IPM
         if left_line is not None and right_line is not None:
@@ -302,7 +299,8 @@ class LaneDetection:
                 self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
                 self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
             y_cv_IPM_vp, x_cv_IPM_vp = self.both_line_detected(left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM)
-            self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM, right_line_IPM)
+            if len(horizontal_lines) != 0:
+                sum_h = self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM, right_line_IPM)
         else:
             if right_line is not None:
                 vp_exists = True
@@ -310,7 +308,8 @@ class LaneDetection:
                 if frame_ROI_IPM is not None:
                     self.draw_line(right_line_IPM, (0, 255, 0), frame_ROI_IPM)
                 y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(right_line_IPM, frame_ROI_IPM, is_left_line=False)
-                self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=None, right_line_IPM=right_line_IPM)
+                if len(horizontal_lines) != 0:
+                    sum_h = self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=None, right_line_IPM=right_line_IPM)
             else:
                 if left_line is not None:
                     vp_exists = True
@@ -319,20 +318,26 @@ class LaneDetection:
                         self.draw_line(left_line_IPM, (0, 255, 0), frame_ROI_IPM)
                     y_cv_IPM_vp, x_cv_IPM_vp = self.only_one_line_detected(left_line_IPM, frame_ROI_IPM,
                                                                            is_left_line=True)
-                    self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=left_line_IPM,
-                                             right_line_IPM=None)
+                    if len(horizontal_lines) != 0:
+                        sum_h = self.get_horizontal_line(horizontal_lines, frame_ROI_IPM, frame_ROI, left_line_IPM=left_line_IPM, right_line_IPM=None)
 
         if vp_exists:
-            line_vp = self.get_inverse_line_IPM([y_cv_IPM_vp, x_cv_IPM_vp, int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM], frame_ROI)
+            line_vp = self.get_inverse_line_IPM(
+                [y_cv_IPM_vp, x_cv_IPM_vp, int(self.width_ROI_IPM / 2 + self.offset_origin), self.height_ROI_IPM],
+                frame_ROI)
             self.draw_line(line_vp, (255, 255, 255), frame_ROI)
-            theta = round(math.degrees(math.atan((self.y_cv_IPM_center - y_cv_IPM_vp) / (self.height_ROI_IPM - x_cv_IPM_vp))))
+            theta = round(math.degrees(
+                math.atan((self.y_cv_IPM_center - y_cv_IPM_vp) / (self.height_ROI_IPM - x_cv_IPM_vp)))) // 1.5
             if theta > 23:
                 theta = 23
             if theta < -23:
                 theta = -23
         else:
             theta = -10000
-        return theta
+        found_horizontal_line = False
+        if sum_h > 500:
+            found_horizontal_line = True
+        return theta, found_horizontal_line
 
     def run(self):
         ret, frame = self.cap.read()
