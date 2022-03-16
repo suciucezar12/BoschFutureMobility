@@ -33,7 +33,7 @@ class LaneDetection:
 
     def preprocess(self, frame_ROI):    # preprocessing phase of our pipeline
         frame_ROI_gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
-        # frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (11, 11), 0)
+        frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (5, 5), 0)
         frame_ROI_preprocessed = cv2.Canny(frame_ROI_gray, 30, 255)
         return frame_ROI_preprocessed
 
@@ -198,6 +198,9 @@ class LaneDetection:
 
         # select the center of our car
         # from that point we will calculate the distance to the TR expanded
+
+
+
 
     def both_line_detected(self, left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM):
         # determine vanishing point
