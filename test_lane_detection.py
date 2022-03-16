@@ -10,10 +10,15 @@ class LDTest:
     def preprocess(self, frame_ROI):
         gray = cv2.cvtColor(frame_ROI, code=cv2.COLOR_BGR2GRAY)
         contrast = cv2.convertScaleAbs(gray, alpha=1.3, beta=0)
-        # hist_eq = cv2.equalizeHist(gray)
-        cv2.imshow("ROI preprocessed", gray)
-        cv2.imshow("Contrast", contrast)
-        # cv2.imshow("Histogram equalization", hist_eq)
+
+        # cv2.imshow("ROI preprocessed", gray)
+        # cv2.imshow("Contrast", contrast)
+
+        canny_gray = cv2.Canny(gray, 30, 255)
+        canny_contrast = cv2.Canny(contrast, 30, 255)
+
+        cv2.imshow("ROI preprocessed", canny_gray)
+        cv2.imshow("Contrast", canny_contrast)
 
     def run(self):
 
