@@ -240,7 +240,7 @@ class LaneDetection:
                     self.draw_line(line_IPM, (255,255,0), frame_ROI_IPM)
                     sum += math.sqrt((y2_cv - y1_cv) ** 2 + (x2_cv - x1_cv) ** 2)
 
-        print("Sum = {}".format(sum))
+        # print("Sum = {}".format(sum))
 
 
 
