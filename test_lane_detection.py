@@ -47,6 +47,7 @@ class LDTest:
         while True:
             frame_ROI = frame[self.x_cv_ROI:, :]
             canny_contrast, canny_gray = self.preprocess(frame_ROI)
+            self.detect_lines(canny_contrast, canny_gray)
             cv2.imshow("ROI preprocessed", canny_gray)
             cv2.imshow("Contrast", canny_contrast)
             cv2.imshow("ROI", frame_ROI)
