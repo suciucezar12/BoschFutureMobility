@@ -224,27 +224,6 @@ class LaneDetection:
         dest_points = cv2.perspectiveTransform(src_points, self.H)[0]
         return [[dest_points[0][0], dest_points[0][1], dest_points[1][0], dest_points[1][1]]]
 
-    def get_offset(self, left_line=None, right_line=None):
-        # trajectory reference = TR
-        # get our TR coordinates in cv2 CS
-        if left_line is not None and right_line is not None:
-            y1_cv_tr, x1_cv_tr = (left_line[0][0] + right_line[0][0]) // 2, (left_line[0][1] + right_line[0][1]) // 2
-            y2_cv_tr, x2_cv_tr = (left_line[0][2] + right_line[0][2]) // 2, (left_line[0][3] + right_line[0][3]) // 2
-        else:
-            if left_line is not None:
-                y1_cv_tr, x1_cv_tr = int(left_line[0][0] + 150), int(left_line[0][1] + 150)
-                y2_cv_tr, x2_cv_tr = int(left_line[0][2] + 150), int(left_line[0][3] + 150)
-            else:
-                if right_line is not None:
-                    y1_cv_tr, x1_cv_tr = int(right_line[0][0] + 150), int(right_line[0][1] + 150)
-                    y2_cv_tr, x2_cv_tr = int(right_line[0][2] + 150), int(right_line[0][3] + 150)
-
-        # select the center of our car
-        # from that point we will calculate the distance to the TR expanded
-
-
-
-
     def both_line_detected(self, left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM):
         # determine vanishing point
         # take the top points of our lines
