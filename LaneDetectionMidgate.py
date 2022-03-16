@@ -152,15 +152,15 @@ class LaneDetection:
         # filter lines which are not candidate for road's lanes
         if lines_candidate is not None:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
-            if len(left_lines) >= 4 and len(right_lines) >= 4:
+            if len(left_lines) >= 1 and len(right_lines) >= 1:
                 left_line = self.polyfit(left_lines, frame_ROI)
                 right_line = self.polyfit(right_lines, frame_ROI)
             else:
-                if len(left_lines) >= 4:
+                if len(left_lines) >= 1:
                     left_line = self.polyfit(left_lines, frame_ROI)
                     right_line = None
                 else:
-                    if len(right_lines) >= 4:
+                    if len(right_lines) >= 1:
                         left_line = None
                         right_line = self.polyfit(right_lines, frame_ROI)
                     else:
