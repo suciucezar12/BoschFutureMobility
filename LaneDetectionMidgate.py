@@ -245,7 +245,7 @@ class LaneDetection:
         # filter horizontal lines which do not belong to our region
         filtered_horizontal_lines = []
         sum = 0
-        margin_error =  50
+        margin_error = 25
         for line in horizontal_lines:
             # y1_cv, x1_cv, y2_cv, x2_cv = line[0]
             line_IPM = self.get_line_IPM(line[0], frame_ROI_IPM)
