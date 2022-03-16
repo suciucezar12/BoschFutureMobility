@@ -266,7 +266,7 @@ class LaneDetection:
         left_line, right_line, horizontal_lines = self.get_road_lines(frame_ROI, frame_ROI_IPM)
         vp_exists = False
 
-        cv2.line(frame_ROI_IPM, (self.width_ROI_IPM // 2, 0), (self.width_ROI_IPM // 2, self.height_ROI_IPM), (80, 70, 50), 2)
+        cv2.line(frame_ROI_IPM, (self.width_ROI_IPM // 2 - 40, 0), (self.width_ROI_IPM // 2 - 40, self.height_ROI_IPM), (80, 70, 50), 2)
 
         # transforming in IPM
         if left_line is not None and right_line is not None:
@@ -324,7 +324,7 @@ class LaneDetection:
             cv2.putText(img=frame_ROI, text=str(theta), org=(350, 200), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1,
                         color=(0, 255, 0), thickness=3)
 
-            # print("time: {}".format(time.time() - start))
+            print("time: {}".format(time.time() - start))
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("ROI", frame_ROI)
