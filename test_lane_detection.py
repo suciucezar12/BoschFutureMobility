@@ -19,3 +19,6 @@ class LDTest:
             self.preprocess(frame_ROI)
             cv2.imshow("ROI", frame_ROI)
             _, frame = self.cap.read()
+
+testld = LDTest()
+testld.run()
