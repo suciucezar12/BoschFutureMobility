@@ -70,7 +70,7 @@ class LaneDetection:
             except OverflowError:
                 intercept_oX = 30000
 
-            return intercept_oX, theta
+            return intercept_oX, theta, coefficients[0]
 
     def left_or_right_candidate_line(self, intercept_oX, theta):    # 0 -> left line;   # 1 -> right line;
         y_cv_margin = 145   # offset wrt to the center vertical line
@@ -91,9 +91,9 @@ class LaneDetection:
         return -1   # no line of the road
 
     def determine_line_manual(self, param_line, frame_ROI):
-        intercept_oX, theta = param_line
+        intercept_oY, theta = param_line
         slope = math.tan(math.radians(theta))
-        coefficient = [intercept_oX, slope]
+        coefficient = [intercept_oY, slope]
         y1 = 0
         y2 = self.height_ROI
         x1 = int((y1 - coefficient[0]) / coefficient[1])
@@ -114,12 +114,12 @@ class LaneDetection:
         horizontal_lines = []
         left_lines = []
         right_lines = []
-        left_line_aux_intercept_oX = 0
+        left_line_aux_intercept_oY = 0
         left_line_aux_theta = 0
-        right_line_aux_intercept_oX = 0
+        right_line_aux_intercept_oY = 0
         right_line_aux_theta = 0
         for line in lines_candidate:
-            intercept_oX, theta = self.get_intercept_theta_line(line)
+            intercept_oX, theta, intercept_oY = self.get_intercept_theta_line(line)
             # horizontal line
             if abs(theta) <= 35:
                 self.draw_line(line, (50, 50, 50), frame_ROI)
@@ -130,24 +130,24 @@ class LaneDetection:
                 if line_code == 0:  # left line
                     self.draw_line(line, (255, 0, 0), frame_ROI)  # BLUE = LEFT
                     left_lines.append(line)
-                    left_line_aux_intercept_oX += intercept_oX
+                    left_line_aux_intercept_oY += intercept_oY
                     left_line_aux_theta += theta
                 if line_code == 1:  # right line
                     self.draw_line(line, (0, 0, 255), frame_ROI)  # RED = RIGHT
                     right_lines.append(line)
-                    right_line_aux_intercept_oX += intercept_oX
+                    right_line_aux_intercept_oY += intercept_oY
                     right_line_aux_theta += theta
 
         if len(left_lines) > 0:
-            left_line_aux_intercept_oX = left_line_aux_intercept_oX // len(left_lines)
+            left_line_aux_intercept_oY = left_line_aux_intercept_oY // len(left_lines)
             left_line_aux_theta = left_line_aux_theta // len(left_lines)
 
         if len(right_lines) > 0:
-            right_line_aux_intercept_oX = right_line_aux_intercept_oX // len(right_lines)
+            right_line_aux_intercept_oY = right_line_aux_intercept_oY // len(right_lines)
             right_line_aux_theta = right_line_aux_theta // len(right_lines)
 
-        return left_lines, right_lines, horizontal_lines, (left_line_aux_intercept_oX, left_line_aux_theta), (
-        right_line_aux_intercept_oX, right_line_aux_theta)
+        return left_lines, right_lines, horizontal_lines, (left_line_aux_intercept_oY, left_line_aux_theta), (
+        right_line_aux_intercept_oY, right_line_aux_theta)
 
 
     def polyfit(self, lines, frame_ROI, param_line):  # polyfit on a set of coordinates of lines
