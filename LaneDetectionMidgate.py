@@ -34,7 +34,7 @@ class LaneDetection:
     def preprocess(self, frame_ROI):    # preprocessing phase of our pipeline
         frame_ROI_gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
         frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (5, 5), 0)
-        frame_ROI_preprocessed = cv2.Canny(frame_ROI_gray, 30, 255)
+        frame_ROI_preprocessed = cv2.Canny(frame_ROI_gray, 80, 255)
         return frame_ROI_preprocessed
 
     def draw_line(self, line, color, image):
