@@ -354,7 +354,7 @@ class LaneDetection():
         while True:
 
             # waits for the preprocessed image and gets it
-            frame = self.cap.read()
+            ret, frame = self.cap.read()
 
             if frame is None:
                 break
@@ -397,6 +397,8 @@ class LaneDetection():
             self.left_line = []
             self.right_line = []
             self.road_line = []
+
+            _, frame = self.cap.read()
 
 
 ld = LaneDetection()
