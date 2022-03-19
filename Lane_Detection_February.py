@@ -397,3 +397,7 @@ class LaneDetection():
             self.right_line = []
             self.road_line = []
 
+
+ld = LaneDetection()
+ld.run()
+
