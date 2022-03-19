@@ -159,8 +159,8 @@ class LaneDetection():
             x_points.append(x2)
             y_points.append(y1)
             y_points.append(y2)
-
-        if abs(max_x_cv - min_x_cv) < 100:
+        
+        if abs(max_x_cv - min_x_cv) < 140:
             return None
 
         # get our estimated line
