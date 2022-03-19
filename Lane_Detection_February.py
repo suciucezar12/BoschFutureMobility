@@ -17,6 +17,7 @@ class LaneDetection():
         # self.outP_lane = outP_lane
         # self.show_lane = show_lane
         # self.writer = cv2.VideoWriter('PHT_Video.avi', cv2.VideoWriter_fourcc(*'DIVX'), 15, (640, 480))
+        self.cap = cv2.VideoCapture(0)
         self.list_of_frames = []
         self.left_line = []
         self.right_line = []
@@ -353,7 +354,7 @@ class LaneDetection():
         while True:
 
             # waits for the preprocessed image and gets it
-            frame = self.inP_img.recv()
+            frame = self.cap.read()
 
             if frame is None:
                 break
