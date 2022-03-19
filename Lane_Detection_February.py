@@ -1,21 +1,21 @@
-from threading import Thread
+# from threading import Thread
 import time
 import math
-import config
+# import config
 import numpy as np
 import cv2
 
 class LaneDetectionThread(Thread):
-    def __init__(self, inP_img, outP_lane, show_lane=False):
+    def __init__(self):
         """
 
         :param inP_img: receives a preprocessed image from a pipe
         :param outP_lane: outputs the result of the detection through the pipe
         """
-        super(LaneDetectionThread, self).__init__()
-        self.inP_img = inP_img
-        self.outP_lane = outP_lane
-        self.show_lane = show_lane
+        # super(LaneDetectionThread, self).__init__()
+        # self.inP_img = inP_img
+        # self.outP_lane = outP_lane
+        # self.show_lane = show_lane
         # self.writer = cv2.VideoWriter('PHT_Video.avi', cv2.VideoWriter_fourcc(*'DIVX'), 15, (640, 480))
         self.list_of_frames = []
         self.left_line = []
@@ -379,19 +379,19 @@ class LaneDetectionThread(Thread):
                         color=(0, 255, 0), thickness=3)
 
             # cv2.imshow("Frame", frame)
-            #cv2.imshow("ROI", frame_ROI)
-            # cv2.imshow("IPM", frame_ROI_IPM)
+            cv2.imshow("ROI", frame_ROI)
+            cv2.imshow("IPM", frame_ROI_IPM)
             #cv2.waitKey(1)
 
             end = time.time()
-            if config.PRINT_EXEC_TIMES:
-                print("Lane detection time: {}".format(end - start))
+            # if config.PRINT_EXEC_TIMES:
+            #     print("Lane detection time: {}".format(end - start))
 
             ######### here the lane detection ends ###########
 
             # lane_info = {"theta": -theta_average, "horiz_line": found_horizontal_line}
 
-            self.outP_lane.send((end, lane_info, self.left_line, self.right_line, self.road_line))   # sends the results of the detection back
+            # self.outP_lane.send((end, lane_info, self.left_line, self.right_line, self.road_line))   # sends the results of the detection back
 
             self.left_line = []
             self.right_line = []
