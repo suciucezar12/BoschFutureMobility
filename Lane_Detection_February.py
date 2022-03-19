@@ -5,7 +5,7 @@ import math
 import numpy as np
 import cv2
 
-class LaneDetectionThread(Thread):
+class LaneDetection():
     def __init__(self):
         """
 
