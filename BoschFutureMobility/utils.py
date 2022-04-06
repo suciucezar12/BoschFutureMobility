@@ -70,7 +70,7 @@ class Utils:
             y_points.append(y2)
             # add more coordinates on the line for better precision in estimating our lane
             # ------------------------------------------------------------------------------
-            num = 10
+            num = 7
             if x1 < x2:
                 x_min = x1
                 x_max = x2
@@ -86,12 +86,6 @@ class Utils:
                 cv2.circle(frame_ROI, (y_cv, x_cv), 5, (0, 0, 255), 1)
                 x_points.append(x)
                 y_points.append(y)
-                x_points.append(x-10)
-                y_points.append(y)
-                cv2.circle(frame_ROI, (y_cv-10, x_cv), 5, (0, 0, 255), 1)
-                x_points.append(x+10)
-                y_points.append(y)
-                cv2.circle(frame_ROI, (y_cv+10, x_cv), 5, (0, 0, 255), 1)
             # ------------------------------------------------------------------------------
 
         coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
