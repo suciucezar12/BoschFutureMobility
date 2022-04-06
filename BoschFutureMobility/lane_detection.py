@@ -104,7 +104,7 @@ class LaneDetection:
             self.lane_detection(frame_ROI, frame_ROI_IPM=None)
 
             # cv2.imshow("Frame", frame)
-            cv2.imshow("ROI Preprocessed", frame_ROI_canny)
+            cv2.imshow("ROI Preprocessed", frame_ROI)
             cv2.waitKey(1)
 
             end = time.time()
