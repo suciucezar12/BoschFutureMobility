@@ -5,6 +5,12 @@ import numpy as np
 from utils import Utils
 
 
+class Line:
+    def __init__(self, line, intercept_oX, theta):
+        self.coords_cv = line
+        self.intercept_oX = intercept_oX
+        self.theta = theta
+
 class LaneDetection:
 
     def __init__(self):
@@ -52,11 +58,11 @@ class LaneDetection:
                 line_code = self.utils.left_or_right_candidate_line(intercept_oX, theta)
                 # left line
                 if line_code == 0:
-                    left_lines.append(line)
+                    left_lines.append(Line(line, intercept_oX, theta))
                     self.utils.draw_line(line, (255, 0, 0), frame_ROI)
                 # right line
                 if line_code == 1:
-                    right_lines.append(line)
+                    right_lines.append(Line(line, intercept_oX, theta))
                     self.utils.draw_line(line, (0, 0, 255), frame_ROI)
 
         return left_lines, right_lines, horizontal_lines

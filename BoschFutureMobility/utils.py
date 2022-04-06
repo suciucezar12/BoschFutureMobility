@@ -31,10 +31,7 @@ class Utils:
         y_points = []
 
         for line in lines:
-            y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-            # print("({}, {}) ".format(y1_cv, x1_cv)),
-            # print("({}, {}) ".format(y2_cv, x2_cv)),
-            x1, y1, x2, y2 = self.get_XoY_coordinates(line)
+            x1, y1, x2, y2 = self.get_XoY_coordinates(line.coords_cv)
             x_points.append(x1)
             x_points.append(x2)
             y_points.append(y1)
