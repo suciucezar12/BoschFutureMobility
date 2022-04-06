@@ -104,8 +104,8 @@ class Utils:
                 cv2.circle(frame_ROI, (y_cv+6, x_cv), 5, (0, 0, 255), 1)
             # ------------------------------------------------------------------------------
 
-        coefficient_y = np.polynomial.polynomial.polyfit(y_points, x_points, deg=1)
-        coefficient = [1 / coefficient_y[1], -coefficient_y[0] / coefficient_y[1]]
+        coefficient = np.polynomial.polynomial.polyfit(y_points, x_points, deg=1)
+        # coefficient = [1 / coefficient_y[1], -coefficient_y[0] / coefficient_y[1]]
         # ----------------------------------------------------------------------
         # x_mean = np.mean(x_points)
         # y_mean = np.mean(y_points)
@@ -128,8 +128,10 @@ class Utils:
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
         y2 = self.height_ROI
-        x1 = int((y1 - coefficient[0]) / coefficient[1])
-        x2 = int((y2 - coefficient[0]) / coefficient[1])
+        x1 = int(coefficient[1] * y1 + coefficient[0])
+        x2 = int(coefficient[1] * y2 + coefficient[0])
+        # x1 = int((y1 - coefficient[0]) / coefficient[1])
+        # x2 = int((y2 - coefficient[0]) / coefficient[1])
 
         # convert our estimated line from XoY in cv2 coordinate system
         y1_cv, x1_cv, y2_cv, x2_cv = self.get_cv2_coordinates([x1, y1, x2, y2])
