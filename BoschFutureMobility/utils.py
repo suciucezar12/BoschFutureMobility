@@ -13,7 +13,7 @@ class Utils:
 
         ''' Info about ROI '''
         self.x_cv_ROI = 270
-        self.height_ROI = self.width - self.x_cv_ROI
+        self.height_ROI = self.height - self.x_cv_ROI
         self.width_ROI = self.width
 
     def draw_line(self, line, color, image):
