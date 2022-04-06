@@ -106,6 +106,8 @@ class LaneDetection:
                     # TO DO: implement Kalman Filter for prediction
                     pass
 
+        print(left_lane_IPM)
+        print(right_lane_IPM)
         if left_lane_IPM and right_lane_IPM:
             if frame_ROI_IPM:
                 self.utils.draw_line(left_lane_IPM, (0, 255, 0), frame_ROI_IPM)
