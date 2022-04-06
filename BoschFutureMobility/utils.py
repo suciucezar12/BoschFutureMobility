@@ -150,7 +150,6 @@ class Utils:
         y1_cv, x1_cv, y2_cv, x2_cv = line
         src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
         dest_points = cv2.perspectiveTransform(src_points, self.H)[0][0]
-        print(dest_points)
 
     def translation_IPM(self, line_IPM, left_lane=None):
         if left_lane:

@@ -149,7 +149,7 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            print("time: {}".format(end - start))
+            # print("time: {}".format(end - start))
 
             _, frame = self.cap.read()
 
