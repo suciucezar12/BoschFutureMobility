@@ -48,14 +48,14 @@ class Utils:
         x2 = (-coefficient[1] + delta) // (2 * coefficient[2])
         if left_lane:
             if derivative[1] * x1 + derivative[0] > 0:
-                return x1
+                return int(x1)
             if derivative[1] * x2 + derivative[0] > 0:
-                return x2
+                return int(x2)
         else:
             if derivative[1] * x1 + derivative[0] <= 0:
-                return x1
+                return int(x1)
             if derivative[1] * x2 + derivative[0] <= 0:
-                return x2
+                return int(x2)
 
     def polyfit(self, lines, frame_ROI, left_lane=False):
         # coordinates used for estimating our line
@@ -94,10 +94,12 @@ class Utils:
         derivative = [2 * coefficient[2], coefficient[1]]
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
-        x1 = self.root(coefficient, derivative, left_lane)
+        x1 = np.roots(coefficient)
+        print("(x1, y1) = ({}. {})".format(x1, y1))
         y2 = self.height_ROI
         c = coefficient[0] - y2
-        x2 = self.root((coefficient[2], coefficient[1], c), derivative, left_lane)
+        x2 = np.roots((coefficient[2], coefficient[1], c))
+        print("(x2, y2) = ({}. {})".format(x2, y2))
 
         # convert our estimated line from XoY in cv2 coordinate system
         y1_cv, x1_cv, y2_cv, x2_cv = self.get_cv2_coordinates([x1, y1, x2, y2])
