@@ -108,6 +108,7 @@ class LaneDetection:
 
         if left_lane_IPM and right_lane_IPM:
             if frame_ROI_IPM:
+                print("asdas")
                 self.utils.draw_line(left_lane_IPM, (0, 255, 0), frame_ROI_IPM)
                 self.utils.draw_line(right_lane_IPM, (0, 255, 0), frame_ROI_IPM)
             pass
