@@ -73,8 +73,10 @@ class LaneDetection:
                                           maxLineGap=80)
         if lines_candidate is not None:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
-            left_lane = self.utils.polyfit(left_lines, frame_ROI)
-            right_lane = self.utils.polyfit(right_lines, frame_ROI)
+            if left_lines:
+                left_lane = self.utils.polyfit(left_lines, frame_ROI)
+            if right_lines:
+                right_lane = self.utils.polyfit(right_lines, frame_ROI)
         pass
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
