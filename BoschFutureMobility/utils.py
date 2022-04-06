@@ -36,22 +36,9 @@ class Utils:
             x_points.append(x2)
             y_points.append(y1)
             y_points.append(y2)
-            print("({}, {}) ".format(x1, y1)),
-            print("({}, {}) ".format(x2, y2)),
-            # add the centroid coordinates for better precision in finding our estimated lane
-            x_mean = (x1 + x2) // 2
-            y_mean = (y1 + y2) // 2
-            y_cv_mean = x_mean
-            x_cv_mean = abs(y_mean - self.height_ROI)
-            print("({}, {}) ".format(x_mean, y_mean))
-            x_points.append(x_mean)
-            y_points.append(y_mean)
-            cv2.circle(frame_ROI, (y_cv_mean, x_cv_mean), 5, (0, 0, 255), 1)
-
-        print()
+            # add more coordinates on the line for better precision in estimating our lane
 
         coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
-        # y = coeff[2]*x^2 - coeff[1]*x + coeff[0]
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
         y2 = self.height_ROI
