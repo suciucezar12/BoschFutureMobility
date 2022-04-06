@@ -108,7 +108,7 @@ class Utils:
             return intercept_oX, theta
 
     def get_cv2_coordinates(self, line):
-        x1, y1, x2, y2 = line[0]
+        x1, y1, x2, y2 = line
         return x1, abs(y1 - self.height_ROI),  x2, abs(y2 - self.height_ROI)
 
     def get_XoY_coordinates(self, line):
