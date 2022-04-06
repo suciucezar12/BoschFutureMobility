@@ -2,13 +2,17 @@ import time
 
 import cv2
 import numpy as np
-import utils
+from utils import Utils
 
 
 class LaneDetection:
 
     def __init__(self):
         self.cap = cv2.VideoCapture(0)
+        self.utils = Utils()
+        ''' Info about previous detected road lanes'''
+        self.previous_left_lane = []
+        self.previous_right_lane = []
 
         ''' Info about frame'''
         self.width = 640
@@ -25,7 +29,7 @@ class LaneDetection:
             dtype=np.float32)
         self.dst_points_DLT = np.array([[0, 3.1], [66.7, 0], [53.5, 24.6], [11, 25.6]])  # expressed in centimeters
         self.pixel_resolution = 0.122  # centimeters per pixel
-        self.H = utils.get_homography_matrix(self.src_points_DLT, self.dst_points_DLT,
+        self.H = self.utils.get_homography_matrix(self.src_points_DLT, self.dst_points_DLT,
                                              self.pixel_resolution)
 
     def preprocessing(self, frame_ROI):
@@ -34,18 +38,76 @@ class LaneDetection:
         frame_ROI_canny = cv2.Canny(frame_ROI_blurred, 180, 255)
         return frame_ROI_canny
 
+    def filter_lines(self, lines_candidate, frame_ROI, frame_ROI_IPM=None):
+        horizontal_lines = []
+        left_lines = []
+        right_lines = []
+        for line in lines_candidate:
+            intercept_oX, theta = self.utils.get_intercept_theta(line)
+            # check if horizontal line
+            if abs(theta) <= 25:
+                horizontal_lines.append(line)
+            else:
+                # check if left or right line
+                line_code = self.utils.left_or_right_candidate_line(intercept_oX, theta)
+                # left line
+                if line_code == 0:
+                    left_lines.append(line)
+                    self.utils.draw_line(line, (255, 0, 0), frame_ROI)
+                # right line
+                if line_code == 1:
+                    right_lines.append(line)
+                    self.utils.draw_line(line, (0, 0, 255), frame_ROI)
+
+        return left_lines, right_lines, horizontal_lines
+
+    def first_detection(self, frame_ROI, frame_ROI_IPM=None):
+        """
+        We use this algorithm when we don't have any previous data about the road
+        :param frame_ROI:
+        :param frame_ROI_IPM:
+        :return:
+        """
+        lines_candidate = cv2.HoughLinesP(frame_ROI, rho=1, theta=np.pi / 180, threshold=50,
+                                          minLineLength=35,
+                                          maxLineGap=80)
+        if lines_candidate is not None:
+            left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+            left_lane = self.utils.polyfit(left_lines, frame_ROI)
+            right_lane = self.utils.polyfit(right_lines, frame_ROI)
+        pass
+
+    def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
+        """
+
+        :param frame_ROI_IPM: only used when we want draw some results on our IPM frame
+        :return: the coordinates of left and right lanes of the road
+        """
+
+        # check for history of detected road lanes
+        if self.previous_left_lane and self.previous_right_lane:
+            pass
+        else:
+            self.first_detection(frame_ROI, frame_ROI_IPM)
+
     def run(self):
         ret, frame = self.cap.read()
         while True:
             start = time.time()
+
             # select our ROI
             frame_ROI = frame[self.x_cv_ROI:, :]
             frame_ROI_canny = self.preprocessing(frame_ROI)
+
+            self.lane_detection(frame_ROI, frame_ROI_IPM=None)
+
             # cv2.imshow("Frame", frame)
             cv2.imshow("ROI Preprocessed", frame_ROI_canny)
             cv2.waitKey(1)
+
             end = time.time()
             print("time: {}".format(end - start))
+
             _, frame = self.cap.read()
 
 
