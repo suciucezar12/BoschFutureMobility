@@ -1,3 +1,4 @@
+import math
 import time
 
 import cv2
@@ -33,6 +34,9 @@ class LaneDetection:
                                              self.pixel_resolution)
         self.height_ROI_IPM = 210  # calculated related to pixel_resolution and the real dimensions
         self.width_ROI_IPM = 547
+
+        self.offset_origin = -20  # to correct the inclination of our camera
+        self.y_heading_car_cv = self.width_ROI_IPM // 2 + self.offset_origin
 
     def preprocessing(self, frame_ROI):
         frame_ROI_gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
@@ -108,12 +112,20 @@ class LaneDetection:
 
         if left_lane_IPM and right_lane_IPM:
             if frame_ROI_IPM is not None:
-                y1_cv, x1_cv, y2_cv, x2_cv = left_lane_IPM
-                cv2.line(frame_ROI_IPM, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
-                y1_cv, x1_cv, y2_cv, x2_cv = right_lane_IPM
-                cv2.line(frame_ROI_IPM, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
-                # self.utils.draw_line(left_lane_IPM, (0, 255, 0), frame_ROI_IPM)
-                # self.utils.draw_line(right_lane_IPM, (0, 255, 0), frame_ROI_IPM)
+                y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM
+                cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 5)
+                y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM
+                cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 5)
+                # --- get theta --- #
+                y_heading_road_cv = (y1_left_cv + y1_right_cv) // 2
+                x_heading_road_cv = (x1_left_cv + x1_right_cv) // 2
+                theta = round(math.degrees(
+                    math.atan((self.y_heading_car_cv - y_heading_road_cv) / (self.height_ROI_IPM - x_heading_road_cv))))
+                print(theta)
+                # --- get offset --- #
+                # offset = round()
+
+
             pass
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
