@@ -99,7 +99,7 @@ class LaneDetection:
             frame_ROI = frame[self.x_cv_ROI:, :]
             frame_ROI_canny = self.preprocessing(frame_ROI)
 
-            self.lane_detection(frame_ROI, frame_ROI_IPM=None)
+            self.lane_detection(frame_ROI_canny, frame_ROI_IPM=None)
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("ROI Preprocessed", frame_ROI_canny)
