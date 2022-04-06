@@ -89,15 +89,19 @@ class Utils:
                 # ---------------
                 x_points.append(x-3)
                 y_points.append(y)
+                cv2.circle(frame_ROI, (y_cv-3, x_cv), 5, (0, 0, 255), 1)
                 # ---------------
                 x_points.append(x+3)
                 y_points.append(y)
+                cv2.circle(frame_ROI, (y_cv+3, x_cv), 5, (0, 0, 255), 1)
                 # ---------------
                 x_points.append(x-6)
                 y_points.append(y)
+                cv2.circle(frame_ROI, (y_cv-6, x_cv), 5, (0, 0, 255), 1)
                 # ---------------
                 x_points.append(x+6)
                 y_points.append(y)
+                cv2.circle(frame_ROI, (y_cv+6, x_cv), 5, (0, 0, 255), 1)
             # ------------------------------------------------------------------------------
 
         coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
