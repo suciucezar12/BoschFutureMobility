@@ -84,21 +84,28 @@ class LaneDetection:
 
     def get_offset_theta(self, frame_ROI, left_lane=None, right_lane=None, frame_ROI_IPM=None):
         # we get all coordinates in IPM we need of our lanes
+        left_lane_IPM = None
+        right_lane_IPM = None
         if left_lane and right_lane:    # we have both lanes
-            self.utils.get_line_IPM(left_lane)
-            self.utils.get_line_IPM(right_lane)
+            left_lane_IPM = self.utils.get_line_IPM(left_lane)
+            right_lane_IPM = self.utils.get_line_IPM(right_lane)
             pass
         else:
             if left_lane is None:   # only have our right lane
-                self.utils.get_line_IPM(left_lane)
+                left_lane_IPM = self.utils.get_line_IPM(left_lane)
+                right_lane_IPM = self.utils.translation_IPM(left_lane_IPM, True)
                 pass
             else:
                 if right_lane is None:  # only have our left lane
-                    self.utils.get_line_IPM(right_lane)
+                    right_lane_IPM = self.utils.get_line_IPM(right_lane)
+                    left_lane_IPM = self.utils.translation_IPM(right_lane_IPM, False)
                     pass
                 else:   # no lane detected
                     # TO DO: implement Kalman Filter for prediction
                     pass
+
+        if left_lane_IPM and right_lane_IPM:
+            pass
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
         """

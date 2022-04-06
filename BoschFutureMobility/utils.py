@@ -25,6 +25,10 @@ class Utils:
         self.H = self.get_homography_matrix(self.src_points_DLT, self.dst_points_DLT,
                                                   self.pixel_resolution)
 
+        ''' Info about road '''
+        self.width_road = 300
+
+
     def draw_line(self, line, color, image):
         y1_cv, x1_cv, y2_cv, x2_cv = line[0]
         radius = 5
@@ -145,8 +149,16 @@ class Utils:
     def get_line_IPM(self, line):
         y1_cv, x1_cv, y2_cv, x2_cv = line
         src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
-        dest_points = cv2.perspectiveTransform(src_points, self.H)[0]
+        dest_points = cv2.perspectiveTransform(src_points, self.H)[0][0]
         print(dest_points)
+
+    def translation_IPM(self, line_IPM, left_lane=None):
+        if left_lane:
+            offset = self.width_road
+        else:
+            offset = - self.width_road
+        y1_cv, x1_cv, y2_cv, x2_cv = line_IPM
+        return [y1_cv + offset, x1_cv, y2_cv + offset, x2_cv]
 
     def get_intercept_theta(self, line):
         """
