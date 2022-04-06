@@ -40,7 +40,7 @@ class LaneDetection:
             frame_ROI = frame[self.x_cv_ROI:, :]
             frame_ROI_canny = self.preprocessing(frame_ROI)
             # cv2.imshow("Frame", frame)
-            cv2.imshow("ROI", frame_ROI)
+            cv2.imshow("ROI Preprocessed", frame_ROI_canny)
             cv2.waitKey(1)
             _, frame = self.cap.read()
 
