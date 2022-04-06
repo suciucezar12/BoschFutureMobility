@@ -26,7 +26,7 @@ class Utils:
                                                   self.pixel_resolution)
 
         ''' Info about road '''
-        self.width_road = 320
+        self.width_road = 310
 
 
     def draw_line(self, line, color, image):
