@@ -74,8 +74,10 @@ class LaneDetection:
         if lines_candidate is not None:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
             if left_lines:
+                print("left lane:")
                 left_lane = self.utils.polyfit(left_lines, frame_ROI)
             if right_lines:
+                print("right lane:")
                 right_lane = self.utils.polyfit(right_lines, frame_ROI)
         pass
 
@@ -108,7 +110,7 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            print("time: {}".format(end - start))
+            # print("time: {}".format(end - start))
 
             _, frame = self.cap.read()
 
