@@ -54,14 +54,14 @@ class Utils:
             y_points.append(y1)
             y_points.append(y2)
             # add more coordinates on the line for better precision in estimating our lane
-            points = self.linspace([x1, y1, x2, y2])
-            for point in points:
-                x, y = point
-                y_cv = x
-                x_cv = abs(y - self.height_ROI)
-                cv2.circle(frame_ROI, (y_cv, x_cv), 5, (0, 0, 255), 1)
-                x_points.append(x)
-                y_points.append(y)
+            # points = self.linspace([x1, y1, x2, y2])
+            # for point in points:
+            #     x, y = point
+            #     y_cv = x
+            #     x_cv = abs(y - self.height_ROI)
+            #     cv2.circle(frame_ROI, (y_cv, x_cv), 5, (0, 0, 255), 1)
+            #     x_points.append(x)
+            #     y_points.append(y)
 
         coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
         print("y = {}*x + {}".format(coefficient[1], coefficient[0]))
