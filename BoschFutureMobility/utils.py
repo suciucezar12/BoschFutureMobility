@@ -88,12 +88,31 @@ class Utils:
                 y_points.append(y)
             # ------------------------------------------------------------------------------
 
-        coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
+        # coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
+        # ----------------------------------------------------------------------
+        x_mean = np.mean(x_points)
+        y_mean = np.mean(y_points)
+        n = len(x_points)
+
+        # Calculate the linear equation
+        numerator = 0  # top
+        denominator = 0  # bottom
+
+        for (x, y) in zip(x_points, y_points):
+            numerator += (x - x_mean) * (y - y_mean)
+            denominator += (x - x_mean) ** 2
+
+        slope = numerator / denominator
+        intercept_oy = y_mean - slope * x_mean
+
+        print("y = {}*x + {}".format(slope, intercept_oy))
+
+        # ----------------------------------------------------------------------
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
         y2 = self.height_ROI
-        x1 = int((y1 - coefficient[0]) / coefficient[1])
-        x2 = int((y2 - coefficient[0]) / coefficient[1])
+        x1 = int((y1 - intercept_oy) / slope)
+        x2 = int((y2 - intercept_oy) / slope)
 
         # convert our estimated line from XoY in cv2 coordinate system
         y1_cv, x1_cv, y2_cv, x2_cv = self.get_cv2_coordinates([x1, y1, x2, y2])
