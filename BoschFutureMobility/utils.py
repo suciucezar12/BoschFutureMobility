@@ -57,7 +57,9 @@ class Utils:
             points = self.linspace([x1, y1, x2, y2])
             for point in points:
                 x, y = point
-                cv2.circle(frame_ROI, (x, y), 5, (0, 0, 255), 1)
+                y_cv = x
+                x_cv = abs(y - self.height_ROI)
+                cv2.circle(frame_ROI, (y_cv, x_cv), 5, (0, 0, 255), 1)
                 x_points.append(x)
                 y_points.append(y)
 
