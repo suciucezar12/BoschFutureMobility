@@ -112,8 +112,12 @@ class LaneDetection:
         print(right_lane_IPM)
         if left_lane_IPM and right_lane_IPM:
             if frame_ROI_IPM is not None:
-                self.utils.draw_line(left_lane_IPM, (0, 255, 0), frame_ROI_IPM)
-                self.utils.draw_line(right_lane_IPM, (0, 255, 0), frame_ROI_IPM)
+                y1_cv, x1_cv, y2_cv, x2_cv = left_lane_IPM
+                cv2.line(frame_ROI_IPM, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
+                y1_cv, x1_cv, y2_cv, x2_cv = right_lane_IPM
+                cv2.line(frame_ROI_IPM, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
+                # self.utils.draw_line(left_lane_IPM, (0, 255, 0), frame_ROI_IPM)
+                # self.utils.draw_line(right_lane_IPM, (0, 255, 0), frame_ROI_IPM)
             pass
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
