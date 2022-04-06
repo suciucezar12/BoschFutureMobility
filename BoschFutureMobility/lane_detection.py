@@ -93,12 +93,12 @@ class LaneDetection:
             right_lane_IPM = self.utils.get_line_IPM(right_lane)
             pass
         else:
-            if left_lane is None:   # only have our right lane
+            if left_lane is not None:   # only have our left lane
                 left_lane_IPM = self.utils.get_line_IPM(left_lane)
                 right_lane_IPM = self.utils.translation_IPM(left_lane_IPM, True)
                 pass
             else:
-                if right_lane is None:  # only have our left lane
+                if right_lane is not None:  # only have our right lane
                     right_lane_IPM = self.utils.get_line_IPM(right_lane)
                     left_lane_IPM = self.utils.translation_IPM(right_lane_IPM, False)
                     pass
@@ -108,7 +108,6 @@ class LaneDetection:
 
         if left_lane_IPM and right_lane_IPM:
             if frame_ROI_IPM:
-                print("asdas")
                 self.utils.draw_line(left_lane_IPM, (0, 255, 0), frame_ROI_IPM)
                 self.utils.draw_line(right_lane_IPM, (0, 255, 0), frame_ROI_IPM)
             pass
