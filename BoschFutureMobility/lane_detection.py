@@ -68,8 +68,8 @@ class LaneDetection:
         :param frame_ROI_IPM:
         :return:
         """
-        lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50,
-                                          minLineLength=35,
+        lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=40,
+                                          minLineLength=25,
                                           maxLineGap=80)
         if lines_candidate is not None:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
