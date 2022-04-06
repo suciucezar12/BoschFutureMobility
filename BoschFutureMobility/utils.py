@@ -27,7 +27,7 @@ class Utils:
 
     def linspace(self, line):
         x1, y1, x2, y2 = line
-        num = 3
+        num = 5
         points = []
         if x1 < x2:
             x_min = x1
