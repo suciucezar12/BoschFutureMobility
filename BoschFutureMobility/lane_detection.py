@@ -75,10 +75,10 @@ class LaneDetection:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
             if left_lines:
                 print("left_line:")
-                left_lane = self.utils.polyfit(left_lines, frame_ROI)
+                left_lane = self.utils.polyfit(left_lines, frame_ROI, left_lane=True)
             if right_lines:
                 print("right_line:")
-                right_lane = self.utils.polyfit(right_lines, frame_ROI)
+                right_lane = self.utils.polyfit(right_lines, frame_ROI, left_lane=False)
         pass
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):

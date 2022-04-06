@@ -42,7 +42,22 @@ class Utils:
             points.append((int(x), y))
         return points
 
-    def polyfit(self, lines, frame_ROI):
+    def root(self, coefficient, derivative, left_lane=False):
+        delta = math.sqrt(coefficient[1] ** 2 - 4 * coefficient[2] * coefficient[0])
+        x1 = (-coefficient[1] - delta) // (2 * coefficient[2])
+        x2 = (-coefficient[1] + delta) // (2 * coefficient[2])
+        if left_lane:
+            if derivative[1] * x1 + derivative[0] > 0:
+                return x1
+            if derivative[1] * x2 + derivative[0] > 0:
+                return x2
+        else:
+            if derivative[1] * x1 + derivative[0] <= 0:
+                return x1
+            if derivative[1] * x2 + derivative[0] <= 0:
+                return x2
+
+    def polyfit(self, lines, frame_ROI, left_lane=False):
         # coordinates used for estimating our line
         x_points = []
         y_points = []
@@ -73,13 +88,16 @@ class Utils:
                 y_points.append(y)
             # ------------------------------------------------------------------------------
 
-        coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
-        print("y = {}*x + {}".format(coefficient[1], coefficient[0]))
+        # coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
+        # y = coeff[2] * x^2 + coeff[1] * x^1 + coeff[0]
+        coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=2)
+        derivative = [2 * coefficient[2], coefficient[1]]
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
+        x1 = self.root(coefficient, derivative, left_lane)
         y2 = self.height_ROI
-        x1 = int((y1 - coefficient[0]) / coefficient[1])
-        x2 = int((y2 - coefficient[0]) / coefficient[1])
+        c = coefficient[0] - y2
+        x2 = self.root((coefficient[2], coefficient[1], c), derivative, left_lane)
 
         # convert our estimated line from XoY in cv2 coordinate system
         y1_cv, x1_cv, y2_cv, x2_cv = self.get_cv2_coordinates([x1, y1, x2, y2])
