@@ -39,34 +39,14 @@ class Utils:
             print("({}, {}) ".format(x1, y1)),
             print("({}, {}) ".format(x2, y2)),
             # add the centroid coordinates for better precision in finding our estimated lane
-            x_mean = int((x1 + x2) / 1.5)
-            y_mean = int((y1 + y2) / 1.5)
-            y_cv_mean = x_mean
-            x_cv_mean = abs(y_mean - self.height_ROI)
-            x_points.append(x_mean)
-            y_points.append(y_mean)
-
             x_mean = (x1 + x2) // 2
             y_mean = (y1 + y2) // 2
             y_cv_mean = x_mean
             x_cv_mean = abs(y_mean - self.height_ROI)
             x_points.append(x_mean)
             y_points.append(y_mean)
-
-            x_mean = (x1 + x2) // 3
-            y_mean = (y1 + y2) // 3
-            y_cv_mean = x_mean
-            x_cv_mean = abs(y_mean - self.height_ROI)
-            x_points.append(x_mean)
-            y_points.append(y_mean)
-
-            x_mean = (x1 + x2) // 4
-            y_mean = (y1 + y2) // 4
-            y_cv_mean = x_mean
-            x_cv_mean = abs(y_mean - self.height_ROI)
-            x_points.append(x_mean)
-            y_points.append(y_mean)
             cv2.circle(frame_ROI, (y_cv_mean, x_cv_mean), 5, (0, 0, 255), 1)
+
         print()
 
         coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
