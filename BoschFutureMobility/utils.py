@@ -87,16 +87,16 @@ class Utils:
                 x_points.append(x)
                 y_points.append(y)
                 # ---------------
-                x_points.append(x-5)
+                x_points.append(x-3)
                 y_points.append(y)
                 # ---------------
-                x_points.append(x+5)
+                x_points.append(x+3)
                 y_points.append(y)
                 # ---------------
-                x_points.append(x-10)
+                x_points.append(x-6)
                 y_points.append(y)
                 # ---------------
-                x_points.append(x+10)
+                x_points.append(x+6)
                 y_points.append(y)
             # ------------------------------------------------------------------------------
 
