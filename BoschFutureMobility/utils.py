@@ -37,8 +37,8 @@ class Utils:
             y_points.append(y1)
             y_points.append(y2)
             # add the centroid coordinates for better precision in finding our estimated lane
-            x_mean = np.mean(x1, x2)
-            y_mean = np.mean(y1, y2)
+            x_mean = (x1 + x2) // 2
+            y_mean = (y1 + y2) // 2
             y_cv_mean = x_mean
             x_cv_mean = abs(y_mean - self.height_ROI)
             x_points.append(x_mean)
