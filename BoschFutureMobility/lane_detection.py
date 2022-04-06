@@ -61,14 +61,14 @@ class LaneDetection:
 
         return left_lines, right_lines, horizontal_lines
 
-    def first_detection(self, frame_ROI, frame_ROI_IPM=None):
+    def first_detection(self, frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM=None):
         """
         We use this algorithm when we don't have any previous data about the road
         :param frame_ROI:
         :param frame_ROI_IPM:
         :return:
         """
-        lines_candidate = cv2.HoughLinesP(frame_ROI, rho=1, theta=np.pi / 180, threshold=50,
+        lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=50,
                                           minLineLength=35,
                                           maxLineGap=80)
         if lines_candidate is not None:
@@ -85,12 +85,12 @@ class LaneDetection:
         :param frame_ROI_IPM: only used when we want draw some results on our IPM frame
         :return: the coordinates of left and right lanes of the road
         """
-
+        frame_ROI_preprocessed = self.preprocessing(frame_ROI)
         # check for history of detected road lanes
         if self.previous_left_lane and self.previous_right_lane:
             pass
         else:
-            self.first_detection(frame_ROI, frame_ROI_IPM)
+            self.first_detection(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
 
     def run(self):
         ret, frame = self.cap.read()
@@ -101,7 +101,7 @@ class LaneDetection:
             frame_ROI = frame[self.x_cv_ROI:, :]
             frame_ROI_canny = self.preprocessing(frame_ROI)
 
-            self.lane_detection(frame_ROI_canny, frame_ROI_IPM=None)
+            self.lane_detection(frame_ROI, frame_ROI_IPM=None)
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("ROI Preprocessed", frame_ROI_canny)
