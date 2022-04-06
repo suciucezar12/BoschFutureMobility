@@ -116,7 +116,7 @@ class LaneDetection:
         else:
             left_lane, right_lane = self.first_detection(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
 
-        offset, theta = self.get_offset_theta(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
+        self.get_offset_theta(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
 
 
     def run(self):
