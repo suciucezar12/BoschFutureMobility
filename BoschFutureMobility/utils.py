@@ -25,6 +25,23 @@ class Utils:
         cv2.circle(image, (y2_cv, x2_cv), radius, color_right_most_point, 1)
         cv2.line(image, (y1_cv, x1_cv), (y2_cv, x2_cv), color, 2)
 
+    def linspace(self, line):
+        x1, y1, x2, y2 = line
+        num = 5
+        points = []
+        if x1 < x2:
+            x_min = x1
+            x_max = x2
+        else:
+            x_min = x2
+            x_max = x1
+        x_array = np.linspace(x_min, x_max, num)
+        coeff = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), deg=1)
+        for x in x_array:
+            y = int(coeff[1] * x + coeff[0])
+            points.append((int(x), y))
+        return points
+
     def polyfit(self, lines, frame_ROI):
         # coordinates used for estimating our line
         x_points = []
@@ -37,6 +54,12 @@ class Utils:
             y_points.append(y1)
             y_points.append(y2)
             # add more coordinates on the line for better precision in estimating our lane
+            points = self.linspace([x1, y1, x2, y2])
+            for point in points:
+                x, y = point
+                cv2.circle(frame_ROI, (x, y), 5, (0, 0, 255), 1)
+                x_points.append(x)
+                y_points.append(y)
 
         coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
         # expand our estimated line from bottom to the top of the ROI

@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from utils import Utils
 
+
 class LaneDetection:
 
     def __init__(self):
