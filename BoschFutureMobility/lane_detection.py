@@ -71,13 +71,34 @@ class LaneDetection:
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=45,
                                           minLineLength=25,
                                           maxLineGap=80)
+        left_lane = None
+        right_lane = None
         if lines_candidate is not None:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+
             if left_lines:
                 left_lane = self.utils.polyfit(left_lines, frame_ROI, left_lane=True)
             if right_lines:
                 right_lane = self.utils.polyfit(right_lines, frame_ROI, left_lane=False)
-        pass
+        return left_lane, right_lane
+
+    def get_offset_theta(self, frame_ROI, left_lane=None, right_lane=None, frame_ROI_IPM=None):
+        # we get all coordinates in IPM we need of our lanes
+        if left_lane and right_lane:    # we have both lanes
+            self.utils.get_line_IPM(left_lane)
+            self.utils.get_line_IPM(right_lane)
+            pass
+        else:
+            if left_lane is None:   # only have our right lane
+                self.utils.get_line_IPM(left_lane)
+                pass
+            else:
+                if right_lane is None:  # only have our left lane
+                    self.utils.get_line_IPM(right_lane)
+                    pass
+                else:   # no lane detected
+                    # TO DO: implement Kalman Filter for prediction
+                    pass
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
         """
@@ -88,10 +109,15 @@ class LaneDetection:
         frame_ROI_preprocessed = self.preprocessing(frame_ROI)
         # cv2.imshow("ROI Preprocessed", frame_ROI_preprocessed)
         # check for history of detected road lanes
+        left_lane = None
+        right_lane = None
         if self.previous_left_lane and self.previous_right_lane:
             pass
         else:
-            self.first_detection(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
+            left_lane, right_lane = self.first_detection(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
+
+        offset, theta = self.get_offset_theta(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
+
 
     def run(self):
         ret, frame = self.cap.read()

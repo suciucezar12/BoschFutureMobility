@@ -42,21 +42,6 @@ class Utils:
             points.append((int(x), y))
         return points
 
-    def root(self, coefficient, derivative, left_lane=False):
-        delta = math.sqrt(coefficient[1] ** 2 - 4 * coefficient[2] * coefficient[0])
-        x1 = (-coefficient[1] - delta) // (2 * coefficient[2])
-        x2 = (-coefficient[1] + delta) // (2 * coefficient[2])
-        if left_lane:
-            if derivative[1] * x1 + derivative[0] > 0:
-                return int(x1)
-            if derivative[1] * x2 + derivative[0] > 0:
-                return int(x2)
-        else:
-            if derivative[1] * x1 + derivative[0] <= 0:
-                return int(x1)
-            if derivative[1] * x2 + derivative[0] <= 0:
-                return int(x2)
-
     def polyfit(self, lines, frame_ROI, left_lane=False):
         # coordinates used for estimating our line
         x_points = []
@@ -85,7 +70,6 @@ class Utils:
                 x_cv = abs(y - self.height_ROI)
                 cv2.circle(frame_ROI, (y_cv, x_cv), 5, (0, 0, 255), 1)
             # ------------------------------------------------------------------------------
-
         coefficient = np.polynomial.polynomial.polyfit(y_points, x_points, deg=1)
         # coefficient = [1 / coefficient_y[1], -coefficient_y[0] / coefficient_y[1]]
         # ----------------------------------------------------------------------
@@ -108,17 +92,20 @@ class Utils:
 
         # ----------------------------------------------------------------------
         # expand our estimated line from bottom to the top of the ROI
-        y1 = 0
-        y2 = self.height_ROI
-        x1 = int(coefficient[1] * y1 + coefficient[0])
-        x2 = int(coefficient[1] * y2 + coefficient[0])
-        # x1 = int((y1 - coefficient[0]) / coefficient[1])
-        # x2 = int((y2 - coefficient[0]) / coefficient[1])
+        if coefficient:
+            y1 = 0
+            y2 = self.height_ROI
+            x1 = int(coefficient[1] * y1 + coefficient[0])
+            x2 = int(coefficient[1] * y2 + coefficient[0])
+            # x1 = int((y1 - coefficient[0]) / coefficient[1])
+            # x2 = int((y2 - coefficient[0]) / coefficient[1])
 
-        # convert our estimated line from XoY in cv2 coordinate system
-        y1_cv, x1_cv, y2_cv, x2_cv = self.get_cv2_coordinates([x1, y1, x2, y2])
-        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
-        return [y1_cv, x1_cv, y2_cv, x2_cv]
+            # convert our estimated line from XoY in cv2 coordinate system
+            y1_cv, x1_cv, y2_cv, x2_cv = self.get_cv2_coordinates([x1, y1, x2, y2])
+            cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
+            return [y1_cv, x1_cv, y2_cv, x2_cv]
+        else:
+            return None
 
 
     def left_or_right_candidate_line(self, intercept_oX, theta):  # 0 -> left line;   # 1 -> right line;
@@ -149,6 +136,12 @@ class Utils:
             dtype=np.float32)
         H = cv2.getPerspectiveTransform(src_points, dst_points)
         return H
+
+    def get_line_IPM(self, line):
+        y1_cv, x1_cv, y2_cv, x2_cv = line
+        src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
+        dest_points = cv2.perspectiveTransform(src_points, self.H)[0]
+        print(dest_points)
 
     def get_intercept_theta(self, line):
         """
