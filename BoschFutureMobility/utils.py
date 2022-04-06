@@ -92,20 +92,17 @@ class Utils:
 
         # ----------------------------------------------------------------------
         # expand our estimated line from bottom to the top of the ROI
-        if coefficient:
-            y1 = 0
-            y2 = self.height_ROI
-            x1 = int(coefficient[1] * y1 + coefficient[0])
-            x2 = int(coefficient[1] * y2 + coefficient[0])
-            # x1 = int((y1 - coefficient[0]) / coefficient[1])
-            # x2 = int((y2 - coefficient[0]) / coefficient[1])
+        y1 = 0
+        y2 = self.height_ROI
+        x1 = int(coefficient[1] * y1 + coefficient[0])
+        x2 = int(coefficient[1] * y2 + coefficient[0])
+        # x1 = int((y1 - coefficient[0]) / coefficient[1])
+        # x2 = int((y2 - coefficient[0]) / coefficient[1])
 
-            # convert our estimated line from XoY in cv2 coordinate system
-            y1_cv, x1_cv, y2_cv, x2_cv = self.get_cv2_coordinates([x1, y1, x2, y2])
-            cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
-            return [y1_cv, x1_cv, y2_cv, x2_cv]
-        else:
-            return None
+        # convert our estimated line from XoY in cv2 coordinate system
+        y1_cv, x1_cv, y2_cv, x2_cv = self.get_cv2_coordinates([x1, y1, x2, y2])
+        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
+        return [y1_cv, x1_cv, y2_cv, x2_cv]
 
 
     def left_or_right_candidate_line(self, intercept_oX, theta):  # 0 -> left line;   # 1 -> right line;
