@@ -32,15 +32,15 @@ class Utils:
 
         for line in lines:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-            print("({}, {}) ".format(y1_cv, x1_cv)),
-            print("({}, {}) ".format(y2_cv, x2_cv)),
+            # print("({}, {}) ".format(y1_cv, x1_cv)),
+            # print("({}, {}) ".format(y2_cv, x2_cv)),
             x1, y1, x2, y2 = self.get_XoY_coordinates(line)
             x_points.append(x1)
             x_points.append(x2)
             y_points.append(y1)
             y_points.append(y2)
-            # print("({}, {}) ".format(x1, y1)),
-            # print("({}, {}) ".format(x2, y2)),
+            print("({}, {}) ".format(x1, y1)),
+            print("({}, {}) ".format(x2, y2)),
             # add the centroid coordinates for better precision in finding our estimated lane
             x_mean = (x1 + x2) // 2
             y_mean = (y1 + y2) // 2
