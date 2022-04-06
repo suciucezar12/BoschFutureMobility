@@ -113,7 +113,6 @@ class Utils:
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
         return [y1_cv, x1_cv, y2_cv, x2_cv]
 
-
     def left_or_right_candidate_line(self, intercept_oX, theta):  # 0 -> left line;   # 1 -> right line;
         y_cv_margin = 145  # offset wrt to the center vertical line
         margin_y_cv_left = int(self.width_ROI / 2) - y_cv_margin
@@ -146,7 +145,7 @@ class Utils:
     def get_line_IPM(self, line):
         y1_cv, x1_cv, y2_cv, x2_cv = line
         src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
-        dest_points = cv2.perspectiveTransform(src_points, self.H)[0][0]
+        dest_points = cv2.perspectiveTransform(src_points, self.H)[0]
         print(dest_points)
 
     def get_intercept_theta(self, line):
