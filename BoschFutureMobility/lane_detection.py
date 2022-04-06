@@ -1,3 +1,5 @@
+import time
+
 import cv2
 import numpy as np
 import utils
@@ -35,13 +37,15 @@ class LaneDetection:
     def run(self):
         ret, frame = self.cap.read()
         while True:
-
+            start = time.time()
             # select our ROI
             frame_ROI = frame[self.x_cv_ROI:, :]
             frame_ROI_canny = self.preprocessing(frame_ROI)
             # cv2.imshow("Frame", frame)
             cv2.imshow("ROI Preprocessed", frame_ROI_canny)
             cv2.waitKey(1)
+            end = time.time()
+            print("time: {}".format(end - start))
             _, frame = self.cap.read()
 
 
