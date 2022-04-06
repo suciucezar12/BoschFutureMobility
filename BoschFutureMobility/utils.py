@@ -52,7 +52,7 @@ class Utils:
 
         print()
 
-        coefficient = np.polynomial.polynomial.Polynomial.fit(x_points, y_points, deg=1)
+        coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
         # y = coeff[2]*x^2 - coeff[1]*x + coeff[0]
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
