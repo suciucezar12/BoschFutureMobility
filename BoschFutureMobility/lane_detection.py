@@ -86,6 +86,7 @@ class LaneDetection:
         :return: the coordinates of left and right lanes of the road
         """
         frame_ROI_preprocessed = self.preprocessing(frame_ROI)
+        cv2.imshow("ROI Preprocessed", frame_ROI_preprocessed)
         # check for history of detected road lanes
         if self.previous_left_lane and self.previous_right_lane:
             pass
@@ -99,12 +100,11 @@ class LaneDetection:
 
             # select our ROI
             frame_ROI = frame[self.x_cv_ROI:, :]
-            frame_ROI_canny = self.preprocessing(frame_ROI)
 
             self.lane_detection(frame_ROI, frame_ROI_IPM=None)
 
             # cv2.imshow("Frame", frame)
-            cv2.imshow("ROI Preprocessed", frame_ROI)
+            cv2.imshow("ROI", frame_ROI)
             cv2.waitKey(1)
 
             end = time.time()
