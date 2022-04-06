@@ -16,6 +16,15 @@ class Utils:
         self.height_ROI = self.height - self.x_cv_ROI
         self.width_ROI = self.width
 
+        ''' Info for IPM (Inverse Perspective Mapping)'''
+        self.src_points_DLT = np.array(
+            [[0, 0], [self.width_ROI, 0], [self.width_ROI, self.height_ROI], [0, self.height_ROI]],
+            dtype=np.float32)
+        self.dst_points_DLT = np.array([[0, 3.1], [66.7, 0], [53.5, 24.6], [11, 25.6]])  # expressed in centimeters
+        self.pixel_resolution = 0.122  # centimeters per pixel
+        self.H = self.get_homography_matrix(self.src_points_DLT, self.dst_points_DLT,
+                                                  self.pixel_resolution)
+
     def draw_line(self, line, color, image):
         y1_cv, x1_cv, y2_cv, x2_cv = line[0]
         radius = 5
