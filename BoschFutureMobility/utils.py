@@ -104,7 +104,7 @@ class Utils:
                 cv2.circle(frame_ROI, (y_cv+6, x_cv), 5, (0, 0, 255), 1)
             # ------------------------------------------------------------------------------
 
-        coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
+        coefficient = np.polynomial.polynomial.polyfit(y_points, x_points, deg=1)
         # ----------------------------------------------------------------------
         # x_mean = np.mean(x_points)
         # y_mean = np.mean(y_points)
