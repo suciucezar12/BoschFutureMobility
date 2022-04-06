@@ -23,7 +23,7 @@ class Utils:
         color_right_most_point = (255, 0, 0)  # BLUE fpr right_most point
         cv2.circle(image, (y1_cv, x1_cv), radius, color_left_most_point, 1)
         cv2.circle(image, (y2_cv, x2_cv), radius, color_right_most_point, 1)
-        cv2.line(image, (y1_cv, x1_cv), (y2_cv, x2_cv), color, 2)
+        cv2.line(image, (y1_cv, x1_cv), (y2_cv, x2_cv), color, 1)
 
     def linspace(self, line):
         x1, y1, x2, y2 = line
@@ -68,7 +68,7 @@ class Utils:
             x_points.append(x2)
             y_points.append(y1)
             y_points.append(y2)
-            # add more coordinates on the line for better precision in estimating our lane
+            # add more coordinates of the line for better precision in estimating our lane
             # ------------------------------------------------------------------------------
             num = 5
             if x1 < x2:
@@ -117,7 +117,7 @@ class Utils:
 
         # convert our estimated line from XoY in cv2 coordinate system
         y1_cv, x1_cv, y2_cv, x2_cv = self.get_cv2_coordinates([x1, y1, x2, y2])
-        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 5)
         return [y1_cv, x1_cv, y2_cv, x2_cv]
 
 
