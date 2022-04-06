@@ -31,6 +31,8 @@ class LaneDetection:
         self.pixel_resolution = 0.122  # centimeters per pixel
         self.H = self.utils.get_homography_matrix(self.src_points_DLT, self.dst_points_DLT,
                                              self.pixel_resolution)
+        self.height_ROI_IPM = 210  # calculated related to pixel_resolution and the real dimensions
+        self.width_ROI_IPM = 547
 
     def preprocessing(self, frame_ROI):
         frame_ROI_gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
@@ -105,6 +107,9 @@ class LaneDetection:
                     pass
 
         if left_lane_IPM and right_lane_IPM:
+            if frame_ROI_IPM:
+                self.utils.draw_line(left_lane_IPM, (0, 255, 0), frame_ROI_IPM)
+                self.utils.draw_line(right_lane_IPM, (0, 255, 0), frame_ROI_IPM)
             pass
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
@@ -133,10 +138,13 @@ class LaneDetection:
 
             # select our ROI
             frame_ROI = frame[self.x_cv_ROI:, :]
+            frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
+                                                flags=cv2.INTER_NEAREST)
 
-            self.lane_detection(frame_ROI, frame_ROI_IPM=None)
+            self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
 
             # cv2.imshow("Frame", frame)
+            cv2.imshow("IPM", frame_ROI_IPM)
             cv2.imshow("ROI", frame_ROI)
             cv2.waitKey(1)
 
