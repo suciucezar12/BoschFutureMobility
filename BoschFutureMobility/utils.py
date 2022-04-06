@@ -64,6 +64,7 @@ class Utils:
                 y_points.append(y)
 
         coefficient = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
+        print("y = {}*x + {}".format(coefficient[1], coefficient[0]))
         # expand our estimated line from bottom to the top of the ROI
         y1 = 0
         y2 = self.height_ROI
