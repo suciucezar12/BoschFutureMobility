@@ -65,7 +65,7 @@ class Utils:
             coeff = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), deg=1)
             for x in x_array:
                 y = int(coeff[1] * x + coeff[0])
-                y_cv = x
+                y_cv = int(x)
                 x_cv = abs(y - self.height_ROI)
                 cv2.circle(frame_ROI, (y_cv, x_cv), 5, (0, 0, 255), 1)
                 x_points.append(x)
