@@ -70,7 +70,7 @@ class Utils:
             y_points.append(y2)
             # add more coordinates on the line for better precision in estimating our lane
             # ------------------------------------------------------------------------------
-            num = 3
+            num = 10
             if x1 < x2:
                 x_min = x1
                 x_max = x2
