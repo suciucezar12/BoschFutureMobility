@@ -127,7 +127,7 @@ class LaneDetection:
         cv2.line(frame_ROI_IPM, (y_heading_road_cv, x_heading_road_cv), (y_bottom_road_cv, x_bottom_road_cv), (255, 255, 255), 3)
         road_line_reference = self.utils.get_inv_line_IPM([y_heading_road_cv, x_heading_road_cv, y_bottom_road_cv, x_bottom_road_cv])
         y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference
-        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
 
         theta = round(math.degrees(math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM))))
 
