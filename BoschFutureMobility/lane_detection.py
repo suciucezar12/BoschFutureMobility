@@ -127,7 +127,7 @@ class LaneDetection:
         theta = round(math.degrees(math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM))))
 
         # offset
-        offset = (y_bottom_road_cv - self.offset_origin) * self.pixel_resolution
+        offset = (y_bottom_road_cv - self.y_heading_car_cv) * self.pixel_resolution
 
         return offset, theta
 
