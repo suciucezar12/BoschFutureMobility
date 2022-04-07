@@ -175,10 +175,10 @@ class LaneDetection:
 
             # select our ROI
             frame_ROI = frame[self.x_cv_ROI:, :]
-            # frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
-            #                                     flags=cv2.INTER_NEAREST)
+            frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
+                                                flags=cv2.INTER_NEAREST)
 
-            offset, theta = self.lane_detection(frame_ROI, frame_ROI_IPM=None)
+            offset, theta = self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
 
             if offset is not None:
                 print("offset = {} cm".format(offset))
