@@ -100,33 +100,40 @@ class LaneDetection:
             if left_lane is not None:   # only have our left lane
                 left_lane_IPM = self.utils.get_line_IPM(left_lane)
                 right_lane_IPM = self.utils.translation_IPM(left_lane_IPM, True)
+                right_lane = self.utils.get_inv_line_IPM(right_lane_IPM)
                 pass
             else:
                 if right_lane is not None:  # only have our right lane
                     right_lane_IPM = self.utils.get_line_IPM(right_lane)
                     left_lane_IPM = self.utils.translation_IPM(right_lane_IPM, False)
-                    pass
-                else:   # no lane detected
-                    # TO DO: implement Kalman Filter for prediction
+                    left_lane = self.utils.get_inv_line_IPM(left_lane_IPM)
                     pass
 
-        if left_lane_IPM and right_lane_IPM:
-            if frame_ROI_IPM is not None:
-                y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM
-                cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 5)
-                y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM
-                cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 5)
-                # --- get theta --- #
-                y_heading_road_cv = (y1_left_cv + y1_right_cv) // 2
-                x_heading_road_cv = (x1_left_cv + x1_right_cv) // 2
-                theta = round(math.degrees(
-                    math.atan((self.y_heading_car_cv - y_heading_road_cv) / (self.height_ROI_IPM - x_heading_road_cv))))
-                print(theta)
-                # --- get offset --- #
-                # offset = round()
 
+        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM
+        y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM
+        if frame_ROI_IPM is not None:
+            cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 5)
+            cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 5)
 
-            pass
+        # theta
+        y_heading_road_cv = (y2_left_cv + y2_right_cv) // 2
+        x_heading_road_cv = (x2_left_cv + x2_right_cv) // 2
+
+        y_bottom_road_cv = (y1_left_cv + y1_right_cv) // 2
+        x_bottom_road_cv = (x1_left_cv + x1_right_cv) // 2
+        cv2.line(frame_ROI_IPM, (y_heading_road_cv, x_heading_road_cv), (y_bottom_road_cv, x_bottom_road_cv), (255, 255, 255), 5)
+
+        theta = round(math.degrees(math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM))))
+
+        # offset
+        offset = (y_bottom_road_cv - self.offset_origin) * self.pixel_resolution
+
+        return offset, theta
+
+    def optimized_detection(self, frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM):
+        return None, None
+
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
         """
@@ -140,11 +147,20 @@ class LaneDetection:
         left_lane = None
         right_lane = None
         if self.previous_left_lane and self.previous_right_lane:
+            # TO DO: implement algorithm using data from previous frames for optimization
+            left_lane, right_lane = self.optimized_detection(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
             pass
         else:
             left_lane, right_lane = self.first_detection(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
-
-        self.get_offset_theta(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
+        offset = None
+        theta = None
+        if left_lane is not None or right_lane is not None:
+            offset, theta = self.get_offset_theta(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
+        else:
+            # algorithm for estimating lanes when they are not detected in our current frame
+            # for example: Kalman Filter
+            pass
+        return offset, theta
 
 
     def run(self):
@@ -157,7 +173,12 @@ class LaneDetection:
             frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
                                                 flags=cv2.INTER_NEAREST)
 
-            self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
+            offset, theta = self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
+
+            if offset is not None:
+                print("offset = {} cm".format(offset))
+            if theta is not None:
+                print("theta = {}".format(theta))
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("IPM", frame_ROI_IPM)

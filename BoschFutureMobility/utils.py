@@ -24,6 +24,7 @@ class Utils:
         self.pixel_resolution = 0.122  # centimeters per pixel
         self.H = self.get_homography_matrix(self.src_points_DLT, self.dst_points_DLT,
                                                   self.pixel_resolution)
+        self.inv_H = np.linalg.inv(self.H)
 
         ''' Info about road '''
         self.width_road = 310
@@ -37,23 +38,6 @@ class Utils:
         cv2.circle(image, (y1_cv, x1_cv), radius, color_left_most_point, 1)
         cv2.circle(image, (y2_cv, x2_cv), radius, color_right_most_point, 1)
         cv2.line(image, (y1_cv, x1_cv), (y2_cv, x2_cv), color, 1)
-
-    def linspace(self, line):
-        x1, y1, x2, y2 = line
-        num = 5
-        points = []
-        if x1 < x2:
-            x_min = x1
-            x_max = x2
-        else:
-            x_min = x2
-            x_max = x1
-        x_array = np.linspace(x_min, x_max, num)
-        coeff = np.polynomial.polynomial.polyfit((x1, x2), (y1, y2), deg=1)
-        for x in x_array:
-            y = int(coeff[1] * x + coeff[0])
-            points.append((int(x), y))
-        return points
 
     def polyfit(self, lines, frame_ROI, left_lane=False):
         # coordinates used for estimating our line
@@ -82,6 +66,8 @@ class Utils:
                 y_cv = int(x)
                 x_cv = abs(y - self.height_ROI)
                 cv2.circle(frame_ROI, (y_cv, x_cv), 5, (0, 0, 255), 1)
+                x_points.append(x)
+                y_points.append(y)
             # ------------------------------------------------------------------------------
         coefficient = np.polynomial.polynomial.polyfit(y_points, x_points, deg=1)
         # coefficient = [1 / coefficient_y[1], -coefficient_y[0] / coefficient_y[1]]
@@ -153,6 +139,12 @@ class Utils:
         # print(dest_points)
         return [int(dest_points[0][0]), int(dest_points[0][1]), int(dest_points[1][0]), int(dest_points[1][1])]
         # return dest_points
+
+    def get_inv_line_IPM(self, line):
+        y1_cv, x1_cv, y2_cv, x2_cv = line
+        src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
+        dest_points = cv2.perspectiveTransform(src_points, self.inv_H)[0]
+        return [int(dest_points[0][0]), int(dest_points[0][1]), int(dest_points[1][0]), int(dest_points[1][1])]
 
     def translation_IPM(self, line_IPM, left_lane=None):
         if left_lane:
