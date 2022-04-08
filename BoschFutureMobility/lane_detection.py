@@ -78,6 +78,7 @@ class LaneDetection:
                                           maxLineGap=80)
         left_lane = None
         right_lane = None
+        horizontal_lines = []
         if lines_candidate is not None:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
 
