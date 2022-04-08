@@ -223,10 +223,9 @@ class LaneDetection:
             if theta is not None:
                 print("THETA = {}".format(theta))
             if intersection is not None:
-                if intersection is True:
-                    print("INTERSECTION = True")
-                else:
-                    print("INTERSECTION = False")
+                print("INTERSECTION = True")
+            else:
+                print("INTERSECTION = False")
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("IPM", frame_ROI_IPM)
