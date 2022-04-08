@@ -142,6 +142,8 @@ class LaneDetection:
         y_left_box = y1_left_cv
         y_right_box = y1_right_cv
         sum = 0
+        cv2.line(frame_ROI_IPM, (y_left_box, 0), (y_left_box, self.height_ROI_IPM), (255, 0, 0), 5)
+        cv2.line(frame_ROI_IPM, (y_right_box, 0), (y_right_box, self.height_ROI_IPM), (255, 0, 0), 5)
         for line in horizontal_lines:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
             line_IPM = self.utils.get_line_IPM(line[0])
