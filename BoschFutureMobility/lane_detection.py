@@ -165,7 +165,7 @@ class LaneDetection:
                 if frame_ROI_IPM is not None:
                     # cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
                     self.utils.draw_line([line_IPM], (0, 255, 255), frame_ROI_IPM)
-
+        print(sum)
         if sum > 300:
             return True
         else:
@@ -217,23 +217,23 @@ class LaneDetection:
 
             offset, theta, intersection = self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
 
-            if offset is not None:
-                print("OFFSET = {} cm".format(offset))
-            if theta is not None:
-                print("THETA = {}".format(theta))
-            if intersection is not None:
-                print("INTERSECTION = True")
-            else:
-                print("INTERSECTION = False")
-
+            # if offset is not None:
+            #     print("OFFSET = {} cm".format(offset))
+            # if theta is not None:
+            #     print("THETA = {}".format(theta))
+            # if intersection is not None:
+            #     print("INTERSECTION = True")
+            # else:
+            #     print("INTERSECTION = False")
+            #
             # cv2.imshow("Frame", frame)
             cv2.imshow("IPM", frame_ROI_IPM)
             cv2.imshow("ROI", frame_ROI)
             cv2.waitKey(1)
-
-            end = time.time()
-            print("TIME = {}".format(end - start))
-            print("---------------------------------------------------------")
+            #
+            # end = time.time()
+            # print("TIME = {}".format(end - start))
+            # print("---------------------------------------------------------")
 
             _, frame = self.cap.read()
 
