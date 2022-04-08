@@ -219,12 +219,14 @@ class LaneDetection:
             offset, theta, intersection = self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
 
             if offset is not None:
-                print("offset = {} cm".format(offset))
+                print("OFFSET = {} cm".format(offset))
             if theta is not None:
-                print("theta = {}".format(theta))
+                print("THETA = {}".format(theta))
             if intersection is not None:
                 if intersection is True:
-                    print("INTERSECTION")
+                    print("INTERSECTION = True")
+                else:
+                    print("INTERSECTION = False")
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("IPM", frame_ROI_IPM)
@@ -232,7 +234,8 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            print("time: {}".format(end - start))
+            print("TIME = {}".format(end - start))
+            print("---------------------------------------------------------")
 
             _, frame = self.cap.read()
 
