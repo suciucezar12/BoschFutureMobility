@@ -143,7 +143,7 @@ class LaneDetection:
         y_right_box = y1_right_cv
         sum = 0
         for line in horizontal_lines:
-            y1_cv, x1_cv, y2_cv, x2_cv = line
+            y1_cv, x1_cv, y2_cv, x2_cv = line[0]
             line_IPM = self.utils.get_line_IPM(line)
             y1_IPM_cv, x1_IPM_cv, y2_IPM_cv, x2_IPM_cv = line_IPM
             if y_left_box <= y1_IPM_cv and y2_IPM_cv <= y_right_box:
