@@ -139,8 +139,9 @@ class LaneDetection:
         # bounding box for filtering horizontal lines
         y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_line_IPM
         y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_line_IPM
-        y_left_box = y1_left_cv
-        y_right_box = y1_right_cv
+        margin_error = 50
+        y_left_box = y1_left_cv - margin_error
+        y_right_box = y1_right_cv + margin_error
         sum = 0
         cv2.line(frame_ROI_IPM, (y_left_box, 0), (y_left_box, self.height_ROI_IPM), (255, 0, 0), 5)
         cv2.line(frame_ROI_IPM, (y_right_box, 0), (y_right_box, self.height_ROI_IPM), (255, 0, 0), 5)
