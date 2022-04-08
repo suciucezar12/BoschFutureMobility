@@ -29,7 +29,6 @@ class Utils:
         ''' Info about road '''
         self.width_road = 310
 
-
     def draw_line(self, line, color, image):
         y1_cv, x1_cv, y2_cv, x2_cv = line[0]
         radius = 5

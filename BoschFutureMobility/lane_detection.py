@@ -173,7 +173,6 @@ class LaneDetection:
     def optimized_detection(self, frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM):
         return None, None
 
-
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
         """
 
@@ -196,7 +195,7 @@ class LaneDetection:
         intersection = None
         if left_lane is not None or right_lane is not None:
             offset, theta, left_lane_IPM, right_lane_IPM = self.get_offset_theta(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
-            if horizontal_lines:
+            if len(horizontal_lines):
                 intersection = self.intersection_detection(horizontal_lines, left_lane_IPM, right_lane_IPM, frame_ROI,
                                                            frame_ROI_IPM=frame_ROI_IPM)
         else:
@@ -204,7 +203,6 @@ class LaneDetection:
             # for example: Kalman Filter
             pass
         return offset, theta, intersection
-
 
     def run(self):
         ret, frame = self.cap.read()
