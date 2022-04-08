@@ -1,8 +1,8 @@
 import math
 import time
-
 import cv2
 import numpy as np
+import pylineclip
 from utils import Utils
 
 
@@ -86,7 +86,7 @@ class LaneDetection:
                 left_lane = self.utils.polyfit(left_lines, frame_ROI, left_lane=True)
             if right_lines:
                 right_lane = self.utils.polyfit(right_lines, frame_ROI, left_lane=False)
-        return left_lane, right_lane
+        return left_lane, right_lane, horizontal_lines
 
     def get_offset_theta(self, frame_ROI, left_lane=None, right_lane=None, frame_ROI_IPM=None):
         # we get all coordinates in IPM we need of our lanes
@@ -129,12 +129,33 @@ class LaneDetection:
         y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
 
-        theta = round(math.degrees(math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM))))
+        theta = math.degrees(math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM)))
 
         # offset
         offset = (y_bottom_road_cv - self.y_heading_car_cv) * self.pixel_resolution
 
-        return offset, theta
+        return offset, theta, left_lane_IPM, right_lane_IPM
+
+    def intersection_detection(self, horizontal_lines, left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM=None):
+        # bounding box for filtering horizontal lines
+        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_line_IPM
+        y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = left_line_IPM
+        y_left_box = y1_left_cv
+        y_right_box = y1_right_cv
+        sum = 0
+        for line in horizontal_lines:
+            y1_cv, x1_cv, y2_cv, x2_cv = line
+            line_IPM = self.utils.get_line_IPM(line)
+            y1_IPM_cv, x1_IPM_cv, y2_IPM_cv, x2_IPM_cv = line_IPM
+            if y_left_box <= y1_IPM_cv and y2_IPM_cv <= y_right_box:
+                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 0), 1)
+                cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 1)
+                sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
+
+        if sum > 300:
+            return True
+        else:
+            return False
 
     def optimized_detection(self, frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM):
         return None, None
@@ -156,16 +177,19 @@ class LaneDetection:
             left_lane, right_lane = self.optimized_detection(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
             pass
         else:
-            left_lane, right_lane = self.first_detection(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
+            left_lane, right_lane, horizontal_lines = self.first_detection(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
         offset = None
         theta = None
+        intersection = None
         if left_lane is not None or right_lane is not None:
-            offset, theta = self.get_offset_theta(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
+            offset, theta, left_lane_IPM, right_lane_IPM = self.get_offset_theta(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
+            intersection = self.intersection_detection(horizontal_lines, left_lane_IPM, right_lane_IPM, frame_ROI,
+                                                       frame_ROI_IPM=frame_ROI_IPM)
         else:
             # algorithm for estimating lanes when they are not detected in our current frame
             # for example: Kalman Filter
             pass
-        return offset, theta
+        return offset, theta, intersection
 
 
     def run(self):
@@ -178,12 +202,15 @@ class LaneDetection:
             frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
                                                 flags=cv2.INTER_NEAREST)
 
-            offset, theta = self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
+            offset, theta, intersection = self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
 
             if offset is not None:
                 print("offset = {} cm".format(offset))
             if theta is not None:
                 print("theta = {}".format(theta))
+            if intersection is not None:
+                if intersection is True:
+                    print("INTERSECTION")
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("IPM", frame_ROI_IPM)
