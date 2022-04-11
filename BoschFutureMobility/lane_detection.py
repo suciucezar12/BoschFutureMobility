@@ -144,8 +144,8 @@ class LaneDetection:
         y_left_box = y1_left_cv - margin_error
         y_right_box = y1_right_cv + margin_error
         sum = 0
-        cv2.line(frame_ROI_IPM, (y_left_box, 0), (y_left_box, self.height_ROI_IPM), (255, 0, 0), 5)
-        cv2.line(frame_ROI_IPM, (y_right_box, 0), (y_right_box, self.height_ROI_IPM), (255, 0, 0), 5)
+        # cv2.line(frame_ROI_IPM, (y_left_box, 0), (y_left_box, self.height_ROI_IPM), (255, 0, 0), 5)
+        # cv2.line(frame_ROI_IPM, (y_right_box, 0), (y_right_box, self.height_ROI_IPM), (255, 0, 0), 5)
         for line in horizontal_lines:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
             line_IPM = self.utils.get_line_IPM(line[0])
@@ -165,7 +165,7 @@ class LaneDetection:
                 if frame_ROI_IPM is not None:
                     # cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
                     self.utils.draw_line([line_IPM], (0, 255, 255), frame_ROI_IPM)
-        print(sum)
+        # print(sum)
         if sum > 300:
             return True
         else:
