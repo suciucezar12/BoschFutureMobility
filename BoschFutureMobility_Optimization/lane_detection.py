@@ -53,15 +53,15 @@ class LaneDetection:
         for line in lines_candidate:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
             if y1_cv != y2_cv:
-                # coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
+                coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
                 # ---------------------------------
-                coeff = []
-                try:
-                    slope = (x2_cv - x1_cv) / (y2_cv - y1_cv)
-                except OverflowError:
-                    slope = 10000
-                coeff.append(y1_cv - slope * x1_cv)
-                coeff.append(slope)
+                # coeff = []
+                # try:
+                #     slope = (x2_cv - x1_cv) / (y2_cv - y1_cv)
+                # except OverflowError:
+                #     slope = 10000
+                # coeff.append(y1_cv - slope * x1_cv)
+                # coeff.append(slope)
                 # print(coeff)
                 # ---------------------------------
                 if coeff is not None:
