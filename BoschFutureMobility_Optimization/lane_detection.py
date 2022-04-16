@@ -155,3 +155,7 @@ class LaneDetection:
             print("---------------------------------------------------------")
 
             _, frame = self.cap.read()
+
+
+LD = LaneDetection()
+LD.run()
