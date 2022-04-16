@@ -42,7 +42,7 @@ class LaneDetection:
         right_lines = []
         horizontal_lines = []
         # used for intercept_oX criteria
-        y_cv_margin = 145  # offset wrt to the center vertical line
+        y_cv_margin = 100  # offset wrt to the center vertical line
         margin_y_cv_left = int(self.width_ROI / 2) - y_cv_margin
         margin_y_cv_right = int(self.width_ROI / 2) + y_cv_margin
 
