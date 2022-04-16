@@ -128,8 +128,8 @@ class LaneDetection:
                     y1_cv, x1_cv, y2_cv, x2_cv = left_lane
                     cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
-        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM.coords
-        y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM.coords
+        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM
+        y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM
         if frame_ROI_IPM is not None:
             cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 3)
             cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 3)
