@@ -152,6 +152,7 @@ class LaneDetection:
             math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM)))
 
         # offset
+        print("{}, {}".format(y_bottom_road_cv, y_heading_road_cv))
         offset = (y_bottom_road_cv - self.y_heading_car_cv) * self.pixel_resolution
 
         return offset, theta, left_lane_IPM, right_lane_IPM
