@@ -61,6 +61,7 @@ class LaneDetection:
                 slope = 10000
             coeff.append(y1_cv - slope * x1_cv)
             coeff.append(slope)
+            print(coeff)
             # ---------------------------------
             if coeff is not None:
                 # coeff[1] -> slope in XoY coordinates
