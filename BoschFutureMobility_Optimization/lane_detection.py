@@ -63,6 +63,7 @@ class LaneDetection:
                         intercept_oX = int((self.height_ROI - coeff[0]) / coeff[1])
                     except OverflowError:
                         intercept_oX = 30000  # some big value
+                    print("y = {}*x + {}".format(coeff[1], coeff[0]))
                     print(intercept_oX)
                     if 0 <= intercept_oX <= margin_y_cv_left:  # left line
                         left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
