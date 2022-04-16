@@ -46,9 +46,6 @@ class LaneDetection:
         margin_y_cv_left = int(self.width_ROI / 2) - y_cv_margin
         margin_y_cv_right = int(self.width_ROI / 2) + y_cv_margin
 
-        cv2.line(frame_ROI, (margin_y_cv_left, self.height_ROI), (margin_y_cv_left, 100), (0, 255, 0), 3)
-        # cv2.line(frame_ROI, (margin_y_cv_right, self.height_ROI), (margin_y_cv_right, 100), (0, 255, 0), 3)
-
 
         for line in lines_candidate:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
