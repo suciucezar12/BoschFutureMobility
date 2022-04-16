@@ -17,9 +17,19 @@ while True:
                                       maxLineGap=80)
 
     if lines_candidate is not None:
+        slope = 0
+        intercept_oY = 0
         for line in lines_candidate:
             y1cv, x1cv, y2cv, x2cv = line[0]
             cv2.line(frame, (y1cv, x1cv), (y2cv, x2cv), (0, 0, 255), 2)
+            coeff = np.polynomial.polynomial.polyfit((y1cv, y2cv), (x1cv, x2cv), 1)
+            if coeff is not None:
+                slope += coeff[1]
+                intercept_oY += coeff[0]
+                # print("y_cv = {}*x_cv + {}".format(coeff[1], coeff[0]))
+        slope /= len(lines_candidate)
+        intercept_oY /= len(lines_candidate)
+        print("y_cv = {}*x_cv + {}".format(slope, intercept_oY))
 
     cv2.imshow("Canny", frame_canny)
     cv2.imshow("Frame", frame)
