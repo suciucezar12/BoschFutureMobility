@@ -40,7 +40,9 @@ class Utils:
                 num = 5
                 for y_cv in np.linspace(y1_cv, y2_cv, num):
                     x_points.append(y_cv)
-                    y_points.append(line.coeff[1] * y_cv + line.coeff[0])
+                    x_cv = line.coeff[1] * y_cv + line.coeff[0]
+                    y_points.append(x_cv)
+                    cv2.circle(frame_ROI, (y_cv, int(x_cv)), 3, (0, 0, 255), 1)
                 # -------------------------------------------------------------------------------
 
             # estimate our lane
