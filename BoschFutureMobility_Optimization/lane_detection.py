@@ -58,7 +58,7 @@ class LaneDetection:
                         intercept_oX = - int(coeff[0] / coeff[1])
                     except OverflowError:
                         intercept_oX = 30000  # some big value
-
+                    print(intercept_oX)
                     if 0 <= intercept_oX <= margin_y_cv_left:  # left line
                         left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
                         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
@@ -192,11 +192,11 @@ class LaneDetection:
             # frame_ROI_IPM = None
             theta, offset, intersection = self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
 
-            if offset is not None:
-                print("OFFSET = {} cm".format(offset))
-            if theta is not None:
-                print("THETA = {}".format(theta))
-            print("INTERSECTION = {}".format(intersection))
+            # if offset is not None:
+            #     print("OFFSET = {} cm".format(offset))
+            # if theta is not None:
+            #     print("THETA = {}".format(theta))
+            # print("INTERSECTION = {}".format(intersection))
 
             # cv2.imshow("Frame", frame)
             cv2.imshow("IPM", frame_ROI_IPM)
@@ -204,8 +204,8 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            print("TIME = {}".format(end - start))
-            print("---------------------------------------------------------")
+            # print("TIME = {}".format(end - start))
+            # print("---------------------------------------------------------")
 
             _, frame = self.cap.read()
 
