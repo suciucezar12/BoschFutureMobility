@@ -37,7 +37,7 @@ class Utils:
                 y_points.append(x2_cv)
 
                 # create more data points on the line for better precision in our line estimation
-                num = 5
+                num = 1
                 for y_cv in np.linspace(y1_cv, y2_cv, num):
                     x_points.append(y_cv)
                     x_cv = line.coeff[1] * y_cv + line.coeff[0]
