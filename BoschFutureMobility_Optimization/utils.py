@@ -62,3 +62,17 @@ class Utils:
                 return None
         else:
             return None
+
+    def get_line_IPM(self, line, H):
+        y1_cv, x1_cv, y2_cv, x2_cv = line.coords
+        src_points = np.array([[[y1_cv, x1_cv], [y2_cv, x2_cv]]], dtype=np.float32)
+        dest_points = cv2.perspectiveTransform(src_points, H)[0]
+        return [int(dest_points[0][0]), int(dest_points[0][1]), int(dest_points[1][0]), int(dest_points[1][1])]
+
+    def translation_IPM(self, line_IPM, width_road, left_lane=None):
+        if left_lane:
+            offset = width_road
+        else:
+            offset = - width_road
+        y1_cv, x1_cv, y2_cv, x2_cv = line_IPM
+        return [y1_cv + offset, x1_cv, y2_cv + offset, x2_cv]

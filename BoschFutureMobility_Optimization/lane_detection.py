@@ -29,11 +29,13 @@ class LaneDetection:
         self.pixel_resolution = 0.122  # centimeters per pixel
         self.H = self.utils.get_homography_matrix(self.src_points_DLT, self.dst_points_DLT,
                                                   self.pixel_resolution)
+        self.inv_H = np.linalg.inv(self.H)
         self.height_ROI_IPM = 210  # calculated related to pixel_resolution and the real dimensions
         self.width_ROI_IPM = 547
 
         self.offset_origin = -20  # to correct the inclination of our camera
         self.y_heading_car_cv = self.width_ROI_IPM // 2 + self.offset_origin
+        self.width_road_IPM = 310
 
     def filter_lines(self, lines_candidate, frame_ROI, frame_ROI_IPM=None):
         left_lines = []
@@ -103,8 +105,55 @@ class LaneDetection:
     def optimized_intersection_detection(self, frame_ROI, left_lane, right_lane, frame_ROI_IPM=None):
         return None
 
-    def get_offset_theta(self, frame_ROI, left_lane, right_lane, frame_ROI_IPM=None):
-        return None, None
+    def get_offset_theta(self, frame_ROI, left_lane=None, right_lane=None, frame_ROI_IPM=None):
+        # we get all coordinates in IPM we need of our lanes
+        left_lane_IPM = None
+        right_lane_IPM = None
+        if left_lane and right_lane:  # we have both lanes
+            left_lane_IPM = self.utils.get_line_IPM(left_lane, self.H)
+            right_lane_IPM = self.utils.get_line_IPM(right_lane, self.H)
+            pass
+        else:
+            if left_lane is not None:  # only have our left lane
+                left_lane_IPM = self.utils.get_line_IPM(left_lane, self.H)
+                right_lane_IPM = self.utils.translation_IPM(left_lane_IPM, self.width_road_IPM, True)
+                right_lane = self.utils.get_line_IPM(right_lane_IPM, self.inv_H)
+                y1_cv, x1_cv, y2_cv, x2_cv = right_lane
+                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+            else:
+                if right_lane is not None:  # only have our right lane
+                    right_lane_IPM = self.utils.get_line_IPM(right_lane, self.H)
+                    left_lane_IPM = self.utils.translation_IPM(right_lane_IPM, self.width_road_IPM, False)
+                    left_lane = self.utils.get_line_IPM(left_lane_IPM, self.inv_H)
+                    y1_cv, x1_cv, y2_cv, x2_cv = left_lane
+                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+
+        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM.coords
+        y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM.coords
+        if frame_ROI_IPM is not None:
+            cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 3)
+            cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 3)
+
+        # theta
+        y_heading_road_cv = (y2_left_cv + y2_right_cv) // 2
+        x_heading_road_cv = (x2_left_cv + x2_right_cv) // 2
+
+        y_bottom_road_cv = (y1_left_cv + y1_right_cv) // 2
+        x_bottom_road_cv = (x1_left_cv + x1_right_cv) // 2
+        cv2.line(frame_ROI_IPM, (y_heading_road_cv, x_heading_road_cv), (y_bottom_road_cv, x_bottom_road_cv),
+                 (255, 255, 255), 3)
+        road_line_reference = self.utils.get_line_IPM(
+            [y_heading_road_cv, x_heading_road_cv, self.y_heading_car_cv, self.height_ROI_IPM], self.inv_H)
+        y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference
+        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
+
+        theta = math.degrees(
+            math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM)))
+
+        # offset
+        offset = (y_bottom_road_cv - self.y_heading_car_cv) * self.pixel_resolution
+
+        return offset, theta, left_lane_IPM, right_lane_IPM
 
     def intersection_detection(self, frame_ROI, horizontal_lines, left_lane, right_lane, frame_ROI_IPM):
         return None
@@ -117,13 +166,15 @@ class LaneDetection:
         if self.previous_left_lane and self.previous_right_lane:
             # TO DO: implement algorithm using data from previous frames for optimization
             left_lane, right_lane = self.optimized_detection(frame_ROI, frame_ROI_IPM)
-            intersection = self.optimized_intersection_detection(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
+            offset, theta, left_lane_IPM, right_lane_IPM = self.get_offset_theta(frame_ROI, left_lane, right_lane,
+                                                                                 frame_ROI_IPM)
+            intersection = self.optimized_intersection_detection(frame_ROI, left_lane_IPM, right_lane_IPM, frame_ROI_IPM)
         else:
             left_lane, right_lane, horizontal_lines = self.first_detection(frame_ROI, frame_ROI_IPM)
-            intersection = self.intersection_detection(frame_ROI, horizontal_lines, left_lane, right_lane,
+            offset, theta, left_lane_IPM, right_lane_IPM = self.get_offset_theta(frame_ROI, left_lane, right_lane,
+                                                                                 frame_ROI_IPM)
+            intersection = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM, right_lane_IPM,
                                                        frame_ROI_IPM)
-
-        offset, theta = self.get_offset_theta(frame_ROI, left_lane, right_lane, frame_ROI_IPM)
 
         return theta, offset, intersection
 
