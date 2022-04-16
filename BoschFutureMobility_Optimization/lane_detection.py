@@ -109,6 +109,9 @@ class LaneDetection:
         return None
 
     def get_offset_theta(self, frame_ROI, left_lane=None, right_lane=None, frame_ROI_IPM=None):
+        offset = None
+        theta = None
+        intersection = False
         # we get all coordinates in IPM we need of our lanes
         left_lane_IPM = None
         right_lane_IPM = None
@@ -131,32 +134,33 @@ class LaneDetection:
                     y1_cv, x1_cv, y2_cv, x2_cv = left_lane
                     cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
-        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM
-        y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM
-        if frame_ROI_IPM is not None:
-            cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 3)
-            cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 3)
+        if left_lane_IPM is not None and right_lane_IPM is not None:
+            y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM
+            y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM
+            if frame_ROI_IPM is not None:
+                cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 3)
+                cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 3)
 
-        # theta
-        y_heading_road_cv = (y2_left_cv + y2_right_cv) // 2
-        x_heading_road_cv = (x2_left_cv + x2_right_cv) // 2
+            # theta
+            y_heading_road_cv = (y2_left_cv + y2_right_cv) // 2
+            x_heading_road_cv = (x2_left_cv + x2_right_cv) // 2
 
-        y_bottom_road_cv = (y1_left_cv + y1_right_cv) // 2
-        x_bottom_road_cv = (x1_left_cv + x1_right_cv) // 2
-        cv2.line(frame_ROI_IPM, (y_heading_road_cv, x_heading_road_cv), (y_bottom_road_cv, x_bottom_road_cv),
-                 (255, 255, 255), 3)
-        road_line_reference = self.utils.get_line_IPM(
-            [y_heading_road_cv, x_heading_road_cv, self.y_heading_car_cv, self.height_ROI_IPM], self.inv_H)
-        y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference
-        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
+            y_bottom_road_cv = (y1_left_cv + y1_right_cv) // 2
+            x_bottom_road_cv = (x1_left_cv + x1_right_cv) // 2
+            cv2.line(frame_ROI_IPM, (y_heading_road_cv, x_heading_road_cv), (y_bottom_road_cv, x_bottom_road_cv),
+                     (255, 255, 255), 3)
+            road_line_reference = self.utils.get_line_IPM(
+                [y_heading_road_cv, x_heading_road_cv, self.y_heading_car_cv, self.height_ROI_IPM], self.inv_H)
+            y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference
+            cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
 
-        # print("{}, {}, {}, {}".format(y_heading_road_cv, self.y_heading_car_cv, x_heading_road_cv, self.height_ROI_IPM))
-        theta = math.degrees(
-            math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM)))
+            # print("{}, {}, {}, {}".format(y_heading_road_cv, self.y_heading_car_cv, x_heading_road_cv, self.height_ROI_IPM))
+            theta = math.degrees(
+                math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM)))
 
-        # offset
-        # print("{}, {}".format(y_bottom_road_cv, y_heading_road_cv))
-        offset = (y_bottom_road_cv - self.y_heading_car_cv) * self.pixel_resolution
+            # offset
+            # print("{}, {}".format(y_bottom_road_cv, y_heading_road_cv))
+            offset = (y_bottom_road_cv - self.y_heading_car_cv) * self.pixel_resolution
 
         return offset, theta, left_lane_IPM, right_lane_IPM
 
