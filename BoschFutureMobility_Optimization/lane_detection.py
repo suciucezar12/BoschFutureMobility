@@ -178,7 +178,7 @@ class LaneDetection:
         for line in horizontal_lines:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
             line_IPM = self.utils.get_line_IPM(line[0], self.H)
-            y1_IPM_cv, x1_IPM_cv, y2_IPM_cv, x2_IPM_cv = line_IPM
+            y1_IPM_cv, x1_IPM_cv, y2_IPM_cv, x2_IPM_cv = [line_IPM]
             if y_left_box <= y1_IPM_cv and y2_IPM_cv <= y_right_box:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 0), 2)
                 self.utils.draw_line(line, (255, 255, 0), frame_ROI)
@@ -217,7 +217,7 @@ class LaneDetection:
                                                                                  frame_ROI_IPM)
             if left_lane_IPM is not None and right_lane_IPM is not None:
                 if len(horizontal_lines):
-                    intersection = self.intersection_detection(frame_ROI, horizontal_lines, [left_lane_IPM], [right_lane_IPM],
+                    intersection = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM, right_lane_IPM,
                                                                frame_ROI_IPM)
 
         return theta, offset, intersection
