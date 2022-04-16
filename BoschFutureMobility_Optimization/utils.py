@@ -50,8 +50,8 @@ class Utils:
                 # get our coordinates expanded from top to the bottom
                 x1_cv = 0
                 x2_cv = height_ROI
-                y1_cv = (x1_cv - coeff[0]) // coeff[1]
-                y2_cv = (x2_cv - coeff[0]) // coeff[1]
+                y1_cv = int((x1_cv - coeff[0]) / coeff[1])
+                y2_cv = int((x2_cv - coeff[0]) / coeff[1])
                 cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
                 return Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff)
