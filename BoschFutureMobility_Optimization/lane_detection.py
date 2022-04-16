@@ -241,6 +241,10 @@ class LaneDetection:
 
     def run(self):
         ret, frame = self.cap.read()
+
+        theta_prev = None
+        offset_prev = None
+
         while True:
             start = time.time()
 
@@ -253,8 +257,12 @@ class LaneDetection:
 
             if offset is not None:
                 print("OFFSET = {} cm".format(offset))
+                offset_prev = offset
+
             if theta is not None:
                 print("THETA = {}".format(theta))
+                theta_prev = theta
+
             print("INTERSECTION = {}".format(intersection))
 
             # cv2.imshow("Frame", frame)
