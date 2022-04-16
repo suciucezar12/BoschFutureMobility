@@ -18,7 +18,7 @@ while True:
 
     if len(lines_candidate) > 0:
         for line in lines_candidate:
-            y1cv, x1cv, y2cv, x2cv = line
+            y1cv, x1cv, y2cv, x2cv = line[0]
             cv2.line(frame, (y1cv, x1cv), (y2cv, x2cv), (0, 0, 255), 2)
 
     cv2.imshow("Canny", frame_canny)
