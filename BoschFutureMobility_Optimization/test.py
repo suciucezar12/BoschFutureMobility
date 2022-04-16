@@ -11,6 +11,11 @@ while True:
     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frame_blurred = cv2.GaussianBlur(frame_gray, (5, 5), 0)
     frame_canny = cv2.Canny(frame_blurred, 180, 255)
+
+    lines_candidate = cv2.HoughLinesP(frame_canny, rho=1, theta=np.pi / 180, threshold=70,
+                                      minLineLength=25,
+                                      maxLineGap=80)
+
     cv2.imshow("Canny", frame_canny)
     cv2.imshow("Frame", frame)
     cv2.waitKey(1)
