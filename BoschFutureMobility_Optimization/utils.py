@@ -44,7 +44,7 @@ class Utils:
                 # -------------------------------------------------------------------------------
 
             # estimate our lane
-            coeff = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
+            coeff = np.polynomial.polynomial.polyfit(y_points, x_points, deg=1)
 
             if coeff is not None:
                 # get our coordinates expanded from top to the bottom
