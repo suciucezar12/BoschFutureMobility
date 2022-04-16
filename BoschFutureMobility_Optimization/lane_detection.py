@@ -52,7 +52,13 @@ class LaneDetection:
 
         for line in lines_candidate:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-            coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
+            # coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
+            # ---------------------------------
+            coeff = []
+            slope = (x2_cv - x1_cv) / (y2_cv - y1_cv)
+            coeff.append(y1_cv - slope * x1_cv)
+            coeff.append(slope)
+            # ---------------------------------
             if coeff is not None:
                 # coeff[1] -> slope in XoY coordinates
                 # coeff[0] -> intercept_oY in XoY coordinates
