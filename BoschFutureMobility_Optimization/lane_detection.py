@@ -1,15 +1,7 @@
 import cv2
 import numpy as np
 import time
-from utils import Utils
-
-
-class Line:
-
-    def __init__(self, coords, coeff):
-        self.coords = coords
-        self.coeff = coeff
-
+from utils import *
 
 class LaneDetection:
 
