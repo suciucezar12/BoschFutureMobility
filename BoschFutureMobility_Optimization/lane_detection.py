@@ -167,8 +167,8 @@ class LaneDetection:
 
     def intersection_detection(self, horizontal_lines, left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM=None):
         # bounding box for filtering horizontal lines
-        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_line_IPM[0]
-        y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_line_IPM[0]
+        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_line_IPM
+        y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_line_IPM
         margin_error = 25
         y_left_box = y1_left_cv - margin_error
         y_right_box = y1_right_cv + margin_error
@@ -177,7 +177,7 @@ class LaneDetection:
         # cv2.line(frame_ROI_IPM, (y_right_box, 0), (y_right_box, self.height_ROI_IPM), (255, 0, 0), 5)
         for line in horizontal_lines:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-            line_IPM = self.utils.get_line_IPM(line[0])
+            line_IPM = self.utils.get_line_IPM(line[0], self.H)
             y1_IPM_cv, x1_IPM_cv, y2_IPM_cv, x2_IPM_cv = line_IPM
             if y_left_box <= y1_IPM_cv and y2_IPM_cv <= y_right_box:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 0), 2)
