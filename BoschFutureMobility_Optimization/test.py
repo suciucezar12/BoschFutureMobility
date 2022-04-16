@@ -16,6 +16,11 @@ while True:
                                       minLineLength=25,
                                       maxLineGap=80)
 
+    if lines_candidate:
+        for line in lines_candidate:
+            y1cv, x1cv, y2cv, x2cv = line
+            cv2.line(frame, (y1cv, x1cv), (y2cv, x2cv), (0, 0, 255), 2)
+
     cv2.imshow("Canny", frame_canny)
     cv2.imshow("Frame", frame)
     cv2.waitKey(1)
