@@ -217,7 +217,7 @@ class LaneDetection:
                                                                                  frame_ROI_IPM)
             if left_lane_IPM is not None and right_lane_IPM is not None:
                 if len(horizontal_lines):
-                    intersection = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM, right_lane_IPM,
+                    intersection = self.intersection_detection(frame_ROI, horizontal_lines, [left_lane_IPM], [right_lane_IPM],
                                                                frame_ROI_IPM)
 
         return theta, offset, intersection
