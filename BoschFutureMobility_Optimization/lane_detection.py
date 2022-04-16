@@ -84,7 +84,7 @@ class LaneDetection:
         # preprocessing step
         frame_ROI_preprocessed = self.utils.preprocessing(frame_ROI)
         # apply Probabilistic Hough Line
-        lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=45,
+        lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=40,
                                           minLineLength=25,
                                           maxLineGap=80)
         # filter lines
