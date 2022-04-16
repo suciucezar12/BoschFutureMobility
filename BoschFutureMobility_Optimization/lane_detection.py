@@ -268,7 +268,7 @@ class LaneDetection:
             end = time.time()
             print("TIME = {}".format(end - start))
             print("---------------------------------------------------------")
-
+            time.sleep(0.1)
             _, frame = self.cap.read()
 
 
