@@ -42,7 +42,7 @@ class Utils:
                     x_points.append(y_cv)
                     x_cv = line.coeff[1] * y_cv + line.coeff[0]
                     y_points.append(x_cv)
-                    cv2.circle(frame_ROI, (y_cv, int(x_cv)), 3, (0, 0, 255), 1)
+                    cv2.circle(frame_ROI, (int(y_cv), int(x_cv)), 3, (0, 0, 255), 1)
                 # -------------------------------------------------------------------------------
 
             # estimate our lane
