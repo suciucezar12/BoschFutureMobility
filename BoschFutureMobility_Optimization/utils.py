@@ -46,7 +46,7 @@ class Utils:
                 # -------------------------------------------------------------------------------
 
             # estimate our lane
-            coeff = np.polynomial.polynomial.polyfit(y_points, x_points, deg=1)
+            coeff = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
             print("y = {}*x + {}".format(coeff[1], coeff[0]))
 
             if coeff is not None:
