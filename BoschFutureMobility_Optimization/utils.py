@@ -6,6 +6,9 @@ from lane_detection import Line
 
 class Utils:
 
+    def __init__(self):
+        pass
+
     def get_homography_matrix(self, src_points, dst_points, pixel_resolution):
         dst_points = np.array(
             [[int(y_cv / pixel_resolution), int(x_cv / pixel_resolution)] for [y_cv, x_cv] in dst_points],
