@@ -1,13 +1,15 @@
 import numpy as np
 import cv2
 import math
-from lane_detection import Line
 
+
+class Line:
+
+    def __init__(self, coords, coeff):
+        self.coords = coords
+        self.coeff = coeff
 
 class Utils:
-
-    def __init__(self):
-        pass
 
     def get_homography_matrix(self, src_points, dst_points, pixel_resolution):
         dst_points = np.array(
