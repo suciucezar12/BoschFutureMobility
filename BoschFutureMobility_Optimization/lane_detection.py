@@ -55,7 +55,7 @@ class LaneDetection:
                 if abs(coeff[1]) >= 0.2:  # slope = +-0.2 -> +-11.3 degrees
                     # OverFlowError when we get horizontal lines
                     try:
-                        intercept_oX = - (coeff[0] // coeff[1])
+                        intercept_oX = - int(coeff[0] / coeff[1])
                     except OverflowError:
                         intercept_oX = 30000  # some big value
 
@@ -147,12 +147,12 @@ class LaneDetection:
         y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference
         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
 
-        print("{}, {}, {}, {}".format(y_heading_road_cv, self.y_heading_car_cv, x_heading_road_cv, self.height_ROI_IPM))
+        # print("{}, {}, {}, {}".format(y_heading_road_cv, self.y_heading_car_cv, x_heading_road_cv, self.height_ROI_IPM))
         theta = math.degrees(
             math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM)))
 
         # offset
-        print("{}, {}".format(y_bottom_road_cv, y_heading_road_cv))
+        # print("{}, {}".format(y_bottom_road_cv, y_heading_road_cv))
         offset = (y_bottom_road_cv - self.y_heading_car_cv) * self.pixel_resolution
 
         return offset, theta, left_lane_IPM, right_lane_IPM
