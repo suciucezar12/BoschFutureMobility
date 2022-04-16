@@ -197,7 +197,7 @@ class LaneDetection:
             print("INTERSECTION = {}".format(intersection))
 
             # cv2.imshow("Frame", frame)
-            # cv2.imshow("IPM", frame_ROI_IPM)
+            cv2.imshow("IPM", frame_ROI_IPM)
             cv2.imshow("ROI", frame_ROI)
             cv2.waitKey(1)
 
