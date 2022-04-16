@@ -168,7 +168,7 @@ class LaneDetection:
     def intersection_detection(self, horizontal_lines, left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM=None):
         # bounding box for filtering horizontal lines
         print(left_line_IPM)
-        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_line_IPM[0]
+        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_line_IPM[0][0]
         y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_line_IPM[0]
         margin_error = 25
         y_left_box = y1_left_cv - margin_error
