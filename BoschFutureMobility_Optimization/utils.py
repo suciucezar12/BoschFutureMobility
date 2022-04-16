@@ -11,6 +11,15 @@ class Line:
 
 class Utils:
 
+    def draw_line(self, line, color, image):
+        y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+        radius = 5
+        color_left_most_point = (0, 255, 0)  # GREEN for left_most point
+        color_right_most_point = (255, 0, 0)  # BLUE fpr right_most point
+        cv2.circle(image, (y1_cv, x1_cv), radius, color_left_most_point, 1)
+        cv2.circle(image, (y2_cv, x2_cv), radius, color_right_most_point, 1)
+        cv2.line(image, (y1_cv, x1_cv), (y2_cv, x2_cv), color, 1)
+
     def get_homography_matrix(self, src_points, dst_points, pixel_resolution):
         dst_points = np.array(
             [[int(y_cv / pixel_resolution), int(x_cv / pixel_resolution)] for [y_cv, x_cv] in dst_points],

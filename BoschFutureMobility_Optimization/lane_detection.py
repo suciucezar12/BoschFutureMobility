@@ -165,8 +165,40 @@ class LaneDetection:
 
         return offset, theta, left_lane_IPM, right_lane_IPM
 
-    def intersection_detection(self, frame_ROI, horizontal_lines, left_lane, right_lane, frame_ROI_IPM):
-        return None
+    def intersection_detection(self, horizontal_lines, left_line_IPM, right_line_IPM, frame_ROI, frame_ROI_IPM=None):
+        # bounding box for filtering horizontal lines
+        y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_line_IPM
+        y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_line_IPM
+        margin_error = 25
+        y_left_box = y1_left_cv - margin_error
+        y_right_box = y1_right_cv + margin_error
+        sum = 0
+        # cv2.line(frame_ROI_IPM, (y_left_box, 0), (y_left_box, self.height_ROI_IPM), (255, 0, 0), 5)
+        # cv2.line(frame_ROI_IPM, (y_right_box, 0), (y_right_box, self.height_ROI_IPM), (255, 0, 0), 5)
+        for line in horizontal_lines:
+            y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+            line_IPM = self.utils.get_line_IPM(line[0])
+            y1_IPM_cv, x1_IPM_cv, y2_IPM_cv, x2_IPM_cv = line_IPM
+            if y_left_box <= y1_IPM_cv and y2_IPM_cv <= y_right_box:
+                # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 0), 2)
+                self.utils.draw_line(line, (255, 255, 0), frame_ROI)
+                if frame_ROI_IPM is not None:
+                    # cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
+                    self.utils.draw_line([line_IPM], (255, 255, 0), frame_ROI_IPM)
+                sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
+            else:
+                # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 2)
+                # if frame_ROI_IPM is not None:
+                #     cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (0, 255, 255), 2)
+                self.utils.draw_line(line, (0, 255, 255), frame_ROI)
+                if frame_ROI_IPM is not None:
+                    # cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
+                    self.utils.draw_line([line_IPM], (0, 255, 255), frame_ROI_IPM)
+        # print(sum)
+        if sum > 300:
+            return True
+        else:
+            return False
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
         offset = None
