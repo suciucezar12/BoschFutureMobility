@@ -7,6 +7,7 @@ ret, frame = cap.read()
 
 while True:
 
+    frame = frame[210:, :]
     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frame_blurred = cv2.GaussianBlur(frame_gray, (5, 5), 0)
     frame_canny = cv2.Canny(frame_blurred, 180, 255)
