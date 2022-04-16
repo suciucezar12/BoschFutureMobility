@@ -35,8 +35,6 @@ class Utils:
                 x_points.append(y2_cv)
                 y_points.append(x1_cv)
                 y_points.append(x2_cv)
-                cv2.circle(frame_ROI, (y1_cv, x1_cv), 3, (0, 255, 0), 1)
-                cv2.circle(frame_ROI, (y2_cv, x2_cv), 3, (0, 255, 0), 1)
 
                 # create more data points on the line for better precision in our line estimation
                 num = 5
@@ -49,6 +47,7 @@ class Utils:
 
             # estimate our lane
             coeff = np.polynomial.polynomial.polyfit(y_points, x_points, deg=1)
+            print("y = {}*x + {}".format(coeff[1], coeff[0]))
 
             if coeff is not None:
                 # get our coordinates expanded from top to the bottom
