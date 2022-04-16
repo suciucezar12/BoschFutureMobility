@@ -52,7 +52,7 @@ class LaneDetection:
 
         for line in lines_candidate:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-            if y1_cv != y2_cv:
+            if abs(y1_cv - y2_cv) > 10:
                 coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
                 # ---------------------------------
                 # coeff = []
