@@ -92,12 +92,15 @@ class LaneDetection:
         # filter lines
         # left_lines and right_lines are type of class Line
         # horizontal_lines are just lists of coordinates
-        left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+        if lines_candidate is not None:
+            left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
 
-        left_lane = self.utils.estimate_lane(left_lines, self.height_ROI, frame_ROI, frame_ROI_IPM)
-        right_lane = self.utils.estimate_lane(right_lines, self.height_ROI, frame_ROI, frame_ROI_IPM)
+            left_lane = self.utils.estimate_lane(left_lines, self.height_ROI, frame_ROI, frame_ROI_IPM)
+            right_lane = self.utils.estimate_lane(right_lines, self.height_ROI, frame_ROI, frame_ROI_IPM)
 
-        return left_lane, right_lane, horizontal_lines
+            return left_lane, right_lane, horizontal_lines
+
+        return None, None, None
 
     def optimized_detection(self, frame_ROI, framre_ROI_IPM=None):
         return None, None
