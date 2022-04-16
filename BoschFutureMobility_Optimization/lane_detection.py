@@ -52,51 +52,52 @@ class LaneDetection:
 
         for line in lines_candidate:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-            # coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
-            # ---------------------------------
-            coeff = []
-            try:
-                slope = (x2_cv - x1_cv) / (y2_cv - y1_cv)
-            except OverflowError:
-                slope = 10000
-            coeff.append(y1_cv - slope * x1_cv)
-            coeff.append(slope)
-            print(coeff)
-            # ---------------------------------
-            if coeff is not None:
-                # coeff[1] -> slope in XoY coordinates
-                # coeff[0] -> intercept_oY in XoY coordinates
-                if coeff[1] != 10000:
-                    if abs(coeff[1]) >= 0.2:  # slope = +-0.2 -> +-11.3 degrees
-                        # OverFlowError when we get horizontal lines
-                        try:
-                            # intercept_oX = - int(coeff[0] / coeff[1])
-                            print((self.height_ROI - coeff[0]) / coeff[1])
-                            intercept_oX = int((self.height_ROI - coeff[0]) / coeff[1])
-                        except OverflowError:
-                            intercept_oX = 30000  # some big value
-                        print("y = {}*x + {}".format(coeff[1], coeff[0]))
-                        print(intercept_oX)
-                        if 0 <= intercept_oX <= margin_y_cv_left:  # left line
-                            left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                            cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
-
-                        if margin_y_cv_right <= intercept_oX <= self.width_ROI:  # right line
-                            right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                            cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
-
-                        # check by theta and intercept_oX (last criteria)
-                        if coeff[1] <= -0.2:  # candidate left line
-                            if 0 <= intercept_oX <= margin_y_cv_right:
+            if y1_cv != y2_cv:
+                # coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
+                # ---------------------------------
+                coeff = []
+                try:
+                    slope = (x2_cv - x1_cv) / (y2_cv - y1_cv)
+                except OverflowError:
+                    slope = 10000
+                coeff.append(y1_cv - slope * x1_cv)
+                coeff.append(slope)
+                print(coeff)
+                # ---------------------------------
+                if coeff is not None:
+                    # coeff[1] -> slope in XoY coordinates
+                    # coeff[0] -> intercept_oY in XoY coordinates
+                    if coeff[1] != 10000:
+                        if abs(coeff[1]) >= 0.2:  # slope = +-0.2 -> +-11.3 degrees
+                            # OverFlowError when we get horizontal lines
+                            try:
+                                # intercept_oX = - int(coeff[0] / coeff[1])
+                                print((self.height_ROI - coeff[0]) / coeff[1])
+                                intercept_oX = int((self.height_ROI - coeff[0]) / coeff[1])
+                            except OverflowError:
+                                intercept_oX = 30000  # some big value
+                            print("y = {}*x + {}".format(coeff[1], coeff[0]))
+                            print(intercept_oX)
+                            if 0 <= intercept_oX <= margin_y_cv_left:  # left line
                                 left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
                                 cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
 
-                        if coeff[1] >= 0.2:  # candidate right line
-                            if margin_y_cv_left <= intercept_oX <= self.width_ROI:
+                            if margin_y_cv_right <= intercept_oX <= self.width_ROI:  # right line
                                 right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
                                 cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
-                    else:
-                        horizontal_lines.append(line)
+
+                            # check by theta and intercept_oX (last criteria)
+                            if coeff[1] <= -0.2:  # candidate left line
+                                if 0 <= intercept_oX <= margin_y_cv_right:
+                                    left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
+                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
+
+                            if coeff[1] >= 0.2:  # candidate right line
+                                if margin_y_cv_left <= intercept_oX <= self.width_ROI:
+                                    right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
+                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
+                        else:
+                            horizontal_lines.append(line)
 
         return left_lines, right_lines, horizontal_lines
 
