@@ -71,6 +71,7 @@ class LaneDetection:
                         # OverFlowError when we get horizontal lines
                         try:
                             # intercept_oX = - int(coeff[0] / coeff[1])
+                            print((self.height_ROI - coeff[0]) / coeff[1])
                             intercept_oX = int((self.height_ROI - coeff[0]) / coeff[1])
                         except OverflowError:
                             intercept_oX = 30000  # some big value
