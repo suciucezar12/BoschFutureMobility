@@ -148,7 +148,7 @@ class LaneDetection:
 
             x_cv_points.append(x_cv)
             # x_cv_points.append(x_cv)
-            # x_cv_points.append(xp_cv)
+            x_cv_points.append(xp_cv)
             # x_cv_points.append(xp_cv)
 
             # clipping
