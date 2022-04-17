@@ -206,7 +206,9 @@ class LaneDetection:
                     correct_lines = self.optimized_sliding_window_pipeline([y_cv_min, x_cv_min, y_cv_max, x_cv_max],
                                                                            coeff, (255, 0, 0), frame_ROI, frame_ROI_IPM)
                 cv2.rectangle(frame_ROI, (y_cv_min, x_cv_min), (y_cv_max, x_cv_max), (255, 0, 255), 2)
-                edge_lines.append(correct_lines)
+                for correct_line in correct_lines:
+                    edge_lines.append(correct_line)
+                # edge_lines.append(correct_lines)
 
             y_cv_points = []
             x_cv_points = []
