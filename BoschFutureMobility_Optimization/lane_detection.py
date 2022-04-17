@@ -155,8 +155,8 @@ class LaneDetection:
 
 
 
-        cv2.imshow("window_ROI", window_ROI_preprocessed)
-        cv2.waitKey(1000)
+        # cv2.imshow("window_ROI", window_ROI_preprocessed)
+        # cv2.waitKey(1000)
         return correct_lines
         pass
 
