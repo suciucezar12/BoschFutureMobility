@@ -221,8 +221,8 @@ class LaneDetection:
 
     def optimized_detection(self, frame_ROI, frame_ROI_IPM=None):
         nb_of_windows = 3
-        left_lane = self.lane_optimized_detection(nb_of_windows, 30, 100, self.previous_left_lane, frame_ROI, left_lane=True, frame_ROI_IPM=frame_ROI_IPM)
-        right_lane = self.lane_optimized_detection(nb_of_windows, 100, 30, self.previous_right_lane, frame_ROI, left_lane=False,  frame_ROI_IPM=frame_ROI_IPM)
+        left_lane = self.lane_optimized_detection(nb_of_windows, 50, 50, self.previous_left_lane, frame_ROI, left_lane=True, frame_ROI_IPM=frame_ROI_IPM)
+        right_lane = self.lane_optimized_detection(nb_of_windows, 50, 50, self.previous_right_lane, frame_ROI, left_lane=False,  frame_ROI_IPM=frame_ROI_IPM)
 
 
         return left_lane, right_lane
