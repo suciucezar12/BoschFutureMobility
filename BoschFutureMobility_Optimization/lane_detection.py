@@ -131,7 +131,7 @@ class LaneDetection:
 
 
 
-        # cv2.imshow("window_ROI", window_ROI_preprocessed)
+        cv2.imshow("window_ROI", window_ROI_preprocessed)
         cv2.waitKey(1000)
         return None
         pass
@@ -144,7 +144,6 @@ class LaneDetection:
 
         y_cv_points = []
         x_cv_points = []
-        print(y_cv_array)
         for i in range(len(y_cv_array) - 1):
             y_cv = y_cv_array[i]
             yp_cv = y_cv_array[i+1]
