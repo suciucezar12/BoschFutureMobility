@@ -158,6 +158,8 @@ class LaneDetection:
             x_cv_points = [x_cv if x_cv >= 0 else 0 for x_cv in x_cv_points]
             x_cv_points = [x_cv if x_cv <= self.height_ROI else self.height_ROI for x_cv in x_cv_points]
 
+            print(y_cv_points)
+            print(x_cv_points)
 
             # get our corners
             x_cv_min, x_cv_max = int(min(x_cv_points)), int(max(x_cv_points))
