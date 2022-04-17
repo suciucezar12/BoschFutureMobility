@@ -184,7 +184,7 @@ class LaneDetection:
             x_cv_points = []
 
     def optimized_detection(self, frame_ROI, frame_ROI_IPM=None):
-        nb_of_windows = 4
+        nb_of_windows = 3
         self.lane_optimized_detection(nb_of_windows, 30, 100, self.previous_left_lane, frame_ROI, frame_ROI_IPM)
         self.lane_optimized_detection(nb_of_windows, 100, 30, self.previous_right_lane, frame_ROI, frame_ROI_IPM)
 
