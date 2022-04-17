@@ -37,6 +37,14 @@ class LaneDetection:
         self.y_heading_car_cv = self.width_ROI_IPM // 2 + self.offset_origin
         self.width_road_IPM = 310
 
+        ''' store lines for drawing in brain '''
+        self.left_lines = []
+        self.right_lines = []
+        self.horizontal_lines = []
+        self.left_lane = None
+        self.right_lane = None
+        self.road_lane = None
+
     def filter_lines(self, lines_candidate, frame_ROI, frame_ROI_IPM=None):
         left_lines = []
         right_lines = []
@@ -77,24 +85,29 @@ class LaneDetection:
                             # print(intercept_oX)
                             if 0 <= intercept_oX <= margin_y_cv_left:  # left line
                                 left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
+                                self.left_lines.append(line)
+                                # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
 
                             if margin_y_cv_right <= intercept_oX <= self.width_ROI:  # right line
                                 right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
+                                self.right_lines.append(line)
+                                # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
 
                             # check by theta and intercept_oX (last criteria)
                             if coeff[1] <= -0.2:  # candidate left line
                                 if 0 <= intercept_oX <= margin_y_cv_right:
                                     left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
+                                    self.left_lines.append(line)
+                                    # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
 
                             if coeff[1] >= 0.2:  # candidate right line
                                 if margin_y_cv_left <= intercept_oX <= self.width_ROI:
                                     right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
+                                    self.right_lines.append(line)
+                                    # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
                         else:
                             horizontal_lines.append(line)
+                            self.horizontal_lines.append(line)
 
         return left_lines, right_lines, horizontal_lines
 
@@ -118,62 +131,7 @@ class LaneDetection:
 
         return None, None, None
 
-    def optimized_sliding_window_pipeline(self, coords, frame_ROI, frame_ROI_IPM=None):
-        y_cv_min, x_cv_min, y_cv_max, x_cv_max = coords
-        window_ROI = frame_ROI[x_cv_min:x_cv_max, y_cv_min:y_cv_max]
-        return None
-        pass
-
-    def lane_optimized_detection(self, nb_of_windows, margin_left, margin_right, lane, frame_ROI, frame_ROI_IPM=None):
-        # generate sliding windows coordinates
-        y1_cv, x1_cv, y2_cv, x2_cv = lane
-        coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), 1)
-        y_cv_array = np.linspace(y1_cv, y2_cv, nb_of_windows)
-
-        y_cv_points = []
-        x_cv_points = []
-        for i in range(len(y_cv_array) - 1):
-            y_cv = y_cv_array[i]
-            yp_cv = y_cv_array[i+1]
-            x_cv = coeff[1] * y_cv + coeff[0]
-            xp_cv = coeff[1] * yp_cv + coeff[0]
-
-            # extend by margin error
-            y_cv_points.append(y_cv - margin_left)
-            y_cv_points.append(y_cv + margin_right)
-            y_cv_points.append(yp_cv - margin_left)
-            y_cv_points.append(yp_cv + margin_right)
-
-            x_cv_points.append(x_cv - margin_left)
-            x_cv_points.append(x_cv + margin_right)
-            x_cv_points.append(xp_cv - margin_left)
-            x_cv_points.append(xp_cv + margin_right)
-
-            # clipping
-            y_cv_points = [y_cv if y_cv >= 0 else 0 for y_cv in y_cv_points]
-            y_cv_points = [y_cv if y_cv <= self.width_ROI else self.width_ROI for y_cv in y_cv_points]
-
-            x_cv_points = [x_cv if x_cv >= 0 else 0 for x_cv in x_cv_points]
-            x_cv_points = [x_cv if x_cv <= self.height_ROI else self.height_ROI for x_cv in x_cv_points]
-
-
-            # get our corners
-            x_cv_min, x_cv_max = int(min(x_cv_points)), int(max(x_cv_points))
-            y_cv_min, y_cv_max = int(min(y_cv_points)), int(max(y_cv_points))
-
-            # check if our sliding window is in within our image (previous detected lane was outside of our FOV)
-            if x_cv_min != x_cv_max and y_cv_min != y_cv_max:
-                cv2.rectangle(frame_ROI, (y_cv_min, x_cv_min), (y_cv_max, x_cv_max), (255, 0, 255), 2)
-                # pipeline for detecting edge points -> return set of points
-                points = self.optimized_sliding_window_pipeline([y_cv_min, x_cv_min, y_cv_max, x_cv_max], frame_ROI, frame_ROI_IPM)
-
-
-    def optimized_detection(self, frame_ROI, frame_ROI_IPM=None):
-        nb_of_windows = 4
-        self.lane_optimized_detection(nb_of_windows, 30, 100, self.previous_left_lane, frame_ROI, frame_ROI_IPM)
-        self.lane_optimized_detection(nb_of_windows, 100, 30, self.previous_right_lane, frame_ROI, frame_ROI_IPM)
-
-
+    def optimized_detection(self, frame_ROI, framre_ROI_IPM=None):
         return None, None
 
     def optimized_intersection_detection(self, frame_ROI, left_lane, right_lane, frame_ROI_IPM=None):
@@ -196,21 +154,21 @@ class LaneDetection:
                 right_lane_IPM = self.utils.translation_IPM(left_lane_IPM, self.width_road_IPM, True)
                 right_lane = self.utils.get_line_IPM(right_lane_IPM, self.inv_H)
                 y1_cv, x1_cv, y2_cv, x2_cv = right_lane
-                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+                # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
             else:
                 if right_lane is not None:  # only have our right lane
                     right_lane_IPM = self.utils.get_line_IPM(right_lane, self.H)
                     left_lane_IPM = self.utils.translation_IPM(right_lane_IPM, self.width_road_IPM, False)
                     left_lane = self.utils.get_line_IPM(left_lane_IPM, self.inv_H)
                     y1_cv, x1_cv, y2_cv, x2_cv = left_lane
-                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+                    # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
         if left_lane_IPM is not None and right_lane_IPM is not None:
             y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM
             y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM
-            if frame_ROI_IPM is not None:
-                cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 3)
-                cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 3)
+            # if frame_ROI_IPM is not None:
+                # cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 3)
+                # cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 3)
 
             # theta
             y_heading_road_cv = (y2_left_cv + y2_right_cv) // 2
@@ -218,12 +176,13 @@ class LaneDetection:
 
             y_bottom_road_cv = (y1_left_cv + y1_right_cv) // 2
             x_bottom_road_cv = (x1_left_cv + x1_right_cv) // 2
-            cv2.line(frame_ROI_IPM, (y_heading_road_cv, x_heading_road_cv), (y_bottom_road_cv, x_bottom_road_cv),
-                     (255, 255, 255), 3)
+            # cv2.line(frame_ROI_IPM, (y_heading_road_cv, x_heading_road_cv), (y_bottom_road_cv, x_bottom_road_cv),
+            #          (255, 255, 255), 3)
             road_line_reference = self.utils.get_line_IPM(
                 [y_heading_road_cv, x_heading_road_cv, self.y_heading_car_cv, self.height_ROI_IPM], self.inv_H)
             y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference
-            cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
+            self.road_lane = road_line_reference
+            # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
 
             # print("{}, {}, {}, {}".format(y_heading_road_cv, self.y_heading_car_cv, x_heading_road_cv, self.height_ROI_IPM))
             theta = math.degrees(
@@ -253,19 +212,19 @@ class LaneDetection:
             y1_IPM_cv, x1_IPM_cv, y2_IPM_cv, x2_IPM_cv = line_IPM
             if y_left_box <= y1_IPM_cv and y2_IPM_cv <= y_right_box:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 0), 2)
-                self.utils.draw_line(line, (255, 255, 0), frame_ROI)
-                if frame_ROI_IPM is not None:
+                # self.utils.draw_line(line, (255, 255, 0), frame_ROI)
+                # if frame_ROI_IPM is not None:
                     # cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
-                    self.utils.draw_line([line_IPM], (255, 255, 0), frame_ROI_IPM)
+                    # self.utils.draw_line([line_IPM], (255, 255, 0), frame_ROI_IPM)
                 sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
-            else:
+            # else:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 2)
                 # if frame_ROI_IPM is not None:
                 #     cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (0, 255, 255), 2)
-                self.utils.draw_line(line, (0, 255, 255), frame_ROI)
-                if frame_ROI_IPM is not None:
+                # self.utils.draw_line(line, (0, 255, 255), frame_ROI)
+                # if frame_ROI_IPM is not None:
                     # cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
-                    self.utils.draw_line([line_IPM], (0, 255, 255), frame_ROI_IPM)
+                    # self.utils.draw_line([line_IPM], (0, 255, 255), frame_ROI_IPM)
         # print(sum)
         if sum > 300:
             return True
@@ -288,11 +247,11 @@ class LaneDetection:
             offset, theta, left_lane_IPM, right_lane_IPM = self.get_offset_theta(frame_ROI, left_lane, right_lane,
                                                                                  frame_ROI_IPM)
             if left_lane_IPM is not None and right_lane_IPM is not None:
+                self.left_lane = left_lane
+                self.right_lane = right_lane
                 if len(horizontal_lines):
                     intersection = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM, right_lane_IPM,
                                                                frame_ROI_IPM)
-                self.previous_left_lane = left_lane
-                self.previous_right_lane = right_lane
 
         return theta, offset, intersection
 
