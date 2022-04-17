@@ -150,7 +150,7 @@ class LaneDetection:
                     coeff_line = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), 1)
                     if abs(theta - math.degrees(math.atan(coeff_line[1]))) <= theta_margin:
                         cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), color, 2)
-                        correct_lines.append(Line(line, coeff_line))
+                        correct_lines.append(Line(coords=line, coeff=coeff_line))
 
 
 
