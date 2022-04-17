@@ -145,7 +145,7 @@ class LaneDetection:
                 y1_cv, x1_cv, y2_cv, x2_cv = line[0]
                 # translation from the origin of sliding window to the origin of frame_ROI
                 line = [y1_cv + y_cv_min, x1_cv + x_cv_min, y2_cv + y_cv_min, x2_cv + x_cv_min]
-                y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+                y1_cv, x1_cv, y2_cv, x2_cv = line
                 if abs(y1_cv - y2_cv) >= 10:
                     coeff_line = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), 1)
                     if abs(theta - math.degrees(math.atan(coeff_line[1]))) <= theta_margin:
