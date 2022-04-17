@@ -150,7 +150,6 @@ class LaneDetection:
             yp_cv = y_cv_array[i+1]
             x_cv = coeff[1] * y_cv + coeff[0]
             xp_cv = coeff[1] * yp_cv + coeff[0]
-            print("{}, {}".format(y_cv, yp_cv))
 
             # extend by margin error
             y_cv_points.append(y_cv - margin_left)
@@ -159,9 +158,7 @@ class LaneDetection:
             y_cv_points.append(yp_cv + margin_right)
 
             x_cv_points.append(x_cv)
-            # x_cv_points.append(x_cv)
             x_cv_points.append(xp_cv)
-            # x_cv_points.append(xp_cv)
 
             # clipping
             y_cv_points = [y_cv if y_cv >= 0 else 0 for y_cv in y_cv_points]
@@ -169,9 +166,6 @@ class LaneDetection:
 
             x_cv_points = [x_cv if x_cv >= 0 else 0 for x_cv in x_cv_points]
             x_cv_points = [x_cv if x_cv <= self.height_ROI else self.height_ROI for x_cv in x_cv_points]
-
-            print(y_cv_points)
-            print(x_cv_points)
 
             # get our corners
             x_cv_min, x_cv_max = int(min(x_cv_points)), int(max(x_cv_points))
