@@ -166,7 +166,9 @@ class LaneDetection:
                 cv2.rectangle(frame_ROI, (y_cv_min, x_cv_min), (y_cv_max, x_cv_max), (255, 0, 255), 2)
                 # pipeline for detecting edge points -> return set of points
                 points = self.optimized_sliding_window_pipeline([y_cv_min, x_cv_min, y_cv_max, x_cv_max], frame_ROI, frame_ROI_IPM)
-
+            
+            y_cv_points = []
+            x_cv_points = []
 
     def optimized_detection(self, frame_ROI, frame_ROI_IPM=None):
         nb_of_windows = 4
