@@ -1,7 +1,10 @@
+import math
+
 import cv2
 import numpy as np
 import time
 from utils import *
+
 
 class LaneDetection:
 
@@ -118,25 +121,46 @@ class LaneDetection:
 
         return None, None, None
 
-    def optimized_preprocessing(self, window_ROI, frame_ROI, framre_ROI_IPM=None):
+    def optimized_preprocessing(self, window_ROI, frame_ROI, frame_ROI_IPM=None):
         window_ROI_gray = cv2.cvtColor(window_ROI, cv2.COLOR_BGR2RGB)
         window_ROI_canny = cv2.Canny(window_ROI_gray, 180, 255)
         return window_ROI_canny
         pass
 
-    def optimized_sliding_window_pipeline(self, coords, frame_ROI, frame_ROI_IPM=None):
+    def optimized_sliding_window_pipeline(self, coords, coeff, color, frame_ROI, frame_ROI_IPM=None):
         y_cv_min, x_cv_min, y_cv_max, x_cv_max = coords
         window_ROI = frame_ROI[x_cv_min:x_cv_max, y_cv_min:y_cv_max]
         window_ROI_preprocessed = self.optimized_preprocessing(window_ROI, frame_ROI, frame_ROI_IPM)
+        theta = math.degrees(math.atan(coeff[1]))
+        theta_margin = 15
+
+        lines_candidate = lines_candidate = cv2.HoughLinesP(window_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=20,
+                                          minLineLength=25,
+                                          maxLineGap=80)
+
+        # filter lines
+        correct_lines = []
+        if lines_candidate is not None:
+            for line in lines_candidate:
+                y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+                # translation from the origin of sliding window to the origin of frame_ROI
+                line = [y1_cv + y_cv_min, x1_cv + x_cv_min, y2_cv + y_cv_min, x2_cv + x_cv_min]
+                y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+                if abs(y1_cv - y2_cv) >= 10:
+                    coeff_line = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), 1)
+                    if abs(theta - math.degrees(math.atan(coeff_line[1]))) <= theta_margin:
+                        cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), color, 2)
+                        correct_lines.append(Line(line, coeff_line))
+
 
 
 
         cv2.imshow("window_ROI", window_ROI_preprocessed)
         cv2.waitKey(1000)
-        return None
+        return correct_lines
         pass
 
-    def lane_optimized_detection(self, nb_of_windows, margin_left, margin_right, lane, frame_ROI, frame_ROI_IPM=None):
+    def lane_optimized_detection(self, nb_of_windows, margin_left, margin_right, lane, frame_ROI, left_lane=False, frame_ROI_IPM=None):
         # generate sliding windows coordinates
         y1_cv, x1_cv, y2_cv, x2_cv = lane
         coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), 1)
@@ -144,6 +168,9 @@ class LaneDetection:
 
         y_cv_points = []
         x_cv_points = []
+
+        edge_lines = []
+
         for i in range(len(y_cv_array) - 1):
             y_cv = y_cv_array[i]
             yp_cv = y_cv_array[i+1]
@@ -172,17 +199,27 @@ class LaneDetection:
 
             # check if our sliding window is in within our image (previous detected lane was outside of our FOV)
             if x_cv_min != x_cv_max and y_cv_min != y_cv_max:
-                cv2.rectangle(frame_ROI, (y_cv_min, x_cv_min), (y_cv_max, x_cv_max), (255, 0, 255), 2)
                 # pipeline for detecting edge points -> return set of points
-                points = self.optimized_sliding_window_pipeline([y_cv_min, x_cv_min, y_cv_max, x_cv_max], frame_ROI, frame_ROI_IPM)
+                if left_lane is False:
+                    correct_lines = self.optimized_sliding_window_pipeline([y_cv_min, x_cv_min, y_cv_max, x_cv_max], coeff, (0, 0, 255), frame_ROI, frame_ROI_IPM)
+                else:
+                    correct_lines = self.optimized_sliding_window_pipeline([y_cv_min, x_cv_min, y_cv_max, x_cv_max],
+                                                                           coeff, (255, 0, 0), frame_ROI, frame_ROI_IPM)
+                cv2.rectangle(frame_ROI, (y_cv_min, x_cv_min), (y_cv_max, x_cv_max), (255, 0, 255), 2)
+                edge_lines.append(correct_lines)
 
             y_cv_points = []
             x_cv_points = []
 
+        if len(edge_lines):
+            return self.utils.estimate_lane(edge_lines, self.height_ROI, frame_ROI, frame_ROI_IPM)
+        else:
+            return None
+
     def optimized_detection(self, frame_ROI, frame_ROI_IPM=None):
         nb_of_windows = 3
-        self.lane_optimized_detection(nb_of_windows, 30, 100, self.previous_left_lane, frame_ROI, frame_ROI_IPM)
-        self.lane_optimized_detection(nb_of_windows, 100, 30, self.previous_right_lane, frame_ROI, frame_ROI_IPM)
+        left_lane = self.lane_optimized_detection(nb_of_windows, 30, 100, self.previous_left_lane, frame_ROI, left_lane=True, frame_ROI_IPM=frame_ROI_IPM)
+        right_lane = self.lane_optimized_detection(nb_of_windows, 100, 30, self.previous_right_lane, frame_ROI, left_lane=False,  frame_ROI_IPM=frame_ROI_IPM)
 
 
         return None, None
