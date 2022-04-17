@@ -212,6 +212,7 @@ class LaneDetection:
             x_cv_points = []
 
         if len(edge_lines):
+            print(edge_lines)
             return self.utils.estimate_lane(edge_lines, self.height_ROI, frame_ROI, frame_ROI_IPM)
         else:
             return None
