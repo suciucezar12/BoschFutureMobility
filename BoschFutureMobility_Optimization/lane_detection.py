@@ -132,11 +132,13 @@ class LaneDetection:
 
         y_cv_points = []
         x_cv_points = []
+        print(y_cv_array)
         for i in range(len(y_cv_array) - 1):
             y_cv = y_cv_array[i]
             yp_cv = y_cv_array[i+1]
             x_cv = coeff[1] * y_cv + coeff[0]
             xp_cv = coeff[1] * yp_cv + coeff[0]
+            print("{}, {}".format(y_cv, yp_cv))
 
             # extend by margin error
             y_cv_points.append(y_cv - margin_left)
