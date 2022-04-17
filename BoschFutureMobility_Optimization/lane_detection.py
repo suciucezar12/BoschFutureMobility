@@ -121,7 +121,7 @@ class LaneDetection:
     def optimized_preprocessing(self, window_ROI, frame_ROI, framre_ROI_IPM=None):
         window_ROI_gray = cv2.cvtColor(window_ROI, cv2.COLOR_BGR2RGB)
         window_ROI_canny = cv2.Canny(window_ROI_gray, 180, 255)
-        return window_ROI_gray
+        return window_ROI_canny
         pass
 
     def optimized_sliding_window_pipeline(self, coords, frame_ROI, frame_ROI_IPM=None):
