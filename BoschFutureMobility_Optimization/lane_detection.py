@@ -128,7 +128,7 @@ class LaneDetection:
         # generate sliding windows coordinates
         y1_cv, x1_cv, y2_cv, x2_cv = lane
         coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), 1)
-        y_cv_array = np.linspace(y1_cv, y2_cv, nb_of_windows)
+        y_cv_array = np.linspace(y1_cv, y2_cv, nb_of_windows+1)
 
         y_cv_points = []
         x_cv_points = []
@@ -166,7 +166,7 @@ class LaneDetection:
                 cv2.rectangle(frame_ROI, (y_cv_min, x_cv_min), (y_cv_max, x_cv_max), (255, 0, 255), 2)
                 # pipeline for detecting edge points -> return set of points
                 points = self.optimized_sliding_window_pipeline([y_cv_min, x_cv_min, y_cv_max, x_cv_max], frame_ROI, frame_ROI_IPM)
-            
+
             y_cv_points = []
             x_cv_points = []
 
