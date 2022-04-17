@@ -214,7 +214,7 @@ class LaneDetection:
             x_cv_points = []
 
         if len(edge_lines):
-            print(edge_lines)
+            # print(edge_lines)
             return self.utils.estimate_lane(edge_lines, self.height_ROI, frame_ROI, frame_ROI_IPM)
         else:
             return None
@@ -225,7 +225,7 @@ class LaneDetection:
         right_lane = self.lane_optimized_detection(nb_of_windows, 100, 30, self.previous_right_lane, frame_ROI, left_lane=False,  frame_ROI_IPM=frame_ROI_IPM)
 
 
-        return None, None
+        return left_lane, right_lane
 
     def optimized_intersection_detection(self, frame_ROI, left_lane, right_lane, frame_ROI_IPM=None):
         return None
@@ -379,7 +379,7 @@ class LaneDetection:
             cv2.waitKey(1)
 
             end = time.time()
-            print("TIME = {}".format(end - start - 6))
+            print("TIME = {}".format(end - start))
             print("---------------------------------------------------------")
 
             _, frame = self.cap.read()
