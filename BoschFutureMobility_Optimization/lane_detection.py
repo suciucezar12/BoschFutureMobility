@@ -146,10 +146,10 @@ class LaneDetection:
             y_cv_points.append(yp_cv - margin_left)
             y_cv_points.append(yp_cv + margin_right)
 
-            x_cv_points.append(x_cv - margin_left)
-            x_cv_points.append(x_cv + margin_right)
-            x_cv_points.append(xp_cv - margin_left)
-            x_cv_points.append(xp_cv + margin_right)
+            x_cv_points.append(x_cv)
+            # x_cv_points.append(x_cv)
+            # x_cv_points.append(xp_cv)
+            # x_cv_points.append(xp_cv)
 
             # clipping
             y_cv_points = [y_cv if y_cv >= 0 else 0 for y_cv in y_cv_points]
