@@ -31,13 +31,21 @@ while True:
     # increase contrast
     alpha = 1.2
     beta = 0
-    # alpha_beta_image = grayscale * alpha + beta
     alpha_beta_image = cv2.convertScaleAbs(grayscale, alpha=alpha, beta=beta)
 
     # gamma correction
     gamma = 1.5
     table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
     gamma_image = cv2.LUT(grayscale, table)
+
+    # alpha_beta + gamma
+    alpha = 1.2
+    beta = 0
+    alpha_beta_image1 = cv2.convertScaleAbs(grayscale, alpha=alpha, beta=beta)
+    gamma = 1.5
+    table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
+    alph_beta_gamma_image = cv2.LUT(grayscale, table)
+
 
     # Display ---------------------------------------------------
     # cv2.imshow("RGB", rgb)
@@ -55,6 +63,7 @@ while True:
 
     cv2.imshow("Gamma correction", gamma_image)
     cv2.imshow("Alpha_Beta image", alpha_beta_image)
+    cv2.imshow("Alpha_Beta_Gamma image", alph_beta_gamma_image)
 
     cv2.waitKey(1)
 
