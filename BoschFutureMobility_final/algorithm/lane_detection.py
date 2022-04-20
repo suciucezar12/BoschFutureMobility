@@ -87,25 +87,25 @@ class LaneDetection:
                             if 0 <= intercept_oX <= margin_y_cv_left:  # left line
                                 left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
                                 # self.left_lines.append(line)
-                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
+                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 2)
 
                             if margin_y_cv_right <= intercept_oX <= self.width_ROI:  # right line
                                 right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
                                 # self.right_lines.append(line)
-                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
+                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
 
                             # check by theta and intercept_oX (last criteria)
                             if coeff[1] <= -0.2:  # candidate left line
                                 if 0 <= intercept_oX <= margin_y_cv_right:
                                     left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
                                     # self.left_lines.append(line)
-                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
+                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 2)
 
                             if coeff[1] >= 0.2:  # candidate right line
                                 if margin_y_cv_left <= intercept_oX <= self.width_ROI:
                                     right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
                                     # self.right_lines.append(line)
-                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
+                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
                         else:
                             if abs(coeff[1]) <= 0.3:
                                 horizontal_lines.append(line)
@@ -120,9 +120,8 @@ class LaneDetection:
 
         if lines_candidate is not None:
             for line in lines_candidate:
-                y1_cv, x1_cv, y2_cv, x2_cv = line[0]
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
-                left_lines, right_lines, horizonta_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+                left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
 
 
 
