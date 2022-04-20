@@ -28,6 +28,10 @@ while True:
     gaussian = cv2.GaussianBlur(grayscale, (5, 5), sigmaX=0)
     bilateral = cv2.bilateralFilter(grayscale, 9, 10, 15)
 
+    gamma = 10
+    table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
+    gamma_image = cv2.LUT(grayscale, table)
+
     # Display ---------------------------------------------------
     # cv2.imshow("RGB", rgb)
 
@@ -39,8 +43,10 @@ while True:
     # cv2.imshow("G", g)
     # cv2.imshow("B", b)
 
-    cv2.imshow("Gaussian", gaussian)
-    cv2.imshow("Bilateral", bilateral)
+    # cv2.imshow("Gaussian", gaussian)
+    # cv2.imshow("Bilateral", bilateral)
+
+    cv2.imshow("Gamma correction", gamma_image)
 
     cv2.waitKey(1)
 
