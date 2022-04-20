@@ -54,7 +54,7 @@ while True:
     # cv2.imshow("Bilateral", bilateral)
 
     cv2.imshow("Gamma correction", gamma_image)
-    cv2.imshow("Alpha_Beta image")
+    cv2.imshow("Alpha_Beta image", alpha_beta_image)
 
     cv2.waitKey(1)
 
