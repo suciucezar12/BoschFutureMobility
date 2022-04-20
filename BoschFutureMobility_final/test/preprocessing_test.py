@@ -23,4 +23,4 @@ while True:
     cv2.imshow("V_HSV", v)
     cv2.waitKey(1)
 
-    _, frame = cap.read()
+    _, rgb = cap.read()
