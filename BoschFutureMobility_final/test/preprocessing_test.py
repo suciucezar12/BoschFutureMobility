@@ -44,7 +44,7 @@ while True:
     alpha_beta_image1 = cv2.convertScaleAbs(grayscale, alpha=alpha, beta=beta)
     gamma = 1.5
     table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
-    alph_beta_gamma_image = cv2.LUT(grayscale, table)
+    alph_beta_gamma_image = cv2.LUT(alpha_beta_image1, table)
 
 
     # Display ---------------------------------------------------
