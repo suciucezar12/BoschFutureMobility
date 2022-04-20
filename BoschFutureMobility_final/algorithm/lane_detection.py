@@ -1,3 +1,5 @@
+import time
+
 import cv2
 import numpy as np
 from utils import *
@@ -40,7 +42,7 @@ class LaneDetection:
     def preprocessing(self, frame_ROI):
         grayscale_frame = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
         contrast_frame = cv2.convertScaleAbs(grayscale_frame, alpha=1.3, beta=0)
-        cv2.imshow("Contrast_ROI", contrast_frame)
+        # cv2.imshow("Contrast_ROI", contrast_frame)
         canny_frame = cv2.Canny(contrast_frame, 150, 200)
         return canny_frame
 
@@ -53,17 +55,18 @@ class LaneDetection:
         ret, frame = self.cap.read()
 
         while True:
-
+            start = time.time()
             frame_ROI = frame[self.x_cv_ROI:, :]
-            frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
-                                                flags=cv2.INTER_NEAREST)
+            # frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
+            #                                     flags=cv2.INTER_NEAREST)
 
             self.lane_detection(frame_ROI, None)
 
             cv2.imshow("ROI", frame_ROI)
-            cv2.imshow("IPM", frame_ROI_IPM)
+            # cv2.imshow("IPM", frame_ROI_IPM)
             cv2.waitKey(1)
-
+            end = time.time()
+            print("time = {}".format(end - start))
             _, frame = self.cap.read()
 
 
