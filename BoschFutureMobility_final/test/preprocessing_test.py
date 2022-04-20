@@ -58,7 +58,7 @@ while True:
     beta = 0
     alpha_beta_image = cv2.convertScaleAbs(grayscale_roi, alpha=alpha, beta=beta)
     # hist_eq = cv2.equalizeHist(alpha_beta_image)
-    gamma = 0.9
+    gamma = 0.5
     table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
     alpha_beta_gamma_image = cv2.LUT(alpha_beta_image, table)
     bilateral = cv2.bilateralFilter(alpha_beta_gamma_image, 9, 5, 15)
