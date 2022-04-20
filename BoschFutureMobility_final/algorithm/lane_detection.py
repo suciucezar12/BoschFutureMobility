@@ -38,7 +38,7 @@ class LaneDetection:
         # TO DO: modify this values
         self.offset_origin = -20  # to correct the inclination of our camera
         self.y_heading_car_cv = self.width_ROI_IPM // 2 + self.offset_origin
-        self.width_road_IPM = 350
+        self.width_road_IPM = 370
 
     def preprocessing(self, frame_ROI):
         grayscale_frame = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
