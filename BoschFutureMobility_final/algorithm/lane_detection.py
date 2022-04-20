@@ -39,7 +39,8 @@ class LaneDetection:
 
     def preprocessing(self, frame_ROI):
         grayscale_frame = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
-        canny_frame = cv2.Canny(grayscale_frame, 150, 200)
+        contrast_frame = cv2.convertScaleAbs(grayscale_frame, alpha=1.3, beta=0)
+        canny_frame = cv2.Canny(contrast_frame, 150, 200)
         return canny_frame
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM):
@@ -55,7 +56,7 @@ class LaneDetection:
             frame_ROI = frame[self.x_cv_ROI:, :]
             frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
                                                 flags=cv2.INTER_NEAREST)
-            
+
             self.lane_detection(frame_ROI, None)
 
             cv2.imshow("ROI", frame_ROI)
