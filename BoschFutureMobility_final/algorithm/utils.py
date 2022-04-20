@@ -20,10 +20,12 @@ class Utils:
         left_lines = []
         right_lines = []
         horizontal_lines = []
+        width_ROI = 640
+        height_ROI = 160
         # used for intercept_oX criteria
         y_cv_margin = 80  # offset wrt to the center vertical line
-        margin_y_cv_left = int(self.width_ROI / 2) - y_cv_margin
-        margin_y_cv_right = int(self.width_ROI / 2) + y_cv_margin
+        margin_y_cv_left = int(width_ROI / 2) - y_cv_margin
+        margin_y_cv_right = int(width_ROI / 2) + y_cv_margin
 
         for line in lines_candidate:
             y1_cv, x1_cv, y2_cv, x2_cv = line[0]
