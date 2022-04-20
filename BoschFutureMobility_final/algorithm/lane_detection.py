@@ -116,7 +116,7 @@ class LaneDetection:
     def detect_lanes(self, frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM):
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=45,
                                           minLineLength=20,
-                                          maxLineGap=80)
+                                          maxLineGap=30)
 
         if lines_candidate is not None:
             left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
