@@ -48,3 +48,7 @@ class LaneDetection:
             cv2.imshow("IPM", frame_ROI_IPM)
 
             _, frame = self.cap.read()
+
+
+LD = LaneDetection()
+LD.run()
