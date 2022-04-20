@@ -23,6 +23,8 @@ while True:
     # choose our ROI
     x_cv_ROI = 320
     cv2.line(rgb, (0, x_cv_ROI), (width, x_cv_ROI), (0, 0, 255), 3)
+    rgb_roi = rgb[x_cv_ROI:, :]
+    grayscale_roi = cv2.cvtColor(rgb_roi, cv2.COLOR_BGRA2GRAY)
 
     # test filters ------------------------------------
     gaussian = cv2.GaussianBlur(grayscale, (5, 5), sigmaX=0)
