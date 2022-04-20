@@ -28,7 +28,7 @@ while True:
     gaussian = cv2.GaussianBlur(grayscale, (5, 5), sigmaX=0)
     bilateral = cv2.bilateralFilter(grayscale, 9, 10, 15)
 
-    gamma = 10
+    gamma = 1.5
     table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
     gamma_image = cv2.LUT(grayscale, table)
 
