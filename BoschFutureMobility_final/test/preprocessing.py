@@ -11,7 +11,8 @@ def preprocessing(frame, alpha, beta, gamma):
     grayscale_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     contrast_frame = cv2.convertScaleAbs(grayscale_frame, alpha=alpha, beta=beta)
     bilateral_frame = cv2.bilateralFilter(contrast_frame, 9, 10, 10)
-    return bilateral_frame
+    gx_sobel = cv2.Sobel(bilateral_frame,  0, 1, 0, ksize=3, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
+    return gx_sobel
 
 while True:
 
