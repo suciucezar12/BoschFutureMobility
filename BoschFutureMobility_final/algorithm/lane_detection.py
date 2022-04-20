@@ -48,8 +48,8 @@ class LaneDetection:
 
     def detect_lanes(self, frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM):
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=45,
-                                          minLineLength=25,
-                                          maxLineGap=0)
+                                          minLineLength=20,
+                                          maxLineGap=80)
 
         if lines_candidate is not None:
             for line in lines_candidate:
