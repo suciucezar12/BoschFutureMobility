@@ -27,7 +27,7 @@ class LaneDetection:
             [[0, 0], [self.width_ROI, 0], [self.width_ROI, self.height_ROI], [0, self.height_ROI]],
             dtype=np.float32)
         self.dst_points_DLT = np.array([[0, 2.2], [57.7, 0], [49.5, 13.2], [7.5, 14.2]])  # expressed in centimeters
-        self.pixel_resolution = 57.7 / self.width_ROI  # centimeters per pixel
+        self.pixel_resolution = float(57.7 / self.width_ROI)  # centimeters per pixel
         self.H = self.utils.get_homography_matrix(self.src_points_DLT, self.dst_points_DLT,
                                                   self.pixel_resolution)
         self.inv_H = np.linalg.inv(self.H)
@@ -46,9 +46,26 @@ class LaneDetection:
         canny_frame = cv2.Canny(contrast_frame, 150, 200)
         return canny_frame
 
+    def detect_lanes(self, frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM):
+        lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=45,
+                                          minLineLength=25,
+                                          maxLineGap=80)
+
+        if lines_candidate is not None:
+            for line in lines_candidate:
+                y1_cv, x1_cv, y2_cv, x2_cv = line
+                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
+
+
+
     def lane_detection(self, frame_ROI, frame_ROI_IPM):
         frame_ROI_preprocessed = self.preprocessing(frame_ROI)
         cv2.imshow("ROI_Preprocessed", frame_ROI_preprocessed)
+
+        # get left and right lane
+        self.detect_lanes(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
+
+
 
     def run(self):
 
@@ -57,13 +74,13 @@ class LaneDetection:
         while True:
             start = time.time()
             frame_ROI = frame[self.x_cv_ROI:, :]
-            frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
-                                                flags=cv2.INTER_NEAREST)
+            # frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
+            #                                     flags=cv2.INTER_NEAREST)
 
             self.lane_detection(frame_ROI, None)
 
             cv2.imshow("ROI", frame_ROI)
-            cv2.imshow("IPM", frame_ROI_IPM)
+            # cv2.imshow("IPM", frame_ROI_IPM)
             cv2.waitKey(1)
             end = time.time()
             print("time = {}".format(end - start))
