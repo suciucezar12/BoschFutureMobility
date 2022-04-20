@@ -21,7 +21,7 @@ while True:
     # (b, g, r) = cv2.split(rgb)
 
     # choose our ROI
-    x_cv_ROI = 300
+    x_cv_ROI = 320
     cv2.line(rgb, (0, x_cv_ROI), (width, x_cv_ROI), (0, 0, 255), 3)
 
     # test filters ------------------------------------
