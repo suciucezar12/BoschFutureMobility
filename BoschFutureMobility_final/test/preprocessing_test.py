@@ -29,9 +29,9 @@ while True:
     bilateral = cv2.bilateralFilter(grayscale, 9, 10, 15)
 
     # Display ---------------------------------------------------
-    cv2.imshow("RGB", rgb)
+    # cv2.imshow("RGB", rgb)
 
-    # cv2.imshow("Grayscale", grayscale)
+    cv2.imshow("Grayscale", grayscale)
     # cv2.imshow("L_HLS", l)
     # cv2.imshow("V_HSV", v)
 
