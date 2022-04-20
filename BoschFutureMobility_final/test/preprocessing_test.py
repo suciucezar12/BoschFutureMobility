@@ -5,6 +5,9 @@ cap = cv2.VideoCapture(0)
 
 ret, rgb = cap.read()
 
+height = rgb.shape[0]
+width = rgb.shape[1]
+
 while True:
 
     # Conversion of color spaces --------------------------------
@@ -17,14 +20,18 @@ while True:
     # _, _, v = cv2.split(hsv)
     # (b, g, r) = cv2.split(rgb)
 
+    # choose our ROI
+    x_cv_ROI = height // 2
+    cv2.line(rgb, (0, x_cv_ROI), (width, x_cv_ROI), (0, 0, 255), 3)
+
     # test filters ------------------------------------
     gaussian = cv2.GaussianBlur(grayscale, (5, 5), sigmaX=0)
 
     # Display ---------------------------------------------------
-    # cv2.imshow("RGB", rgb)
+    cv2.imshow("RGB", rgb)
 
-    cv2.imshow("Grayscale", grayscale)
-    cv2.imshow("Gaussian", gaussian)
+    # cv2.imshow("Grayscale", grayscale)
+    # cv2.imshow("Gaussian", gaussian)
     # cv2.imshow("L_HLS", l)
     # cv2.imshow("V_HSV", v)
 
