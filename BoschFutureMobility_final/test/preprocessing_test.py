@@ -46,6 +46,9 @@ while True:
     table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
     alph_beta_gamma_image = cv2.LUT(alpha_beta_image1, table)
 
+    # histogram equalization
+    hist_eq = cv2.equalizeHist(grayscale)
+
 
     # Display ---------------------------------------------------
     # cv2.imshow("RGB", rgb)
@@ -61,9 +64,11 @@ while True:
     # cv2.imshow("Gaussian", gaussian)
     # cv2.imshow("Bilateral", bilateral)
 
-    cv2.imshow("Gamma correction", gamma_image)
-    cv2.imshow("Alpha_Beta image", alpha_beta_image)
-    cv2.imshow("Alpha_Beta_Gamma image", alph_beta_gamma_image)
+    # cv2.imshow("Gamma correction", gamma_image)
+    # cv2.imshow("Alpha_Beta image", alpha_beta_image)
+    # cv2.imshow("Alpha_Beta_Gamma image", alph_beta_gamma_image)
+
+    cv2.imshow("Histogram equalization", hist_eq)
 
     cv2.waitKey(1)
 
