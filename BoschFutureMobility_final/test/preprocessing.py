@@ -13,8 +13,9 @@ def preprocessing(frame, alpha, beta, gamma):
     contrast_frame = cv2.convertScaleAbs(grayscale_frame, alpha=alpha, beta=beta)
     bilateral_frame = cv2.bilateralFilter(contrast_frame, 9, 10, 10)
     cv2.imshow("Bilateral", bilateral_frame)
-    gx_sobel = cv2.Sobel(bilateral_frame,  0, 1, 0, ksize=3, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
-    return gx_sobel
+    # gx_sobel = cv2.Sobel(bilateral_frame,  0, 1, 0, ksize=3, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
+    canny_frame = cv2.Canny(bilateral_frame, 50, 150)
+    return canny_frame
 
 while True:
 
