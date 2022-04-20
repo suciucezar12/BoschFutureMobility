@@ -54,10 +54,10 @@ while True:
 
     # Combination testing ----------------------------------------
     # Test 1 #
-    alpha = 2
+    alpha = 1.5
     beta = 0
     alpha_beta_image = cv2.convertScaleAbs(grayscale_roi, alpha=alpha, beta=beta)
-    hist_eq = cv2.equalizeHist(alpha_beta_image)
+    # hist_eq = cv2.equalizeHist(alpha_beta_image)
     bilateral = cv2.bilateralFilter(hist_eq, 9, 5, 15)
 
 
