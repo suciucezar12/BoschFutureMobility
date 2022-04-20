@@ -9,13 +9,13 @@ ret, frame = cap.read()
 
 def preprocessing(frame, alpha, beta, gamma):
     grayscale_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    cv2.imshow("Grayscale", grayscale_frame)
-    contrast_frame = cv2.convertScaleAbs(grayscale_frame, alpha=alpha, beta=beta)
-    cv2.imshow("COntrast", contrast_frame)
+    # cv2.imshow("Grayscale", grayscale_frame)
+    # contrast_frame = cv2.convertScaleAbs(grayscale_frame, alpha=alpha, beta=beta)
+    # cv2.imshow("COntrast", contrast_frame)
     # bilateral_frame = cv2.bilateralFilter(contrast_frame, 9, 10, 10)
     # cv2.imshow("Bilateral", bilateral_frame)
     # gx_sobel = cv2.Sobel(bilateral_frame,  0, 1, 0, ksize=3, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
-    canny_frame = cv2.Canny(contrast_frame, 150, 200)
+    canny_frame = cv2.Canny(grayscale_frame, 200, 250)
     return canny_frame
 
 while True:
