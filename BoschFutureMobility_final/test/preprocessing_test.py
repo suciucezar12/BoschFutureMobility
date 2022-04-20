@@ -57,7 +57,9 @@ while True:
     alpha = 2
     beta = 0
     alpha_beta_image = cv2.convertScaleAbs(grayscale_roi, alpha=alpha, beta=beta)
+    hist_eq = cv2.equalizeHist(alpha_beta_image)
     bilateral = cv2.bilateralFilter(alpha_beta_image, 9, 5, 15)
+
 
 
     # Display ---------------------------------------------------
