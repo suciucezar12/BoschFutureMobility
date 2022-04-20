@@ -39,7 +39,7 @@ while True:
     gamma_image = cv2.LUT(grayscale, table)
 
     # alpha_beta + gamma
-    alpha = 1.2
+    alpha = 1.8
     beta = 0
     alpha_beta_image1 = cv2.convertScaleAbs(grayscale, alpha=alpha, beta=beta)
     gamma = 1.8
