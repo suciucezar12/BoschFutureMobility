@@ -1,5 +1,5 @@
 import time
-
+import math
 import cv2
 import numpy as np
 from utils import *
@@ -46,89 +46,106 @@ class LaneDetection:
         canny_frame = cv2.Canny(contrast_frame, 150, 200)
         return canny_frame
 
-    def filter_lines(self, lines_candidate, frame_ROI, frame_ROI_IPM):
-        left_lines = []
-        right_lines = []
-        horizontal_lines = []
-        # used for intercept_oX criteria
-        y_cv_margin = 80  # offset wrt to the center vertical line
-        margin_y_cv_left = int(self.width_ROI / 2) - y_cv_margin
-        margin_y_cv_right = int(self.width_ROI / 2) + y_cv_margin
-
-        for line in lines_candidate:
-            y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-            # centroid = [(y1_cv + y2_cv) // 2, (x1_cv + x2_cv) // 2]
-            if y1_cv != y2_cv:
-                coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
-                # ---------------------------------
-                # coeff = []
-                # try:
-                #     slope = (x2_cv - x1_cv) / (y2_cv - y1_cv)
-                # except OverflowError:
-                #     slope = 10000
-                # coeff.append(y1_cv - slope * x1_cv)
-                # coeff.append(slope)
-                # print(coeff)
-                # ---------------------------------
-                if coeff is not None:
-                    # coeff[1] -> slope in XoY coordinates
-                    # coeff[0] -> intercept_oY in XoY coordinates
-                    if coeff[1] != 10000:
-                        if abs(coeff[1]) >= 0.7:  # slope = +-0.2 -> +-11.3 degrees
-                            # OverFlowError when we get horizontal lines
-                            try:
-                                # intercept_oX = - int(coeff[0] / coeff[1])
-                                # print((self.height_ROI - coeff[0]) / coeff[1])
-                                intercept_oX = int((self.height_ROI - coeff[0]) / coeff[1])
-                            except OverflowError:
-                                intercept_oX = 30000  # some big value
-                            # print("y = {}*x + {}".format(coeff[1], coeff[0]))
-                            # print(intercept_oX)
-                            if 0 <= intercept_oX <= margin_y_cv_left:  # left line
-                                left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                                # self.left_lines.append(line)
-                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 2)
-
-                            if margin_y_cv_right <= intercept_oX <= self.width_ROI:  # right line
-                                right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                                # self.right_lines.append(line)
-                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
-
-                            # check by theta and intercept_oX (last criteria)
-                            if coeff[1] <= -0.2:  # candidate left line
-                                if 0 <= intercept_oX <= margin_y_cv_right:
-                                    left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                                    # self.left_lines.append(line)
-                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 2)
-
-                            if coeff[1] >= 0.2:  # candidate right line
-                                if margin_y_cv_left <= intercept_oX <= self.width_ROI:
-                                    right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
-                                    # self.right_lines.append(line)
-                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
-                        else:
-                            if abs(coeff[1]) <= 0.3:
-                                horizontal_lines.append(line)
-                                # self.horizontal_lines.append(line)
-
-        return left_lines, right_lines, horizontal_lines
-
     def detect_lanes(self, frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM):
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=45,
                                           minLineLength=20,
                                           maxLineGap=80)
 
         if lines_candidate is not None:
-            left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+            left_lines, right_lines, horizontal_lines = self.utils.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+            left_lane = self.utils.estimate_lane(left_lines, self.height_ROI, frame_ROI, frame_ROI_IPM)
+            right_lane = self.utils.estimate_lane(right_lines, self.height_ROI, frame_ROI, frame_ROI_IPM)
+            return left_lane, right_lane
+        else:
+            return None, None
 
+    def get_offset_theta(self, frame_ROI, left_lane=None, right_lane=None, frame_ROI_IPM=None):
+        offset = None
+        theta = None
+        intersection = False
+        # we get all coordinates in IPM we need of our lanes
+        left_lane_IPM = None
+        right_lane_IPM = None
+        if left_lane and right_lane:  # we have both lanes
+            left_lane_IPM = self.utils.get_line_IPM(left_lane, self.H)
+            right_lane_IPM = self.utils.get_line_IPM(right_lane, self.H)
+            pass
+        else:
+            if left_lane is not None:  # only have our left lane
+                left_lane_IPM = self.utils.get_line_IPM(left_lane, self.H)
+                right_lane_IPM = self.utils.translation_IPM(left_lane_IPM, self.width_road_IPM, True)
+                right_lane = self.utils.get_line_IPM(right_lane_IPM, self.inv_H)
+                y1_cv, x1_cv, y2_cv, x2_cv = right_lane
+                # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+            else:
+                if right_lane is not None:  # only have our right lane
+                    right_lane_IPM = self.utils.get_line_IPM(right_lane, self.H)
+                    left_lane_IPM = self.utils.translation_IPM(right_lane_IPM, self.width_road_IPM, False)
+                    left_lane = self.utils.get_line_IPM(left_lane_IPM, self.inv_H)
+                    y1_cv, x1_cv, y2_cv, x2_cv = left_lane
+                    # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
+        if left_lane_IPM is not None and right_lane_IPM is not None:
+            y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_lane_IPM
+            y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_lane_IPM
+            # if frame_ROI_IPM is not None:
+                # cv2.line(frame_ROI_IPM, (y1_left_cv, x1_left_cv), (y2_left_cv, x2_left_cv), (0, 255, 0), 3)
+                # cv2.line(frame_ROI_IPM, (y1_right_cv, x1_right_cv), (y2_right_cv, x2_right_cv), (0, 255, 0), 3)
+
+            # theta
+            y_heading_road_cv = (y2_left_cv + y2_right_cv) // 2
+            x_heading_road_cv = (x2_left_cv + x2_right_cv) // 2
+
+            y_bottom_road_cv = (y1_left_cv + y1_right_cv) // 2
+            x_bottom_road_cv = (x1_left_cv + x1_right_cv) // 2
+            # cv2.line(frame_ROI_IPM, (y_heading_road_cv, x_heading_road_cv), (y_bottom_road_cv, x_bottom_road_cv),
+            #          (255, 255, 255), 3)
+            road_line_reference = self.utils.get_line_IPM(
+                [y_heading_road_cv, x_heading_road_cv, self.y_heading_car_cv, self.height_ROI_IPM], self.inv_H)
+            y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference
+            self.road_lane = road_line_reference
+            # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
+
+            # print("{}, {}, {}, {}".format(y_heading_road_cv, self.y_heading_car_cv, x_heading_road_cv, self.height_ROI_IPM))
+
+            # centroid_road = [(y_heading_road_cv + y_bottom_road_cv) / 2, (x_heading_road_cv + x_bottom_road_cv) / 2]
+
+            theta = math.degrees(
+                math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM)))
+            # theta = math.degrees(
+            #     math.atan((centroid_road[0] - self.y_heading_car_cv) / (centroid_road[1] - self.height_ROI_IPM)))
+
+            # offset
+            # print("{}, {}".format(y_bottom_road_cv, y_heading_road_cv))
+            offset = (y_bottom_road_cv - self.y_heading_car_cv) * self.pixel_resolution
+
+        return offset, theta, left_lane_IPM, right_lane_IPM
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM):
         frame_ROI_preprocessed = self.preprocessing(frame_ROI)
         cv2.imshow("ROI_Preprocessed", frame_ROI_preprocessed)
 
-        # get left and right lane
-        self.detect_lanes(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
+        if self.previous_left_lane and self.previous_right_lane:
+            pass
+            # # TO DO: implement algorithm using data from previous frames for optimization
+            # left_lane, right_lane = self.optimized_detection(frame_ROI, frame_ROI_IPM)
+            # offset, theta, left_lane_IPM, right_lane_IPM = self.get_offset_theta(frame_ROI, left_lane, right_lane,
+            #                                                                      frame_ROI_IPM)
+            # intersection = self.optimized_intersection_detection(frame_ROI, left_lane_IPM, right_lane_IPM,
+            #                                                      frame_ROI_IPM)
+        else:
+            left_lane, right_lane = self.detect_lanes(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
+            offset, theta, left_lane_IPM, right_lane_IPM = self.get_offset_theta(frame_ROI, left_lane, right_lane,
+                                                                                 frame_ROI_IPM)
+            return theta, offset
+            # if left_lane_IPM is not None and right_lane_IPM is not None:
+                # self.left_lane = left_lane
+                # self.right_lane = right_lane
+                # if len(horizontal_lines):
+                #     intersection = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM,
+                #                                                right_lane_IPM,
+                #                                                frame_ROI_IPM)
+        return None, None
 
 
 
@@ -142,7 +159,15 @@ class LaneDetection:
             # frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
             #                                     flags=cv2.INTER_NEAREST)
 
-            self.lane_detection(frame_ROI, None)
+            theta, offset = self.lane_detection(frame_ROI, None)
+
+            if offset is not None:
+                print("OFFSET = {} cm".format(offset))
+                # offset_prev = offset
+
+            if theta is not None:
+                print("THETA = {}".format(theta))
+                # theta_prev = theta
 
             cv2.imshow("Frame", frame)
             # cv2.imshow("ROI", frame_ROI)
