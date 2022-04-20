@@ -17,10 +17,14 @@ while True:
     # _, _, v = cv2.split(hsv)
     # (b, g, r) = cv2.split(rgb)
 
-    # Display ---------------------------------------------------
-    cv2.imshow("RGB", rgb)
+    # test filters ------------------------------------
+    gaussian = cv2.GaussianBlur(grayscale, (5, 5), sigmaX=0)
 
-    # cv2.imshow("Grayscale", grayscale)
+    # Display ---------------------------------------------------
+    # cv2.imshow("RGB", rgb)
+
+    cv2.imshow("Grayscale", grayscale)
+    cv2.imshow("Gaussian", gaussian)
     # cv2.imshow("L_HLS", l)
     # cv2.imshow("V_HSV", v)
 
