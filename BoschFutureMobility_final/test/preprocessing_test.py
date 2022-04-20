@@ -26,18 +26,21 @@ while True:
 
     # test filters ------------------------------------
     gaussian = cv2.GaussianBlur(grayscale, (5, 5), sigmaX=0)
+    bilateral = cv2.bilateralFilter(grayscale, 9, 10, 15)
 
     # Display ---------------------------------------------------
     cv2.imshow("RGB", rgb)
 
     # cv2.imshow("Grayscale", grayscale)
-    # cv2.imshow("Gaussian", gaussian)
     # cv2.imshow("L_HLS", l)
     # cv2.imshow("V_HSV", v)
 
     # cv2.imshow("R", r)
     # cv2.imshow("G", g)
     # cv2.imshow("B", b)
+
+    cv2.imshow("Gaussian", gaussian)
+    cv2.imshow("Bilateral", bilateral)
 
     cv2.waitKey(1)
 
