@@ -51,7 +51,7 @@ class Utils:
                             try:
                                 # intercept_oX = - int(coeff[0] / coeff[1])
                                 # print((self.height_ROI - coeff[0]) / coeff[1])
-                                intercept_oX = int((self.height_ROI - coeff[0]) / coeff[1])
+                                intercept_oX = int((height_ROI - coeff[0]) / coeff[1])
                             except OverflowError:
                                 intercept_oX = 30000  # some big value
                             # print("y = {}*x + {}".format(coeff[1], coeff[0]))
@@ -61,7 +61,7 @@ class Utils:
                                 # self.left_lines.append(line)
                                 cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 2)
 
-                            if margin_y_cv_right <= intercept_oX <= self.width_ROI:  # right line
+                            if margin_y_cv_right <= intercept_oX <= width_ROI:  # right line
                                 right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
                                 # self.right_lines.append(line)
                                 cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
@@ -74,7 +74,7 @@ class Utils:
                                     cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 2)
 
                             if coeff[1] >= 0.2:  # candidate right line
-                                if margin_y_cv_left <= intercept_oX <= self.width_ROI:
+                                if margin_y_cv_left <= intercept_oX <= width_ROI:
                                     right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
                                     # self.right_lines.append(line)
                                     cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
