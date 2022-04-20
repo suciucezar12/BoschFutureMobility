@@ -53,7 +53,7 @@ class LaneDetection:
 
         if lines_candidate is not None:
             for line in lines_candidate:
-                y1_cv, x1_cv, y2_cv, x2_cv = line
+                y1_cv, x1_cv, y2_cv, x2_cv = line[0]
                 cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
 
 
