@@ -1,3 +1,5 @@
+import time
+
 import cv2
 import numpy as np
 
@@ -13,13 +15,20 @@ def preprocessing(frame, alpha, beta, gamma):
 
 while True:
 
+    start = time.time()
+
     # ROI
     x_cv_ROI = 320
     frame_ROI = frame[x_cv_ROI:, :]
-    
+
     preprocessed_frame_ROI = preprocessing(frame_ROI, alpha=1.5, beta=0, gamma=0)
 
     cv2.imshow("Frame", frame)
     cv2.imshow("Final Frame", preprocessed_frame_ROI)
+
+    end = time.time()
+
+    print("time = {}".format(end - start))
+
     cv2.waitKey(1)
     _, frame = cap.read()
