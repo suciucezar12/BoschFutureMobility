@@ -52,6 +52,13 @@ while True:
     # histogram equalization
     hist_eq = cv2.equalizeHist(grayscale)
 
+    # Combination testing ----------------------------------------
+    # Test 1 #
+    alpha = 2
+    beta = 0
+    alpha_beta_image = cv2.convertScaleAbs(grayscale_roi, alpha=alpha, beta=beta)
+    bilateral = cv2.bilateralFilter(alpha_beta_image, 9, 5, 15)
+
 
     # Display ---------------------------------------------------
     # cv2.imshow("RGB", rgb)
