@@ -48,9 +48,9 @@ while True:
 
 
     # Display ---------------------------------------------------
-    cv2.imshow("RGB", rgb)
+    # cv2.imshow("RGB", rgb)
 
-    # cv2.imshow("Grayscale", grayscale)
+    cv2.imshow("Grayscale", grayscale)
     # cv2.imshow("L_HLS", l)
     # cv2.imshow("V_HSV", v)
 
@@ -61,9 +61,9 @@ while True:
     # cv2.imshow("Gaussian", gaussian)
     # cv2.imshow("Bilateral", bilateral)
 
-    # cv2.imshow("Gamma correction", gamma_image)
-    # cv2.imshow("Alpha_Beta image", alpha_beta_image)
-    # cv2.imshow("Alpha_Beta_Gamma image", alph_beta_gamma_image)
+    cv2.imshow("Gamma correction", gamma_image)
+    cv2.imshow("Alpha_Beta image", alpha_beta_image)
+    cv2.imshow("Alpha_Beta_Gamma image", alph_beta_gamma_image)
 
     cv2.waitKey(1)
 
