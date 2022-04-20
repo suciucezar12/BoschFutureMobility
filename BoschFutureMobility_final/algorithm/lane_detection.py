@@ -125,7 +125,7 @@ class LaneDetection:
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM):
         frame_ROI_preprocessed = self.preprocessing(frame_ROI)
-        # cv2.imshow("ROI_Preprocessed", frame_ROI_preprocessed)
+        cv2.imshow("ROI_Preprocessed", frame_ROI_preprocessed)
 
         # get left and right lane
         self.detect_lanes(frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM)
