@@ -34,7 +34,7 @@ while True:
     alpha_beta_image = cv2.convertScaleAbs(grayscale, alpha=alpha, beta=beta)
 
     # gamma correction
-    gamma = 2.5
+    gamma = 1.8
     table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
     gamma_image = cv2.LUT(grayscale, table)
 
@@ -42,7 +42,7 @@ while True:
     alpha = 1.8
     beta = 0
     alpha_beta_image1 = cv2.convertScaleAbs(grayscale, alpha=alpha, beta=beta)
-    gamma = 2.5
+    gamma = 1.8
     table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
     alph_beta_gamma_image = cv2.LUT(alpha_beta_image1, table)
 
