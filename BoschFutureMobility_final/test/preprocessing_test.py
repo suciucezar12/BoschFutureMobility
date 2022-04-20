@@ -13,14 +13,21 @@ while True:
     hls = cv2.cvtColor(rgb, cv2.COLOR_BGR2HLS)
 
     # extracting channels ---------------------------------------
-    _, l, _ = cv2.split(hls)
-    _, _, v = cv2.split(hsv)
+    # _, l, _ = cv2.split(hls)
+    # _, _, v = cv2.split(hsv)
+    b, g, r = cv2.split(rgb)
 
     # Display ---------------------------------------------------
-    # cv2.imshow("Frame", frame)
-    cv2.imshow("Grayscale", grayscale)
-    cv2.imshow("L_HLS", l)
-    cv2.imshow("V_HSV", v)
+    cv2.imshow("RGB", rgb)
+
+    # cv2.imshow("Grayscale", grayscale)
+    # cv2.imshow("L_HLS", l)
+    # cv2.imshow("V_HSV", v)
+
+    cv2.imshow("R", r)
+    cv2.imshow("G", g)
+    cv2.imshow("B", b)
+
     cv2.waitKey(1)
 
     _, rgb = cap.read()
