@@ -41,8 +41,8 @@ class LaneDetection:
 
     def preprocessing(self, frame_ROI):
         grayscale_frame = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
-        contrast_frame = cv2.convertScaleAbs(grayscale_frame, alpha=1.3, beta=0)
-        # cv2.imshow("Contrast_ROI", contrast_frame)
+        contrast_frame = cv2.convertScaleAbs(grayscale_frame, alpha=1.5, beta=0)
+        cv2.imshow("Contrast_ROI", contrast_frame)
         canny_frame = cv2.Canny(contrast_frame, 150, 200)
         return canny_frame
 

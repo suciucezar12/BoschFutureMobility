@@ -4,9 +4,9 @@ import cv2
 
 class Line:
 
-    def __init__(self, coords):
-        y1_cv, x1_cv, y2_cv, x2_cv = coords
-        self.coords = coords
+    def __init__(self, line):
+        y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+        self.coords = [y1_cv, x1_cv, y2_cv, x2_cv]
         # get slope --------------------------------------------------
         # check if vertical line
         try:
