@@ -54,7 +54,7 @@ while True:
 
     # Combination testing ----------------------------------------
     # Test 1 #
-    alpha = 1.5
+    alpha = 1.8
     beta = 0
     alpha_beta_image = cv2.convertScaleAbs(grayscale_roi, alpha=alpha, beta=beta)
     # hist_eq = cv2.equalizeHist(alpha_beta_image)
