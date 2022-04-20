@@ -21,7 +21,7 @@ while True:
     x_cv_ROI = 320
     frame_ROI = frame[x_cv_ROI:, :]
 
-    preprocessed_frame_ROI = preprocessing(frame_ROI, alpha=1.8, beta=0, gamma=0)
+    preprocessed_frame_ROI = preprocessing(frame_ROI, alpha=1.9, beta=0, gamma=0)
 
     cv2.imshow("Frame", frame)
     cv2.imshow("Final Frame", preprocessed_frame_ROI)
