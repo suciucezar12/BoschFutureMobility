@@ -28,11 +28,23 @@ class LaneDetection:
         self.pixel_resolution = 57.7 / self.width_ROI  # centimeters per pixel
         self.H = self.utils.get_homography_matrix(self.src_points_DLT, self.dst_points_DLT,
                                                   self.pixel_resolution)
+        self.inv_H = np.linalg.inv(self.H)
         self.height_ROI_IPM = 147  # calculated related to pixel_resolution and the real dimensions
         self.width_ROI_IPM = 640
 
+        ''' Centroid of front axel '''
+        # TO DO: modify this values
         self.offset_origin = -20  # to correct the inclination of our camera
         self.y_heading_car_cv = self.width_ROI_IPM // 2 + self.offset_origin
+
+    def preprocessing(self, frame_ROI):
+        grayscale_frame = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
+        canny_frame = cv2.Canny(grayscale_frame, 150, 200)
+        return canny_frame
+
+    def lane_detection(self, frame_ROI, frame_ROI_IPM):
+        frame_ROI_preprocessed = self.preprocessing(frame_ROI)
+        cv2.imshow("ROI_Preprocessed", frame_ROI_preprocessed)
 
     def run(self):
 
@@ -43,6 +55,8 @@ class LaneDetection:
             frame_ROI = frame[self.x_cv_ROI:, :]
             frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
                                                 flags=cv2.INTER_NEAREST)
+            
+            self.lane_detection(frame_ROI, None)
 
             cv2.imshow("ROI", frame_ROI)
             cv2.imshow("IPM", frame_ROI_IPM)
