@@ -15,7 +15,7 @@ while True:
     # extracting channels ---------------------------------------
     # _, l, _ = cv2.split(hls)
     # _, _, v = cv2.split(hsv)
-    b, g, r = cv2.split(rgb)
+    (b, g, r) = cv2.split(rgb)
 
     # Display ---------------------------------------------------
     cv2.imshow("RGB", rgb)
