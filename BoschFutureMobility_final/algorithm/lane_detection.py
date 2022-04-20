@@ -119,9 +119,7 @@ class LaneDetection:
                                           maxLineGap=80)
 
         if lines_candidate is not None:
-            for line in lines_candidate:
-                # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
-                left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
+            left_lines, right_lines, horizontal_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
 
 
 
