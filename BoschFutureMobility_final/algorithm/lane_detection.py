@@ -46,6 +46,73 @@ class LaneDetection:
         canny_frame = cv2.Canny(contrast_frame, 150, 200)
         return canny_frame
 
+    def filter_lines(self, lines_candidate, frame_ROI, frame_ROI_IPM):
+        left_lines = []
+        right_lines = []
+        horizontal_lines = []
+        # used for intercept_oX criteria
+        y_cv_margin = 80  # offset wrt to the center vertical line
+        margin_y_cv_left = int(self.width_ROI / 2) - y_cv_margin
+        margin_y_cv_right = int(self.width_ROI / 2) + y_cv_margin
+
+        for line in lines_candidate:
+            y1_cv, x1_cv, y2_cv, x2_cv = line[0]
+            # centroid = [(y1_cv + y2_cv) // 2, (x1_cv + x2_cv) // 2]
+            if y1_cv != y2_cv:
+                coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
+                # ---------------------------------
+                # coeff = []
+                # try:
+                #     slope = (x2_cv - x1_cv) / (y2_cv - y1_cv)
+                # except OverflowError:
+                #     slope = 10000
+                # coeff.append(y1_cv - slope * x1_cv)
+                # coeff.append(slope)
+                # print(coeff)
+                # ---------------------------------
+                if coeff is not None:
+                    # coeff[1] -> slope in XoY coordinates
+                    # coeff[0] -> intercept_oY in XoY coordinates
+                    if coeff[1] != 10000:
+                        if abs(coeff[1]) >= 0.7:  # slope = +-0.2 -> +-11.3 degrees
+                            # OverFlowError when we get horizontal lines
+                            try:
+                                # intercept_oX = - int(coeff[0] / coeff[1])
+                                # print((self.height_ROI - coeff[0]) / coeff[1])
+                                intercept_oX = int((self.height_ROI - coeff[0]) / coeff[1])
+                            except OverflowError:
+                                intercept_oX = 30000  # some big value
+                            # print("y = {}*x + {}".format(coeff[1], coeff[0]))
+                            # print(intercept_oX)
+                            if 0 <= intercept_oX <= margin_y_cv_left:  # left line
+                                left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
+                                # self.left_lines.append(line)
+                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
+
+                            if margin_y_cv_right <= intercept_oX <= self.width_ROI:  # right line
+                                right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
+                                # self.right_lines.append(line)
+                                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
+
+                            # check by theta and intercept_oX (last criteria)
+                            if coeff[1] <= -0.2:  # candidate left line
+                                if 0 <= intercept_oX <= margin_y_cv_right:
+                                    left_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
+                                    # self.left_lines.append(line)
+                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 0, 0), 1)
+
+                            if coeff[1] >= 0.2:  # candidate right line
+                                if margin_y_cv_left <= intercept_oX <= self.width_ROI:
+                                    right_lines.append(Line((y1_cv, x1_cv, y2_cv, x2_cv), coeff))
+                                    # self.right_lines.append(line)
+                                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 1)
+                        else:
+                            if abs(coeff[1]) <= 0.3:
+                                horizontal_lines.append(line)
+                                # self.horizontal_lines.append(line)
+
+        return left_lines, right_lines, horizontal_lines
+
     def detect_lanes(self, frame_ROI_preprocessed, frame_ROI, frame_ROI_IPM):
         lines_candidate = cv2.HoughLinesP(frame_ROI_preprocessed, rho=1, theta=np.pi / 180, threshold=45,
                                           minLineLength=20,
@@ -54,7 +121,8 @@ class LaneDetection:
         if lines_candidate is not None:
             for line in lines_candidate:
                 y1_cv, x1_cv, y2_cv, x2_cv = line[0]
-                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
+                # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 0, 255), 2)
+                left_lines, right_lines, horizonta_lines = self.filter_lines(lines_candidate, frame_ROI, frame_ROI_IPM)
 
 
 
