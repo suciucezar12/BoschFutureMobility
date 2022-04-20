@@ -25,7 +25,7 @@ while True:
     cv2.line(rgb, (0, x_cv_ROI), (width, x_cv_ROI), (0, 0, 255), 3)
     rgb_roi = rgb[x_cv_ROI:, :]
     grayscale_roi = cv2.cvtColor(rgb_roi, cv2.COLOR_BGRA2GRAY)
-    grayscale = grayscale_roi
+    # grayscale = grayscale_roi
 
     # test filters ------------------------------------
     gaussian = cv2.GaussianBlur(grayscale, (5, 5), sigmaX=0)
@@ -47,7 +47,7 @@ while True:
     alpha_beta_image1 = cv2.convertScaleAbs(grayscale, alpha=alpha, beta=beta)
     gamma = 1.8
     table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
-    alph_beta_gamma_image = cv2.LUT(alpha_beta_image1, table)
+    alpha_beta_gamma_image = cv2.LUT(alpha_beta_image1, table)
 
     # histogram equalization
     hist_eq = cv2.equalizeHist(grayscale)
@@ -67,11 +67,11 @@ while True:
     # cv2.imshow("Gaussian", gaussian)
     # cv2.imshow("Bilateral", bilateral)
 
-    # cv2.imshow("Gamma correction", gamma_image)
-    # cv2.imshow("Alpha_Beta image", alpha_beta_image)
-    # cv2.imshow("Alpha_Beta_Gamma image", alph_beta_gamma_image)
+    cv2.imshow("Gamma correction", gamma_image)
+    cv2.imshow("Alpha_Beta image", alpha_beta_image)
+    cv2.imshow("Alpha_Beta_Gamma image", alpha_beta_gamma_image)
 
-    cv2.imshow("Histogram equalization", hist_eq)
+    # cv2.imshow("Histogram equalization", hist_eq)
 
     cv2.waitKey(1)
 
