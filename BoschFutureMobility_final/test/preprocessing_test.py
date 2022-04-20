@@ -32,7 +32,7 @@ while True:
     bilateral = cv2.bilateralFilter(grayscale, 9, 10, 15)
 
     # increase contrast
-    alpha = 1.8
+    alpha = 2
     beta = 0
     alpha_beta_image = cv2.convertScaleAbs(grayscale, alpha=alpha, beta=beta)
 
@@ -42,10 +42,10 @@ while True:
     gamma_image = cv2.LUT(grayscale, table)
 
     # alpha_beta + gamma
-    alpha = 1.8
+    alpha = 2
     beta = 0
     alpha_beta_image1 = cv2.convertScaleAbs(grayscale, alpha=alpha, beta=beta)
-    gamma = 1.8
+    gamma = 1.2
     table = np.array([((i / 255) ** gamma) * 255 for i in range(256)], np.uint8)
     alpha_beta_gamma_image = cv2.LUT(alpha_beta_image1, table)
 
