@@ -239,8 +239,10 @@ class LaneDetection():
                     sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
                     x_points.append(y1_IPM_cv)
                     x_points.append(y2_IPM_cv)
+                    x_points.append((y1_IPM_cv + y2_IPM_cv) / 2)
                     y_points.append(x1_IPM_cv)
                     y_points.append(x2_IPM_cv)
+                    y_points.append((x1_IPM_cv + x2_IPM_cv) / 2)
             # else:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 2)
                 # if frame_ROI_IPM is not None:
