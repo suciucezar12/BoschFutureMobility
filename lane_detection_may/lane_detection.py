@@ -311,14 +311,14 @@ class LaneDetection():
             if offset is not None:
                 #print("OFFSET = {} cm".format(offset))
                 offset_prev = offset
-            print("offset = {}".format(offset_prev))
+            # print("offset = {}".format(offset_prev))
 
             if theta is not None:
                 #print("THETA = {}".format(theta))
                 theta_prev = theta
-            print("theta = {}".format(theta_prev))
+            # print("theta = {}".format(theta_prev))
 
-            print("INTERSECTION = {}".format(intersection))
+            # print("INTERSECTION = {}".format(intersection))
 
             cv2.imshow("ROI", frame_ROI)
             if frame_ROI_IPM is not None:
@@ -328,7 +328,7 @@ class LaneDetection():
 
 
             end = time.time()
-            print("time = {}".format(end - start))
+            # print("time = {}".format(end - start))
             print("-----------------------------------------------------------")
             # if config.PRINT_EXEC_TIMES:
             #     print("Lane detection time: {}".format(end - start))
