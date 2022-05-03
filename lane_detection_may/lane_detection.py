@@ -218,6 +218,8 @@ class LaneDetection():
         # bounding box for filtering horizontal lines
         y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_line_IPM
         y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_line_IPM
+        coeff_left_line_IPM = np.polynomial.polynomial.polyfit((y1_left_cv, y2_left_cv), (x1_left_cv, x2_left_cv), deg=1)
+        coeff_right_line_IPM = np.polynomial.polynomial.polyfit((y1_right_cv, y2_right_cv), (x1_right_cv, x2_right_cv), deg=1)
         margin_error = 25
         y_left_box = y1_left_cv - margin_error
         y_right_box = y1_right_cv + margin_error
@@ -238,13 +240,24 @@ class LaneDetection():
                     if frame_ROI_IPM is not None:
                         cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
                     sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
+                    coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
+                    # intersection with left and right lanes
+                    # left lane
+                    y_cv, x_cv = self.utils.line_intersection(coeff, coeff_left_line_IPM)
+                    cv2.circle(frame_ROI_IPM, (y_cv, x_cv), 1, (255, 255, 255), 1)
+                    x_points.append(y_cv)
+                    y_points.append(x_cv)
+                    # right lane
+                    y_cv, x_cv = self.utils.line_intersection(coeff, coeff_right_line_IPM)
+                    cv2.circle(frame_ROI_IPM, (y_cv, x_cv), 1, (255, 255, 255), 1)
+                    x_points.append(y_cv)
+                    y_points.append(x_cv)
                     # x_points.append(y1_IPM_cv)
                     # x_points.append(y2_IPM_cv)
                     # x_points.append((y1_IPM_cv + y2_IPM_cv) / 2)
                     # y_points.append(x1_IPM_cv)
                     # y_points.append(x2_IPM_cv)
                     # y_points.append((x1_IPM_cv + x2_IPM_cv) / 2)
-                    coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
                     slope_horiz += coeff[1]
             # else:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 2)
