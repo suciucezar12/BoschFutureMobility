@@ -312,7 +312,7 @@ class LaneDetection():
             cv2.imshow("ROI", frame_ROI)
             if frame_ROI_IPM is not None:
                 cv2.imshow("IPM", frame_ROI_IPM)
-            cv2.waitKey(0)
+            cv2.waitKey(1)
             # theta_prev = (theta_prev // 3) * 3
 
 
