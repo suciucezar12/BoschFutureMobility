@@ -319,6 +319,7 @@ class LaneDetection():
 
 
             end = time.time()
+            print("time = {}".format(end - start))
             # if config.PRINT_EXEC_TIMES:
             #     print("Lane detection time: {}".format(end - start))
             #
