@@ -79,8 +79,8 @@ class Utils:
         return [int(dest_points[0][0]), int(dest_points[0][1]), int(dest_points[1][0]), int(dest_points[1][1])]
 
     def line_intersection(self, eq1, eq2):
-        m1, b1 = eq1
-        m2, b2 = eq2
+        b1, m1 = eq1
+        b2, m2 = eq2
         y = (b1 - b2) / (m2 - m1)
         x = m1 * y + b1
         return int(y), int(x)
