@@ -243,27 +243,16 @@ class LaneDetection():
                     sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
                     coeff = np.polynomial.polynomial.polyfit((y1_IPM_cv, y2_IPM_cv), (x1_IPM_cv, x2_IPM_cv), deg=1)
                     # intersection with left and right lanes
-                    # print(coeff_left_line_IPM)
-                    # print(coeff_right_line_IPM)
-                    # print(coeff)
                     # left lane
                     y_cv, x_cv = self.utils.line_intersection(coeff, coeff_left_line_IPM)
                     cv2.circle(frame_ROI_IPM, (y_cv, x_cv), 2, (255, 255, 255), 2)
-                    # print("y_cv, x_cv = {}, {}".format(y_cv, x_cv))
                     x_points.append(y_cv)
                     y_points.append(x_cv)
                     # right lane
                     y_cv, x_cv = self.utils.line_intersection(coeff, coeff_right_line_IPM)
                     cv2.circle(frame_ROI_IPM, (y_cv, x_cv), 2, (255, 255, 255), 2)
-                    # print("y_cv, x_cv = {}, {}".format(y_cv, x_cv))
                     x_points.append(y_cv)
                     y_points.append(x_cv)
-                    # x_points.append(y1_IPM_cv)
-                    # x_points.append(y2_IPM_cv)
-                    # x_points.append((y1_IPM_cv + y2_IPM_cv) / 2)
-                    # y_points.append(x1_IPM_cv)
-                    # y_points.append(x2_IPM_cv)
-                    # y_points.append((x1_IPM_cv + x2_IPM_cv) / 2)
                     slope_horiz += coeff[1]
             # else:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 2)
@@ -280,13 +269,8 @@ class LaneDetection():
             # y = coeff[1] * x + coeff[0]
             x1_cv = int(coeff[1] * 0 + coeff[0])
             x2_cv = int(coeff[1] * self.width_ROI_IPM + coeff[0])
-            # cv2.line(frame_ROI_IPM, (0, abs(x1_cv - self.height_ROI_IPM)), (self.width_ROI_IPM, abs(x2_cv - self.height_ROI_IPM)), (0, 255, 0), 3)
             cv2.line(frame_ROI_IPM, (0, x1_cv),
                      (self.width_ROI_IPM, x2_cv), (0, 255, 0), 3)
-            # print("slope horiz line = {}".format(coeff[1]))
-            # theta_horizontal_lane = math.degrees(math.atan(coeff[1]))
-            # theta_yaw_map = 90 + theta_horizontal_lane
-            # print("theta_horiz = {}".format(theta_horizontal_lane))
             y1_cv, x1_cv = self.utils.line_intersection(coeff, coeff_right_line_IPM)
             y2_cv, x2_cv = self.utils.line_intersection(coeff, coeff_left_line_IPM)
             y = (y1_cv + y2_cv) // 2
