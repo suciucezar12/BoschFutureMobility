@@ -241,7 +241,7 @@ class LaneDetection():
                     if frame_ROI_IPM is not None:
                         cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
                     sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
-                    coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
+                    coeff = np.polynomial.polynomial.polyfit((y1_IPM_cv, y2_IPM_cv), (x1_IPM_cv, x2_IPM_cv), deg=1)
                     # intersection with left and right lanes
                     print(coeff_left_line_IPM)
                     print(coeff_right_line_IPM)
