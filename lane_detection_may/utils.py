@@ -28,8 +28,9 @@ class Utils:
 
     def preprocessing(self, frame_ROI):
         frame_ROI_gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
-        frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (5, 5), 0)
-        frame_ROI_canny = cv2.Canny(frame_ROI_blurred, 180, 255)
+        # frame_ROI_blurred = cv2.GaussianBlur(frame_ROI_gray, (5, 5), 0)
+        contrast = cv2.convertScaleAbs(frame_ROI_gray, alpha=1.2)
+        frame_ROI_canny = cv2.Canny(contrast, 180, 255)
         return frame_ROI_canny
 
     def estimate_lane(self, lines, height_ROI, frame_ROI, frame_ROI_IPM=None):
