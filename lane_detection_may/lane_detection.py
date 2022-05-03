@@ -260,6 +260,8 @@ class LaneDetection():
             # cv2.line(frame_ROI_IPM, (0, abs(x1_cv - self.height_ROI_IPM)), (self.width_ROI_IPM, abs(x2_cv - self.height_ROI_IPM)), (0, 255, 0), 3)
             cv2.line(frame_ROI_IPM, (0, x1_cv),
                      (self.width_ROI_IPM, x2_cv), (0, 255, 0), 3)
+            theta_horizontal_lane = math.tan(coeff[1])
+            print("theta_horizontal = {}".format(theta_horizontal_lane))
             return True, coeff
         else:
             return False, False
