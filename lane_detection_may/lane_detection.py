@@ -277,7 +277,7 @@ class LaneDetection():
         if sum > 200:
             slope_horiz /= len(horizontal_lines)
             coeff = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
-            y = coeff[1] * x + coeff[0]
+            # y = coeff[1] * x + coeff[0]
             x1_cv = int(coeff[1] * 0 + coeff[0])
             x2_cv = int(coeff[1] * self.width_ROI_IPM + coeff[0])
             cv2.line(frame_ROI_IPM, (0, abs(x1_cv - self.height_ROI_IPM)), (self.width_ROI_IPM, abs(x2_cv - self.height_ROI_IPM)), (0, 255, 0), 3)
