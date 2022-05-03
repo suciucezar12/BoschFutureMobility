@@ -279,14 +279,21 @@ class LaneDetection():
             theta_yaw_map = 90 + math.degrees(slope_horiz)
             print("theta_yaw_map = {}".format(theta_yaw_map))
 
-            return True, True
+            x_offset = self.y_heading_car_cv - y
+            y_offset = self.height_ROI_IPM - x
+            print("x_offset = {}, y_offset = {}".format(x_offset, y_offset))
+
+            return True, theta_yaw_map, x_offset, y_offset
         else:
-            return False, False
+            return False, False, False, False, False
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
         offset = None
         theta = None
         intersection = False
+        theta_yaw_map = False
+        x_offset = False
+        y_offset = False
 
         if self.previous_left_lane and self.previous_right_lane:
             # TO DO: implement algorithm using data from previous frames for optimization
@@ -302,13 +309,9 @@ class LaneDetection():
                 self.left_lane = left_lane
                 self.right_lane = right_lane
                 if len(horizontal_lines):
-                    intersection, horizontal_lane = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM, right_lane_IPM,
+                    intersection, theta_yaw_map, x_offset, y_offset = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM, right_lane_IPM,
                                                                frame_ROI_IPM)
-                    if horizontal_lane is not None:
-                        if frame_ROI_IPM is not None:
-                            cv2.line(frame_ROI_IPM, (self.y_heading_car_cv, 0), (self.y_heading_car_cv, self.height_ROI_IPM), (255, 255, 255), 3)
-
-        return theta, offset, intersection
+        return theta, offset, intersection, x_offset, y_offset, theta_yaw_map
 
     def run(self):
         theta_prev = 0
@@ -323,7 +326,7 @@ class LaneDetection():
             frame_ROI_IPM = cv2.warpPerspective(frame_ROI, self.H, (self.width_ROI_IPM, self.height_ROI_IPM),
                                                 flags=cv2.INTER_NEAREST)
             # frame_ROI_IPM = None
-            theta, offset, intersection = self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
+            theta, offset, intersection, x_offset, y_offset, theta_yaw_map = self.lane_detection(frame_ROI, frame_ROI_IPM=frame_ROI_IPM)
 
             if offset is not None:
                 #print("OFFSET = {} cm".format(offset))
