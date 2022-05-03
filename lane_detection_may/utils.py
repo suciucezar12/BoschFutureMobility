@@ -78,6 +78,16 @@ class Utils:
         dest_points = cv2.perspectiveTransform(src_points, H)[0]
         return [int(dest_points[0][0]), int(dest_points[0][1]), int(dest_points[1][0]), int(dest_points[1][1])]
 
+    def get_line_eq(self, p1, p2):
+        y1, x1 = p1
+        y2, x2 = p2
+        if y1 != y2:
+            slope = float((x2 - x1) / (y2 - y1))
+        else:
+            slope = np.sign(y2 - y1) * 3000000
+        intercept = float(y1 - slope * x1)
+        return [intercept, slope]
+
     def line_intersection(self, eq1, eq2):
         b1, m1 = eq1
         b2, m2 = eq2
