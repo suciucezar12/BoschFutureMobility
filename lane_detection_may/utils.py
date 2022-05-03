@@ -63,7 +63,7 @@ class Utils:
                 x2_cv = 0
                 y1_cv = int(coeff[1] * x1_cv + coeff[0])
                 y2_cv = int(coeff[1] * x2_cv + coeff[0])
-                # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
+                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 0), 3)
 
                 return [y1_cv, x1_cv, y2_cv, x2_cv]
             else:

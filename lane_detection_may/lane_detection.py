@@ -6,7 +6,9 @@ import numpy as np
 import cv2
 from utils import *
 
-class LaneDetectionThread(Thread):
+
+class LaneDetection():
+
     def __init__(self):
         """
 
@@ -191,15 +193,15 @@ class LaneDetectionThread(Thread):
             x_bottom_road_cv = (x1_left_cv + x1_right_cv) // 2
             cv2.line(frame_ROI_IPM, (y_heading_road_cv, x_heading_road_cv), (y_bottom_road_cv, x_bottom_road_cv),
                      (255, 255, 255), 3)
-            road_line_reference = self.utils.get_line_IPM(
+            road_line_reference_IPM = self.utils.get_line_IPM(
                 [y_heading_road_cv, x_heading_road_cv, self.y_heading_car_cv, self.height_ROI_IPM], self.inv_H)
-            y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference
-            self.road_lane = road_line_reference
+            y1_cv, x1_cv, y2_cv, x2_cv = road_line_reference_IPM
+            self.road_lane = road_line_reference_IPM
             cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 255), 3)
 
             # print("{}, {}, {}, {}".format(y_heading_road_cv, self.y_heading_car_cv, x_heading_road_cv, self.height_ROI_IPM))
 
-            centroid_road = [(y_heading_road_cv + y_bottom_road_cv) / 2, (x_heading_road_cv + x_bottom_road_cv) / 2]
+            # centroid_road = [(y_heading_road_cv + y_bottom_road_cv) / 2, (x_heading_road_cv + x_bottom_road_cv) / 2]
 
             theta = math.degrees(
                 math.atan((y_heading_road_cv - self.y_heading_car_cv) / (x_heading_road_cv - self.height_ROI_IPM)))
@@ -220,6 +222,8 @@ class LaneDetectionThread(Thread):
         y_left_box = y1_left_cv - margin_error
         y_right_box = y1_right_cv + margin_error
         sum = 0
+        x_points = []
+        y_points = []
         # cv2.line(frame_ROI_IPM, (y_left_box, 0), (y_left_box, self.height_ROI_IPM), (255, 0, 0), 5)
         # cv2.line(frame_ROI_IPM, (y_right_box, 0), (y_right_box, self.height_ROI_IPM), (255, 0, 0), 5)
         for line in horizontal_lines:
@@ -231,6 +235,10 @@ class LaneDetectionThread(Thread):
                 if frame_ROI_IPM is not None:
                     cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
                 sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
+                x_points.append(y1_cv)
+                x_points.append(y2_cv)
+                y_points.append(x1_cv)
+                y_points.append(x2_cv)
             # else:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 2)
                 # if frame_ROI_IPM is not None:
@@ -241,9 +249,14 @@ class LaneDetectionThread(Thread):
                     # self.utils.draw_line([line_IPM], (0, 255, 255), frame_ROI_IPM)
         # print(sum)
         if sum > 300:
-            return True
+            coeff = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
+            # y = coeff[1] * x + coeff[0]
+            y1_cv = coeff[1] * 0 + coeff[0]
+            y2_cv = coeff[1] * self.width_ROI_IPM + coeff[0]
+            cv2.line(frame_ROI_IPM, (y1_cv, 0), (y2_cv, self.width_ROI_IPM), (0, 255, 0), 3)
+            return True, coeff
         else:
-            return False
+            return False, False
 
     def lane_detection(self, frame_ROI, frame_ROI_IPM=None):
         offset = None
@@ -264,7 +277,7 @@ class LaneDetectionThread(Thread):
                 self.left_lane = left_lane
                 self.right_lane = right_lane
                 if len(horizontal_lines):
-                    intersection = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM, right_lane_IPM,
+                    intersection, horizontal_lane = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM, right_lane_IPM,
                                                                frame_ROI_IPM)
 
         return theta, offset, intersection
@@ -311,3 +324,6 @@ class LaneDetectionThread(Thread):
 
             _, frame = self.cap.read()
 
+
+LD = LaneDetection()
+LD.run()
