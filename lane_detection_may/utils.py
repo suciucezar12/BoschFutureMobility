@@ -83,7 +83,7 @@ class Utils:
         m2, b2 = eq2
         y = (b1 - b2) / (m2 - m1)
         x = m1 * y + b1
-        return y, x
+        return int(y), int(x)
 
     def translation_IPM(self, line_IPM, width_road, left_lane=None):
         if left_lane:
