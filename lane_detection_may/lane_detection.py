@@ -262,7 +262,7 @@ class LaneDetection():
                      (self.width_ROI_IPM, x2_cv), (0, 255, 0), 3)
             print("slope horiz line = {}".format(coeff[1]))
             theta_horizontal_lane = math.degrees(math.atan(coeff[1]))
-            theta_yaw_map = 90 - theta_horizontal_lane
+            theta_yaw_map = 90 + theta_horizontal_lane
             print("theta_horiz = {}".format(theta_horizontal_lane))
             print("theta_yaw_map = {}".format(theta_yaw_map))
             return True, coeff
