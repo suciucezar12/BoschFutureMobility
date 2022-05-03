@@ -287,6 +287,11 @@ class LaneDetection():
             # theta_horizontal_lane = math.degrees(math.atan(coeff[1]))
             # theta_yaw_map = 90 + theta_horizontal_lane
             # print("theta_horiz = {}".format(theta_horizontal_lane))
+            y1_cv, x1_cv = self.utils.line_intersection(coeff, coeff_right_line_IPM)
+            y2_cv, x2_cv = self.utils.line_intersection(coeff, coeff_left_line_IPM)
+            y = (y1_cv + y2_cv) // 2
+            x = (x1_cv + x2_cv) // 2
+            cv2.circle(frame_ROI_IPM, (y, x), 3, (0, 0, 255), 3)
             theta_yaw_map = 90 + math.degrees(slope_horiz)
             print("theta_yaw_map = {}".format(theta_yaw_map))
 
