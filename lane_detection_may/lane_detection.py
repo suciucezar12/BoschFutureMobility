@@ -309,6 +309,10 @@ class LaneDetection():
 
             print("INTERSECTION = {}".format(intersection))
 
+            cv2.imshow("ROI", frame_ROI)
+            if frame_ROI_IPM is not None:
+                cv2.imshow("IPM", frame_ROI_IPM)
+
             # theta_prev = (theta_prev // 3) * 3
 
 
