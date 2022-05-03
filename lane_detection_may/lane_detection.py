@@ -218,8 +218,8 @@ class LaneDetection():
         # bounding box for filtering horizontal lines
         y1_left_cv, x1_left_cv, y2_left_cv, x2_left_cv = left_line_IPM
         y1_right_cv, x1_right_cv, y2_right_cv, x2_right_cv = right_line_IPM
-        coeff_left_line_IPM = np.polynomial.polynomial.polyfit((x1_left_cv, x2_left_cv), (y1_left_cv, y2_left_cv), deg=1)
-        coeff_right_line_IPM = np.polynomial.polynomial.polyfit((x1_right_cv, x2_right_cv), (y1_right_cv, y2_right_cv),
+        coeff_left_line_IPM = np.polynomial.polynomial.polyfit((y1_left_cv, y2_left_cv), (x1_left_cv, x2_left_cv), deg=1)
+        coeff_right_line_IPM = np.polynomial.polynomial.polyfit((y1_right_cv, y2_right_cv), (x1_right_cv, x2_right_cv),
                                                                deg=1)
         margin_error = 25
         y_left_box = y1_left_cv - margin_error
