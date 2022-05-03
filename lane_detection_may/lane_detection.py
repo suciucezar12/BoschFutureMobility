@@ -233,14 +233,14 @@ class LaneDetection():
             y1_IPM_cv, x1_IPM_cv, y2_IPM_cv, x2_IPM_cv = line_IPM
             if y_left_box <= y1_IPM_cv and y2_IPM_cv <= y_right_box:
                 if x1_IPM_cv <= x_bottom_ROI and x2_IPM_cv <= x_bottom_ROI:
-                cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 0), 2)
-                if frame_ROI_IPM is not None:
-                    cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
-                sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
-                x_points.append(y1_IPM_cv)
-                x_points.append(y2_IPM_cv)
-                y_points.append(x1_IPM_cv)
-                y_points.append(x2_IPM_cv)
+                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 0), 2)
+                    if frame_ROI_IPM is not None:
+                        cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
+                    sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
+                    x_points.append(y1_IPM_cv)
+                    x_points.append(y2_IPM_cv)
+                    y_points.append(x1_IPM_cv)
+                    y_points.append(x2_IPM_cv)
             # else:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 2)
                 # if frame_ROI_IPM is not None:
