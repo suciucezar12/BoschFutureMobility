@@ -280,7 +280,7 @@ class LaneDetection():
             # y = coeff[1] * x + coeff[0]
             x1_cv = int(coeff[1] * 0 + coeff[0])
             x2_cv = int(coeff[1] * self.width_ROI_IPM + coeff[0])
-            cv2.line(frame_ROI_IPM, (0, abs(x1_cv - self.height_ROI_IPM)), (self.width_ROI_IPM, abs(x2_cv - self.height_ROI_IPM)), (0, 255, 0), 3)
+            # cv2.line(frame_ROI_IPM, (0, abs(x1_cv - self.height_ROI_IPM)), (self.width_ROI_IPM, abs(x2_cv - self.height_ROI_IPM)), (0, 255, 0), 3)
             cv2.line(frame_ROI_IPM, (0, x1_cv),
                      (self.width_ROI_IPM, x2_cv), (0, 255, 0), 3)
             # print("slope horiz line = {}".format(coeff[1]))
