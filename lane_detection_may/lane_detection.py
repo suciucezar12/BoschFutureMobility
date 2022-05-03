@@ -222,7 +222,7 @@ class LaneDetection():
         y_left_box = y1_left_cv - margin_error
         y_right_box = y1_right_cv + margin_error
         sum = 0
-        x_bottom_ROI = 125
+        x_bottom_ROI = 140
         x_points = []
         y_points = []
         # cv2.line(frame_ROI_IPM, (y_left_box, 0), (y_left_box, self.height_ROI_IPM), (255, 0, 0), 5)
@@ -285,6 +285,9 @@ class LaneDetection():
                 if len(horizontal_lines):
                     intersection, horizontal_lane = self.intersection_detection(frame_ROI, horizontal_lines, left_lane_IPM, right_lane_IPM,
                                                                frame_ROI_IPM)
+                    if horizontal_lane is not None:
+                        if frame_ROI_IPM is not None:
+                            cv2.line(frame_ROI_IPM, (self.y_heading_car_cv, 0), (self.y_heading_car_cv, self.height_ROI_IPM), (255, 255, 255), 3)
 
         return theta, offset, intersection
 
