@@ -247,13 +247,13 @@ class LaneDetection():
                     print(coeff)
                     # left lane
                     y_cv, x_cv = self.utils.line_intersection(coeff, coeff_left_line_IPM)
-                    cv2.circle(frame_ROI_IPM, (y_cv, abs(x_cv - self.height_ROI_IPM)), 2, (255, 255, 255), 2)
+                    cv2.circle(frame_ROI_IPM, (y_cv, x_cv), 2, (255, 255, 255), 2)
                     print("y_cv, x_cv = {}, {}".format(y_cv, x_cv))
                     x_points.append(y_cv)
                     y_points.append(x_cv)
                     # right lane
                     y_cv, x_cv = self.utils.line_intersection(coeff, coeff_right_line_IPM)
-                    cv2.circle(frame_ROI_IPM, (y_cv, abs(x_cv - self.height_ROI_IPM)), 2, (255, 255, 255), 2)
+                    cv2.circle(frame_ROI_IPM, (y_cv, x_cv), 2, (255, 255, 255), 2)
                     print("y_cv, x_cv = {}, {}".format(y_cv, x_cv))
                     x_points.append(y_cv)
                     y_points.append(x_cv)
