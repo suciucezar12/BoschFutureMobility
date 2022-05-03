@@ -225,6 +225,7 @@ class LaneDetection():
         x_bottom_ROI = 140
         x_points = []
         y_points = []
+        slope_horiz = 0
         # cv2.line(frame_ROI_IPM, (y_left_box, 0), (y_left_box, self.height_ROI_IPM), (255, 0, 0), 5)
         # cv2.line(frame_ROI_IPM, (y_right_box, 0), (y_right_box, self.height_ROI_IPM), (255, 0, 0), 5)
         for line in horizontal_lines:
@@ -233,16 +234,18 @@ class LaneDetection():
             y1_IPM_cv, x1_IPM_cv, y2_IPM_cv, x2_IPM_cv = line_IPM
             if y_left_box <= y1_IPM_cv and y2_IPM_cv <= y_right_box:
                 if x1_IPM_cv <= x_bottom_ROI and x2_IPM_cv <= x_bottom_ROI:
-                    cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 0), 2)
-                    if frame_ROI_IPM is not None:
-                        cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
-                    sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
-                    x_points.append(y1_IPM_cv)
-                    x_points.append(y2_IPM_cv)
-                    x_points.append((y1_IPM_cv + y2_IPM_cv) / 2)
-                    y_points.append(x1_IPM_cv)
-                    y_points.append(x2_IPM_cv)
-                    y_points.append((x1_IPM_cv + x2_IPM_cv) / 2)
+                    # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (255, 255, 0), 2)
+                    # if frame_ROI_IPM is not None:
+                    #     cv2.line(frame_ROI_IPM, (y1_IPM_cv, x1_IPM_cv), (y2_IPM_cv, x2_IPM_cv), (255, 255, 0), 2)
+                    # sum += math.sqrt((y2_IPM_cv - y1_IPM_cv) ** 2 + (x2_IPM_cv - x1_IPM_cv) ** 2)
+                    # x_points.append(y1_IPM_cv)
+                    # x_points.append(y2_IPM_cv)
+                    # x_points.append((y1_IPM_cv + y2_IPM_cv) / 2)
+                    # y_points.append(x1_IPM_cv)
+                    # y_points.append(x2_IPM_cv)
+                    # y_points.append((x1_IPM_cv + x2_IPM_cv) / 2)
+                    coeff = np.polynomial.polynomial.polyfit((y1_cv, y2_cv), (x1_cv, x2_cv), deg=1)
+                    slope_horiz += coeff[1]
             # else:
                 # cv2.line(frame_ROI, (y1_cv, x1_cv), (y2_cv, x2_cv), (0, 255, 255), 2)
                 # if frame_ROI_IPM is not None:
@@ -253,19 +256,21 @@ class LaneDetection():
                     # self.utils.draw_line([line_IPM], (0, 255, 255), frame_ROI_IPM)
         # print(sum)
         if sum > 300:
-            coeff = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
+            slope_horiz /= len(horizontal_lines)
+            # coeff = np.polynomial.polynomial.polyfit(x_points, y_points, deg=1)
             # y = coeff[1] * x + coeff[0]
-            x1_cv = int(coeff[1] * 0 + coeff[0])
-            x2_cv = int(coeff[1] * self.width_ROI_IPM + coeff[0])
+            # x1_cv = int(coeff[1] * 0 + coeff[0])
+            # x2_cv = int(coeff[1] * self.width_ROI_IPM + coeff[0])
             # cv2.line(frame_ROI_IPM, (0, abs(x1_cv - self.height_ROI_IPM)), (self.width_ROI_IPM, abs(x2_cv - self.height_ROI_IPM)), (0, 255, 0), 3)
             cv2.line(frame_ROI_IPM, (0, x1_cv),
                      (self.width_ROI_IPM, x2_cv), (0, 255, 0), 3)
-            print("slope horiz line = {}".format(coeff[1]))
-            theta_horizontal_lane = math.degrees(math.atan(coeff[1]))
-            theta_yaw_map = 90 + theta_horizontal_lane
-            print("theta_horiz = {}".format(theta_horizontal_lane))
-            print("theta_yaw_map = {}".format(theta_yaw_map))
-            return True, coeff
+            # print("slope horiz line = {}".format(coeff[1]))
+            # theta_horizontal_lane = math.degrees(math.atan(coeff[1]))
+            # theta_yaw_map = 90 + theta_horizontal_lane
+            # print("theta_horiz = {}".format(theta_horizontal_lane))
+            # print("theta_yaw_map = {}".format(theta_yaw_map))
+            theta_yaw_map = 90 + math.degrees(slope_horiz)
+            return True, True
         else:
             return False, False
 
