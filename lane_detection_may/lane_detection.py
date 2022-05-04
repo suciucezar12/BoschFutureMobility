@@ -281,7 +281,7 @@ class LaneDetection():
 
             x_offset = self.y_heading_car_cv - y
             y_offset = self.height_ROI_IPM - x
-            print("x_offset = {}, y_offset = {}".format(x_offset, y_offset))
+            print("x_offset = {} cm, y_offset = {} cm".format(x_offset * self.pixel_resolution, y_offset * self.pixel_resolution))
 
             return True, theta_yaw_map, x_offset, y_offset
         else:
@@ -331,7 +331,7 @@ class LaneDetection():
             if offset is not None:
                 #print("OFFSET = {} cm".format(offset))
                 offset_prev = offset
-            # print("offset = {}".format(offset_prev))
+            # print("offset = {} cm".format(offset_prev))
 
             if theta is not None:
                 #print("THETA = {}".format(theta))
