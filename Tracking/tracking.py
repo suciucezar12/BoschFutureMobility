@@ -116,25 +116,68 @@ class Map():
 
     def __init__(self, size=None, pixel_resolution=None):
         self.size = size
-        self.map = np.zeros((self.size, self.size), dtype="unint8")
+        self.map = np.zeros((self.size, self.size), np.uint8)
         self.pixel_resolution = pixel_resolution
-        self.points_ref = self.generate_circle_points(r=90, d=9, x_c=30, y_c=30, alpha_min=0, alpha_max=1.57)
+        # self.points_ref = self.generate_circle_points(r=int(90 / self.pixel_resolution), d=int(9 / self.pixel_resolution), x_c=int(30 / self.pixel_resolution), y_c=abs(int(30 / self.pixel_resolution) - self.size), alpha_min=0, alpha_max=1.57)
+        self.points_ref = []
+        self.points_ref = self.generate_circle_points(r=90,
+                                                      d=9,
+                                                      x_c=30,
+                                                      y_c=30, alpha_min=0,
+                                                      alpha_max=1.57)
+        self.init_map()
+        self.points_ref = self.generate_circle_points(r=60,
+                                                      d=9,
+                                                      x_c=180,
+                                                      y_c=30, alpha_min=1.57,
+                                                      alpha_max=3.14)
+        self.init_map()
+        self.points_ref = self.generate_line_points(x1=120, y1=30, x2=120, y2=180, n=10)
+        self.init_map()
+
+        # for point in self.points_ref:
+        #     x, y = point
+        #     print("x = {}, y = {}".format(int(x), int(abs(y - self.size))))
+        #     cv2.circle(self.map, (int(x), int(abs(y - self.size))), 2, (0, 0, 255), 2)
+
+    def init_map(self):
         for point in self.points_ref:
             x, y = point
-            cv2.circle(self.map, (int(x), int(abs(y - self.size))), 2, (0, 0, 255), 2)
+            # print("x = {}, y = {}".format(int(x), int(abs(y - self.size))))
+            # cv2.circle(self.map, (int(x / self.pixel_resolution), int(abs(y / self.pixel_resolution - self.size))), 2, (0, 0, 255), 2)
+            # self.map[int(x / self.pixel_resolution)][int(abs(y / self.pixel_resolution - self.size))] = 255
+            self.map[int(abs(y / self.pixel_resolution - self.size))][int(x / self.pixel_resolution)] = 255
+            # print(self.map)
+            cv2.imshow("map", self.map)
+            cv2.waitKey(0)
 
     def generate_circle_points(self, r=None, d=None, x_c=None, y_c=None, alpha_min=None, alpha_max=None):
         points = []
         alpha = 2 * math.asin(float(d / (2 * r)))
         k = 0
-        while k * alpha <= alpha_max:
-            x = r * math.cos(k * alpha)
-            y = r * math.sin(k * alpha)
+        while k * alpha + alpha_min <= alpha_max:
+            x = r * math.cos((k * alpha + alpha_min) % alpha_max)
+            y = r * math.sin((k * alpha + alpha_min) % alpha_max)
             points.append((x + x_c, y + y_c))
+            k += 1
         return points
 
+    def generate_line_points(self, x1=None, y1=None, x2=None, y2=None, n=None):
+        if x1 != x2:
+            x_points = np.linspace(x1, x2, num=n, endpoint=True)
+        else:
+            x_points = np.zeros(n) + x1
+        if y1 != y2:
+            y_points = np.linspace(y1, y2, num=n, endpoint=True)
+        else:
+            y_points = np.zeros(n) + y1
+
+        points = []
+        for x, y in zip(x_points, y_points):
+            points.append((x, y))
+        return points
 
 map = Map(size=500, pixel_resolution=float(210 / 500))
-
+# map.init_map()
 cv2.imshow("Map", map.map)
 cv2.waitKey(0)
