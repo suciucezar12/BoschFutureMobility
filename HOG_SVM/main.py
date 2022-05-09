@@ -14,7 +14,7 @@ while True:
     x1, y1 = x - width_box // 2, y - height_box // 2
     x2, y2 = x + width_box // 2, y + height_box // 2
 
-    sliding_img = frame[x1:x2, y1:y2]
+    sliding_img = frame[y1:y2, x1:x2]
     sliding_img = cv2.resize(sliding_img, (300, 300))
 
 
