@@ -15,7 +15,7 @@ while True:
     x2, y2 = x + width_box // 2, y + height_box // 2
 
     sliding_img = frame[y1:y2, x1:x2]
-    sliding_img = cv2.resize(sliding_img, (300, 300))
+    sliding_img = cv2.resize(cv2.resize(sliding_img, (64, 64)), (300, 300))
 
 
     cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
