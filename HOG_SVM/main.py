@@ -6,7 +6,7 @@ ret, frame = cap.read()
 
 while True:
 
-    width_box, height_box = 200, 200
+    width_box, height_box = 150, 150
     y = frame.shape[0] // 2
     x = frame.shape[1] // 2
 
