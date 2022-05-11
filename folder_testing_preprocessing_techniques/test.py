@@ -8,6 +8,8 @@ def preprocess(frame_ROI):
     cv2.imshow("Gray", gray)
     hist_eq = cv2.equalizeHist(gray)
     gaussian = cv2.GaussianBlur(hist_eq, ksize=(3,3), sigmaX=0)
+    canny = cv2.Canny(gaussian, 100, 250)
+    cv2.imshow("canny", canny)
     return gaussian
 
 while True:
