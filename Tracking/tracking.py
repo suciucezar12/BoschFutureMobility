@@ -119,20 +119,61 @@ class Map():
         self.map = np.zeros((self.size, self.size), np.uint8)
         self.pixel_resolution = pixel_resolution
         # self.points_ref = self.generate_circle_points(r=int(90 / self.pixel_resolution), d=int(9 / self.pixel_resolution), x_c=int(30 / self.pixel_resolution), y_c=abs(int(30 / self.pixel_resolution) - self.size), alpha_min=0, alpha_max=1.57)
+        # self.points_ref = []
+        # self.points_ref = self.generate_circle_points(r=90,
+        #                                               d=9,
+        #                                               x_c=30,
+        #                                               y_c=30, alpha_min=0,
+        #                                               alpha_max=1.57)
+        # self.init_map()
+        # self.points_ref = self.generate_circle_points(r=60,
+        #                                               d=9,
+        #                                               x_c=180,
+        #                                               y_c=30, alpha_min=1.57,
+        #                                               alpha_max=3.14)
+        # self.init_map()
+        # self.points_ref = self.generate_line_points(x1=120, y1=30, x2=120, y2=180, n=10)
+        # self.init_map()
+
+        # self.points_ref = []
+        # points = self.generate_circle_points(r=70, d=7, x_c=107, y_c=107, alpha_min=0, alpha_max=1.32)
+        # for point in points:
+        #     self.points_ref.append(point)
+        # points = self.generate_circle_points(r=70, d=7, x_c=107, y_c=107, alpha_min=4.95, alpha_max=6.28)
+        # for point in points:
+        #     self.points_ref.append(point)
+        # self.points_ref.append((125, 0))
+        # self.points_ref.append((125, 210))
+        # self.init_map()
+
         self.points_ref = []
-        self.points_ref = self.generate_circle_points(r=90,
-                                                      d=9,
-                                                      x_c=30,
-                                                      y_c=30, alpha_min=0,
-                                                      alpha_max=1.57)
-        self.init_map()
-        self.points_ref = self.generate_circle_points(r=60,
-                                                      d=9,
-                                                      x_c=180,
-                                                      y_c=30, alpha_min=1.57,
-                                                      alpha_max=3.14)
-        self.init_map()
-        self.points_ref = self.generate_line_points(x1=120, y1=30, x2=120, y2=180, n=10)
+        # points = self.generate_circle_points(r=70, d=7, x_c=117, y_c=117, alpha_min=0, alpha_max=1.32)
+        # for point in points:
+        #     self.points_ref.append(point)
+        # points = self.generate_circle_points(r=70, d=7, x_c=117, y_c=117, alpha_min=4.95, alpha_max=6.28)
+        # for point in points:
+        #     self.points_ref.append(point)
+        # self.points_ref.append((135, 10))
+        # self.points_ref.append((135, 20))
+        # self.points_ref.append((135, 220))
+        # self.points_ref.append((135, 210))
+        ref_points_aux = self.generate_circle_points(r=70, d=7, x_c=117, y_c=117, alpha_min=0,
+                                                              alpha_max=1.32)
+        for point in ref_points_aux:
+            self.points_ref.append(point)
+        ref_points_aux = self.generate_circle_points(r=70, d=7, x_c=117, y_c=117, alpha_min=4.95,
+                                                              alpha_max=6.28)
+        for point in ref_points_aux:
+            self.points_ref.append(point)
+
+        ref_points_aux = self.generate_line_points(x1=135, y1=10, x2=135, y2=40, n=5)
+        for point in ref_points_aux:
+            self.points_ref.append(point)
+
+        ref_points_aux = self.generate_line_points(x1=135, y1=224, x2=135, y2=194, n=5)
+        for point in ref_points_aux:
+            self.points_ref.append(point)
+
         self.init_map()
 
         # for point in self.points_ref:
@@ -177,7 +218,8 @@ class Map():
             points.append((x, y))
         return points
 
-map = Map(size=500, pixel_resolution=float(210 / 500))
+# map = Map(size=500, pixel_resolution=float(214 / 500))
+map = Map(size=500, pixel_resolution=float(234 / 500))
 # map.init_map()
 cv2.imshow("Map", map.map)
 cv2.waitKey(0)
