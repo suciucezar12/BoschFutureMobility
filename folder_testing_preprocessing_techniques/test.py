@@ -4,6 +4,7 @@ cap = cv2.VideoCapture(0)
 
 def preprocess(frame_ROI):
     gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
+    cv2.imshow("Gray", gray)
     hist_eq = cv2.equalizeHist(gray)
     return hist_eq
 
