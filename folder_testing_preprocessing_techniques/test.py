@@ -7,7 +7,7 @@ def preprocess(frame_ROI):
     gray = cv2.cvtColor(frame_ROI, cv2.COLOR_BGR2GRAY)
     cv2.imshow("Gray", gray)
     hist_eq = cv2.equalizeHist(gray)
-    gaussian = cv2.GaussianBlur(hist_eq, ksize=(5,5), sigmaX=0)
+    gaussian = cv2.GaussianBlur(hist_eq, ksize=(3,3), sigmaX=0)
     return gaussian
 
 while True:
