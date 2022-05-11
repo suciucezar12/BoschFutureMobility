@@ -12,6 +12,6 @@ while True:
     _, frame = cap.read()
     frame_ROI = frame[270:, :]
     frame_preprocessed = preprocess(frame_ROI)
-    # cv2.imshow("ROI Preprocess", frame_preprocessed)
-    cv2.imshow("ROI", frame_ROI)
+    cv2.imshow("ROI Preprocess", frame_preprocessed)
+    # cv2.imshow("ROI", frame_ROI)
     cv2.waitKey(1)
