@@ -8,7 +8,7 @@ def preprocess(frame_ROI):
     cv2.imshow("Gray", gray)
     hist_eq = cv2.equalizeHist(gray)
     gaussian = cv2.GaussianBlur(hist_eq, ksize=5, sigmaX=0)
-    return hist_eq
+    return gaussian
 
 while True:
     _, frame = cap.read()
