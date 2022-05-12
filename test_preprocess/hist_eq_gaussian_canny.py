@@ -26,4 +26,4 @@ while True:
 
     # cv2.imshow("Otsu", otsu)
     cv2.imshow("Canny", canny)
-    
+    cv2.waitKey(1)

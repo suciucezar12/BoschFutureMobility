@@ -27,6 +27,7 @@ while True:
     end = time.time()
 
     print("time = {}".format(end - start))
+    cv2.waitKey(1)
 
 
 
