@@ -29,6 +29,5 @@ while True:
     cv2.imwrite("./sample_lane_detection/sample_" + str(i) + ".jpg", frame)
     print("Sample_" + str(i) + " added!")
     cv2.imshow("Frame", frame)
-    cv2.waitKey(1)
-
     time.sleep(2)
+    cv2.waitKey(1)
